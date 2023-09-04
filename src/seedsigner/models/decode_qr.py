@@ -284,6 +284,11 @@ class DecodeQR:
     def is_address(self):
         return self.qr_type == QRType.BITCOIN_ADDRESS
         
+    
+    @property
+    def is_nostr_nsec_address(self):
+        return self.qr_type == QRType.NOSTR_NSEC_ADDRESS
+    
 
     @property
     def is_sign_message(self):
