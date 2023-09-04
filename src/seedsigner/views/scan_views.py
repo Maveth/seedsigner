@@ -139,15 +139,15 @@ class ScanView(View):
             elif self.decoder.is_nostr_address:
                 print ("entering scan_views.nostr") #DEBUG
                 from seedsigner.views.seed_views import NostrAddressStartView
-                address = self.decoder.get_address()
-                address_type = self.decoder.get_address_type()
+                nostr_address = self.decoder.get_nostr_address()
+                nostr_address_type = self.decoder.get_nostr_address_type()
                 
                 return Destination(
                     NostrAddressStartView,
                     skip_current_view=True,
                     view_args={
-                        "address": address,
-                        "address_type": address_type,
+                        "address": nostr_address,
+                        "address_type": nostr_address_type,
                     }
                 )
                 
