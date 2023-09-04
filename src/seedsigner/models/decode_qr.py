@@ -976,7 +976,7 @@ class NostrNsecAddressQrDecoder(BaseSingleFrameQrDecoder):
                 self.collected_segments = 1
                 
                 # get address type
-                r = re.search(r'^((nsec1|npub1)[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{25,64})$', self.address)
+                r = re.search(r'^((nsec|npub)[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{25,64})$', self.address)
                 print("getting type - r is:")
                 print(r)
                 print("")
