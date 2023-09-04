@@ -203,7 +203,7 @@ class DecodeQR:
 
     def get_nostr_address_type(self):
         if self.is_address:
-            return self.decoder.nostr_address_type()
+            return self.decoder.get.nostr_address_type()
 
 
     def get_qr_data(self) -> dict:
@@ -962,50 +962,50 @@ class NostrAddressQrDecoder(BaseSingleFrameQrDecoder):
     #TODO this we want to store this like a seed, to use to sign message hashs
     def __init__(self):
         super().__init__()
-        self.address = None
-        self.address_type = None
+        self.nostr_address = None
+        self.nostr_address_type = None
     
     def add(self, segment, qr_type=QRType.NOSTR_ADDRESS):
         print("checking is nostr") #DEBUG
         r = re.search(r'((nsec1|npub1)[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{25,64})', segment)
         
         if r != None:
-            self.address = r.group(1)
+            self.nostr_address = r.group(1)
         
-            if re.search(r'^((nsec1|npub1)[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{25,64})$', self.address) != None:
+            if re.search(r'^((nsec1|npub1)[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{25,64})$', self.nostr_address) != None:
                 self.complete = True
                 self.collected_segments = 1
                 
                 # get address type
-                r = re.search(r'^((nsec1|npub1)[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{25,64})$', self.address)
+                r = re.search(r'^((nsec1|npub1)[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{25,64})$', self.nostr_address)
                 if r != None:
                     r = r.group(2)
                 
                 if r == "nsec1":
                     # Nostr Nsec Privatekey
                     print("found nsec") #DEBUGING
-                    self.address_type = (SettingsConstants.NOSTR_SEC)
+                    self.nostr_address_type = (SettingsConstants.NOSTR_SEC)
 
                 elif r == "npub1":
                     # Nostr Npub Publickey #TODO allow this to scan both, for what dunno?
                     print("found npub") #DEBUGING
-                    self.address_type = (SettingsConstants.NOSTR_PUB)
+                    self.nostr_address_type = (SettingsConstants.NOSTR_PUB)
                 
-                print(self.address)
-                print(self.address_type)
+                print(self.nostr_address)
+                print(self.nostr_address_type)
                 return DecodeQRStatus.COMPLETE
 
         return DecodeQRStatus.INVALID
         
-    def get_address(self):
-        if self.address != None:
-            return self.address
+    def get_nostr_address(self):
+        if self.nostr_address != None:
+            return self.nostr_address
         return None
                 
-    def get_address_type(self):
-        if self.address != None:
-            if self.address_type != None:
-                return self.address_type
+    def get_nostr_address_type(self):
+        if self.nostr_address_type != None:
+            if self.nostr_address_type != None:
+                return self.nostr_address_type
             else:
                 return "Unknown"
         return None
