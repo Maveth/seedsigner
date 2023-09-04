@@ -203,7 +203,7 @@ class DecodeQR:
 
     def get_nostr_address_type(self):
         if self.is_address:
-            return self.decoder.get.nostr_address_type()
+            return self.decoder.get_nostr_address_type()
 
 
     def get_qr_data(self) -> dict:
