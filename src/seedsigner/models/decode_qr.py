@@ -521,6 +521,7 @@ class DecodeQR:
             return True
         elif re.search(r'^((bc1|tb1|bcr|[123]|[mn])[a-zA-HJ-NP-Z0-9]{25,62})$', s):
             # TODO: Handle regtest bcrt?
+            print ("it sees a bitcoin address?") #DEBUG
             return True
         else:
             return False
@@ -955,6 +956,7 @@ class NostrNsecAddressQrDecoder(BaseSingleFrameQrDecoder):
         self.address_type = None
     
     def add(self, segment, qr_type=QRType.NOSTR_NSEC_ADDRESS):
+        print("checking is nostr") #DEBUG
         r = re.search(r'((nsec1|npub1)[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{25,64})', segment)
         if r != None:
             self.address = r.group(1)
