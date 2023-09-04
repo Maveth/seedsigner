@@ -967,13 +967,17 @@ class NostrNsecAddressQrDecoder(BaseSingleFrameQrDecoder):
         
         if r != None:
             self.address = r.group(1)
+            print("r!=none")
         
             if re.search(r'^((nsec1|npub1)[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{25,64})$', self.address) != None:
+                print("next layer - self address = ")
+                print(self.address)
                 self.complete = True
                 self.collected_segments = 1
                 
                 # get address type
                 r = re.search(r'^((nsec1|npub1)[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{25,64})$', self.address)
+                print("getting type")
                 if r != None:
                     r = r.group(2)
                 
