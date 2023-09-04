@@ -982,6 +982,8 @@ class NostrNsecAddressQrDecoder(BaseSingleFrameQrDecoder):
                 print("")
                 if r != None:
                     r = r.group(2)
+                    print("group2")
+                    print (r)
                 
                 if r == "nsec":
                     # Nostr Nsec Privatekey
