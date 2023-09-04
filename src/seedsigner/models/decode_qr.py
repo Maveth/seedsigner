@@ -976,7 +976,7 @@ class NostrNsecAddressQrDecoder(BaseSingleFrameQrDecoder):
                 self.collected_segments = 1
                 
                 # get address type
-                r = re.search(r'^((nsec|npub)[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{25,64})$', self.address)
+                r = re.search(r'^((nsec1|npub1)[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{25,64})$', self.address)
                 print("getting type - r is:")
                 print(r)
                 print("")
@@ -985,16 +985,18 @@ class NostrNsecAddressQrDecoder(BaseSingleFrameQrDecoder):
                     print("group2")
                     print (r)
                 
-                if r == "nsec":
+                if r == "nsec1":
                     # Nostr Nsec Privatekey
                     print("found nsec") #DEBUGING
                     self.address_type = (SettingsConstants.NOSTR_SEC)
 
-                elif r == "npub":
+                elif r == "npub1":
                     # Nostr Npub Publickey #TODO allow this to scan both, for what dunno?
                     print("found npub") #DEBUGING
                     self.address_type = (SettingsConstants.NOSTR_PUB)
                 
+                print(self.address)
+                print(self.address_type)
                 return DecodeQRStatus.COMPLETE
 
         return DecodeQRStatus.INVALID
