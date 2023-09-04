@@ -958,6 +958,9 @@ class NostrNsecAddressQrDecoder(BaseSingleFrameQrDecoder):
     def add(self, segment, qr_type=QRType.NOSTR_NSEC_ADDRESS):
         print("checking is nostr") #DEBUG
         r = re.search(r'((nsec1|npub1)[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{25,64})', segment)
+        
+        print("r is : " + r)
+        
         if r != None:
             self.address = r.group(1)
         
