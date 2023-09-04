@@ -1926,7 +1926,7 @@ class NostrAddressStartView(View):
         print("got to Address start view")
         print("got to Address start view")
         print("got to Address start view")
-        return Destination(NotYetImplementedView)
+        
         raise NotYetImplementedView("Storing NOSTR nsec not yet ready")
         
     

@@ -103,6 +103,7 @@ class SeedSignerIconConstants:
     SEEDS = "\ue901"
     SETTINGS = "\ue902"
     TOOLS = "\ue903"
+    NOSTR = "\ue915" # this is the @ symbol #TODO MAKE OWN
 
     # Utility icons
     BACK = "\ue904"
