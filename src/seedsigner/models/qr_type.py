@@ -20,7 +20,7 @@ class QRType:
     XPUB__UR = "xpub__ur"
 
     BITCOIN_ADDRESS = "bitcoin_address"
-    NOSTR_NSEC_ADDRESS = 'nostr_nsec_address'
+    NOSTR_ADDRESS = 'nostr_address'
 
     SIGN_MESSAGE = "sign_message"
 

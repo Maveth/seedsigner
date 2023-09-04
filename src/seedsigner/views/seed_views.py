@@ -1925,7 +1925,7 @@ class NostrAddressStartView(View):
         # the bulk of the signed might be done with the below code
         #for now we just want to print a success and leave
         print("got to Address start view")
-        raise NotYetImplementedView("Storing nsec not yet ready")
+        raise NotYetImplementedView("Storing NOSTR nsec not yet ready")
         
     
 
