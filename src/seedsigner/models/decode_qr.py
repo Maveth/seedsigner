@@ -519,7 +519,7 @@ class DecodeQR:
     def is_bitcoin_address(s):
         if re.search(r'^bitcoin\:.*', s, re.IGNORECASE):
             return True
-        elif re.search(r'^((bc1|tb1|bcr|[123]|[mn])[a-zA-HJ-NP-Z0-9]{25,62})$', s):
+        elif re.search(r'^((?!npub|nsec)(bc1|tb1|bcr|[123]|[mn])[a-zA-HJ-NP-Z0-9]{25,62})$', s): #mn are bitcoing addresses?
             # TODO: Handle regtest bcrt?
             print ("it sees a bitcoin address?") #DEBUG
             return True
@@ -1008,16 +1008,16 @@ class BitcoinAddressQrDecoder(BaseSingleFrameQrDecoder):
 
             #r'^(npub|nsec)1[0-9a-zA-HJ-NP-Z]{43,}$'
     def add(self, segment, qr_type=QRType.BITCOIN_ADDRESS):
-        r = re.search(r'((bc1q|tb1q|bcrt1q|bc1p|tb1p|bcrt1p|[123]|[mn])[a-zA-HJ-NP-Z0-9]{25,64})', segment)
+        r = re.search(r'((?!npub|nsec)(bc1q|tb1q|bcrt1q|bc1p|tb1p|bcrt1p|[123]|[mn])[a-zA-HJ-NP-Z0-9]{25,64})', segment)
         if r != None:
             self.address = r.group(1)
         
-            if re.search(r'^((bc1q|tb1q|bcrt1q|bc1p|tb1p|bcrt1p|[123]|[mn])[a-zA-HJ-NP-Z0-9]{25,64})$', self.address) != None:
+            if re.search(r'^((?!npub|nsec)(bc1q|tb1q|bcrt1q|bc1p|tb1p|bcrt1p|[123]|[mn])[a-zA-HJ-NP-Z0-9]{25,64})$', self.address) != None:
                 self.complete = True
                 self.collected_segments = 1
                 
                 # get address type
-                r = re.search(r'^((bc1q|tb1q|bcrt1q|bc1p|tb1p|bcrt1p|[123]|[mn])[a-zA-HJ-NP-Z0-9]{25,64})$', self.address)
+                r = re.search(r'^((?!npub|nsec)(bc1q|tb1q|bcrt1q|bc1p|tb1p|bcrt1p|[123]|[mn])[a-zA-HJ-NP-Z0-9]{25,64})$', self.address)
                 if r != None:
                     r = r.group(2)
                 
