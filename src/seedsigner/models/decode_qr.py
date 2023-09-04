@@ -82,6 +82,9 @@ class DecodeQR:
 
             elif self.qr_type == QRType.BITCOIN_ADDRESS:
                 self.decoder = BitcoinAddressQrDecoder() # Single Segment bitcoin address
+                
+            elif self.qr_type == QRType.NOSTR_NSEC_ADDRESS:
+                self.decoder = NostrNsecAddressQrDecoder() #Single Nostr Nsec required for storage
 
             elif self.qr_type == QRType.SIGN_MESSAGE:
                 self.decoder = SignMessageQrDecoder() # Single Segment sign message request
@@ -376,6 +379,10 @@ class DecodeQR:
             # Bitcoin Address
             elif DecodeQR.is_bitcoin_address(s):
                 return QRType.BITCOIN_ADDRESS
+            
+            # Nostr Nsec Address
+            elif DecodeQR.is_nostr_nsec_address(s):
+                return QRType.NOSTR_NSEC_ADDRESS
 
             # message signing
             elif DecodeQR.is_sign_message(s):
@@ -489,6 +496,18 @@ class DecodeQR:
         result.extend(b'\x00' * nPad)
         result.reverse()
         return bytes(result)
+    
+
+    @staticmethod
+    def is_nostr_nsec_address(s):
+        if re.search(r'^nostr\:.*', s, re.IGNORECASE): #TODO is this needed?
+            return True
+        elif re.search(r'^((nsec1|npub1)[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{25,64})$', s):
+            # TODO: Handle other nostr messages
+            print("is a nostr address = true") #DEBUG
+            return True
+        else:
+            return False
 
 
     @staticmethod
@@ -920,7 +939,56 @@ class SignMessageQrDecoder(BaseSingleFrameQrDecoder):
     def get_qr_data(self) -> dict:
         return dict(derivation_path=self.derivation_path, message=self.message)
 
+class NostrNsecAddressQrDecoder(BaseSingleFrameQrDecoder):
+    """
+        Decodes a Nostr Nsec Address, 
+    """
+    #TODO this we want to store this like a seed, to use to sign message hashs
+    def __init__(self):
+        super().__init__()
+        self.address = None
+        self.address_type = None
+    
+    def add(self, segment, qr_type=QRType.NOSTR_NSEC_ADDRESS):
+        r = re.search(r'((nsec1|npub1)[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{25,64})', segment)
+        if r != None:
+            self.address = r.group(1)
+        
+            if re.search(r'^((nsec1|npub1)[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{25,64})$', self.address) != None:
+                self.complete = True
+                self.collected_segments = 1
+                
+                # get address type
+                r = re.search(r'^((nsec1|npub1)[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{25,64})$', self.address)
+                if r != None:
+                    r = r.group(2)
+                
+                if r == "nsec":
+                    # Nostr Nsec Privatekey
+                    print("found nsec") #DEBUGING
+                    self.address_type = (SettingsConstants.NOSTR_SEC)
 
+                elif r == "npub":
+                    # Nostr Npub Publickey #TODO allow this to scan both, for what dunno?
+                    print("found npub") #DEBUGING
+                    self.address_type = (SettingsConstants.NOSTR_PUB)
+                
+                return DecodeQRStatus.COMPLETE
+
+        return DecodeQRStatus.INVALID
+        
+    def get_address(self):
+        if self.address != None:
+            return self.address
+        return None
+                
+    def get_address_type(self):
+        if self.address != None:
+            if self.address_type != None:
+                return self.address_type
+            else:
+                return "Unknown"
+        return None
 
 class BitcoinAddressQrDecoder(BaseSingleFrameQrDecoder):
     """
@@ -931,7 +999,7 @@ class BitcoinAddressQrDecoder(BaseSingleFrameQrDecoder):
         self.address = None
         self.address_type = None
 
-
+            #r'^(npub|nsec)1[0-9a-zA-HJ-NP-Z]{43,}$'
     def add(self, segment, qr_type=QRType.BITCOIN_ADDRESS):
         r = re.search(r'((bc1q|tb1q|bcrt1q|bc1p|tb1p|bcrt1p|[123]|[mn])[a-zA-HJ-NP-Z0-9]{25,64})', segment)
         if r != None:

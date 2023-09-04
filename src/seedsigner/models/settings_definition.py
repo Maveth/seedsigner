@@ -110,6 +110,10 @@ class SettingsConstants:
         (SINGLE_SIG, "Single Sig"),
         (MULTISIG, "Multisig"),
     ]
+    
+    #Nostr
+    NOSTR_SEC = "nsec"
+    NOSTR_PUB = "npub"
 
     LEGACY_P2PKH = "leg"  # Intentionally excluded from ALL_SCRIPT_TYPES
     NATIVE_SEGWIT = "nat"

@@ -134,6 +134,23 @@ class ScanView(View):
                         "network": network,
                     }
                 )
+                
+            #nostr
+            elif self.decoder.is_nostr_nsec_address:
+                print ("entering scan_views.nostr") #DEBUG
+                from seedsigner.views.seed_views import NostrAddressStartView
+                address = self.decoder.get_address()
+                address_type = self.decoder.get_address_type()
+                
+                return Destination(
+                    NostrAddressStartView,
+                    skip_current_view=True,
+                    view_args={
+                        "address": address,
+                        "address_type": address_type,
+                    }
+                )
+                
             
             elif self.decoder.is_sign_message:
                 from seedsigner.views.seed_views import SeedSignMessageStartView
