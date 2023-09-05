@@ -561,7 +561,10 @@ class DecodeQR:
     def is_nostr_json_event(s):
         print("we are checking if this is an event") #DEBUG
         print(s)
-        if re.search(r'^*event*$', s, re.IGNORECASE):
+        if re.search(r'^{"event"\:*$', s, re.IGNORECASE):
+            print("is a nostr json_event id = true") #DEBUG
+            return True
+        elif re.search(r'^((event|nsec1|npub1)[a-zA-z0-9{}"]{25,64})$', s):
             print("is a nostr json_event id = true") #DEBUG
             return True
         else:
