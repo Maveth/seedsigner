@@ -8,7 +8,7 @@ from PIL import Image
 from PIL.ImageOps import autocontrast
 from seedsigner.controller import Controller
 from seedsigner.gui.screens.screen import LoadingScreenThread, QRDisplayScreen
-
+from seedsigner.gui.screens.nostr_screens import NostrButtonListScreen
 from seedsigner.hardware.camera import Camera
 from seedsigner.gui.components import FontAwesomeIconConstants, GUIConstants, SeedSignerIconConstants
 from seedsigner.gui.screens import (RET_CODE__BACK_BUTTON, ButtonListScreen)
@@ -33,7 +33,7 @@ class NostrMenuView(View):
         
         
         button_data = [IMAGE, KEYBOARD, SIGN]
-        screen = ButtonListScreen(
+        screen = NostrButtonListScreen(
             title="Tools",
             is_button_text_centered=False,
             button_data=button_data
