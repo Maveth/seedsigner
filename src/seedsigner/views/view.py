@@ -185,7 +185,7 @@ class MainMenuView(View):
     SEEDS = ("Seeds", SeedSignerIconConstants.SEEDS)
     TOOLS = ("Tools", SeedSignerIconConstants.TOOLS)
     SETTINGS = ("Settings", SeedSignerIconConstants.SETTINGS)
-    NOSTR = ("Nostr",SeedSignerIconConstants.NOSTR)
+    #NOSTR = ("Nostr",SeedSignerIconConstants.NOSTR)
 
 
     def run(self):
@@ -216,9 +216,9 @@ class MainMenuView(View):
             from seedsigner.views.settings_views import SettingsMenuView
             return Destination(SettingsMenuView)
         
-        elif button_data[selected_menu_num] == self.NOSTR:
-            from seedsigner.views.nostr_views import NostrMenuView
-            return Destination(NostrMenuView)
+        #elif button_data[selected_menu_num] == self.NOSTR:
+        #    from seedsigner.views.nostr_views import NostrMenuView
+        #    return Destination(NostrMenuView)
 
 
 
