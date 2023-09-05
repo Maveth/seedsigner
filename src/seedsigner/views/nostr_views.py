@@ -14,6 +14,7 @@ from seedsigner.gui.components import FontAwesomeIconConstants, GUIConstants, Se
 from seedsigner.gui.screens import (RET_CODE__BACK_BUTTON, ButtonListScreen)
 from seedsigner.gui.screens.tools_screens import ToolsCalcFinalWordDoneScreen, ToolsCalcFinalWordFinalizePromptScreen, ToolsCalcFinalWordScreen, ToolsCoinFlipEntryScreen, ToolsDiceEntropyEntryScreen, ToolsImageEntropyFinalImageScreen, ToolsImageEntropyLivePreviewScreen, ToolsAddressExplorerAddressTypeScreen
 from seedsigner.helpers import embit_utils, mnemonic_generation
+from seedsigner.helpers import nostr
 from seedsigner.models.encode_qr import EncodeQR
 from seedsigner.models.qr_type import QRType
 from seedsigner.models.seed import Seed
@@ -23,7 +24,30 @@ from seedsigner.views.view import NotYetImplementedView, OptionDisabledView, Vie
 
 from .view import View, Destination, BackStackView
 
+class BaseNostrView(View):
+    @property
+    def seed_num(self) -> int:
+        return self.controller.nostr_data["seed_num"]
+    
+    @property
+    def seed(self) -> Seed:
+        return self.controller.storage.seeds[self.seed_num]
 
+    @property
+    def nostr_npub(self) -> str:
+        return nostr.get_npub(self.seed)
+
+    @property
+    def nostr_nsec(self) -> str:
+        return nostr.get_nsec(self.seed)
+    
+    @property
+    def nostr_pubkey_hex(self) -> str:
+        return nostr.get_pubkey_hex(self.seed)
+
+    @property
+    def nostr_privkey_hex(self) -> str:
+        return nostr.get_privkey_hex(self.seed)
 
 class NostrMenuView(View):
     def run(self): 
@@ -64,7 +88,7 @@ class NostrMenuView(View):
 """****************************************************************************
     Nostr Menus
 ****************************************************************************"""
-class NostrLoadNsecView(View):
+class NostrLoadNsecView(BaseNostrView):
     def run(self):
         # return Destination(NotYetImplementedView)
         raise NotYetImplementedView("Storing NOSTR nsec not yet ready")

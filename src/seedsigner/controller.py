@@ -114,7 +114,7 @@ class Controller(Singleton):
     image_entropy_final_image: Image = None
 
     address_explorer_data: dict = None
-
+    nostr_data: dict = None
     sign_message_data: dict = None
     # TODO: end refactor section
 
