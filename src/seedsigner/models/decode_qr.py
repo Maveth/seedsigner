@@ -308,6 +308,11 @@ class DecodeQR:
     def is_nostr_address(self):
         return self.qr_type == QRType.NOSTR_ADDRESS
     
+       
+    @property
+    def is_nostr_json_event(self):
+        return self.qr_type == QRType.NOSTR__JSON_EVENT
+    
 
     @property
     def is_sign_message(self):
@@ -556,8 +561,9 @@ class DecodeQR:
         else:
             return False
         
+        
     @staticmethod
-    def is_nostr_json_event(s):
+    def is_nostr_json_event(s):  #     is_nostr_json_event(s):
         print("we are checking if this is an event") # DEBUG
         print(s)
         if re.search(r'^\{"event\.id":', s, re.IGNORECASE):

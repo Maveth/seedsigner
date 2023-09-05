@@ -137,7 +137,7 @@ class ScanView(View):
                 
             #nostr
             elif self.decoder.is_nostr_address:
-                print ("entering scan_views.nostr") #DEBUG
+                print ("entering scan_views.nostr - is_nostr_address is TRUE") #DEBUG
                 from seedsigner.views.seed_views import NostrAddressStartView
                 nostr_address = self.decoder.get_nostr_address()
                 nostr_address_type = self.decoder.get_nostr_address_type()
