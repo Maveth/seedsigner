@@ -118,6 +118,7 @@ class NostrSignEventStartView(BaseNostrView):
 class NostrSignEventReviewView(BaseNostrView):
     def __init__(self, serialized_event: str = None, json_event: str = None):
         super().__init__()
+        raise NotYetImplementedView("Storing NOSTR nsec not yet ready")
         if json_event:
             event_dict = json.loads(json_event)
             serialized_event = nostr.serialize_event(event_dict)
@@ -127,5 +128,6 @@ class NostrSignEventReviewView(BaseNostrView):
     
 
     def run(self):
+        raise NotYetImplementedView("Storing NOSTR nsec not yet ready")
         from seedsigner.gui.screens.nostr_screens import NostrSignEventReviewScreen
 

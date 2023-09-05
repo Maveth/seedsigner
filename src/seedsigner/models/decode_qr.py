@@ -1062,7 +1062,10 @@ class NostrJsonEventQrDecoder(BaseSingleFrameQrDecoder):
 
     def add(self, segment, qr_type=QRType.NOSTR__JSON_EVENT):
         print("we are in the decode.nostrjsoneventqrdecoder")
+        print (segment)
         self.nostr_json_event = segment.strip()
+        print (self.nostr_json_event)
+        
         return DecodeQRStatus.COMPLETE
 
     def get_nostr_json_event(self):

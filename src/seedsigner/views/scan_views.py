@@ -167,6 +167,7 @@ class ScanView(View):
             elif self.decoder.is_nostr_json_event:   # .qr_type == QRType.NOSTR__JSON_EVENT:
                 from seedsigner.views.nostr_views import NostrSignEventReviewView
                 json_event = self.decoder.get_nostr_json_event()
+                print("we are in the scanviews about to do event REVIEW")
                 
                 return Destination(
                     NostrSignEventReviewView,
