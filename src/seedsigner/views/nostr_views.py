@@ -29,8 +29,10 @@ class NostrMenuView(View):
     def run(self): 
         IMAGE = ("Load Nsec", FontAwesomeIconConstants.CAMERA)
         KEYBOARD = ("Load Nsec", FontAwesomeIconConstants.KEYBOARD)
-        EXPLORER = "Address Explorer"
-        button_data = [IMAGE, KEYBOARD, EXPLORER]
+        SIGN = ("Sign Message Hash", FontAwesomeIconConstants.CAMERA)
+        
+        
+        button_data = [IMAGE, KEYBOARD, SIGN]
         screen = ButtonListScreen(
             title="Tools",
             is_button_text_centered=False,
@@ -47,7 +49,7 @@ class NostrMenuView(View):
         elif button_data[selected_menu_num] == KEYBOARD:
             return Destination(NostrLoadNsecView)
 
-        elif button_data[selected_menu_num] == EXPLORER:
+        elif button_data[selected_menu_num] == SIGN:
             return Destination(NostrLoadNsecView)
 
 
