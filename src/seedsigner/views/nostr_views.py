@@ -27,14 +27,15 @@ from .view import View, Destination, BackStackView
 
 class NostrMenuView(View):
     def run(self): 
+        SEEDS = ("Generate New Seed",SeedSignerIconConstants.SEEDS)
         IMAGE = ("Load Nsec", FontAwesomeIconConstants.CAMERA)
         KEYBOARD = ("Load Nsec", FontAwesomeIconConstants.KEYBOARD)
         SIGN = ("Sign Message Hash", FontAwesomeIconConstants.CAMERA)
         
         
-        button_data = [IMAGE, KEYBOARD, SIGN]
+        button_data = [SEEDS, IMAGE, KEYBOARD, SIGN]
         screen = NostrButtonListScreen(
-            title="Tools",
+            title="Nostr Menu",
             is_button_text_centered=False,
             button_data=button_data
         )
@@ -43,21 +44,29 @@ class NostrMenuView(View):
         if selected_menu_num == RET_CODE__BACK_BUTTON:
             return Destination(BackStackView)
 
-        elif button_data[selected_menu_num] == IMAGE:
+        elif button_data[selected_menu_num] == SEEDS:
+            
             return Destination(NostrLoadNsecView)
+        
+        elif button_data[selected_menu_num] == IMAGE:
+            return Destination(NotYetImplementedView)
+            
 
         elif button_data[selected_menu_num] == KEYBOARD:
-            return Destination(NostrLoadNsecView)
+            return Destination(NotYetImplementedView)
+            
 
         elif button_data[selected_menu_num] == SIGN:
-            return Destination(NostrLoadNsecView)
+            return Destination(NotYetImplementedView)
+            
 
 
 """****************************************************************************
-    Image entropy Views
+    Nostr Menus
 ****************************************************************************"""
 class NostrLoadNsecView(View):
     def run(self):
+        return Destination(NotYetImplementedView)
         raise NotYetImplementedView("Storing NOSTR nsec not yet ready")
         self.controller.image_entropy_preview_frames = None
         ret = ToolsImageEntropyLivePreviewScreen().display()
