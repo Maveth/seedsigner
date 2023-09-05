@@ -552,9 +552,9 @@ class DecodeQR:
 
     @staticmethod
     def is_nostr_address(s):
-        if re.search(r'^nostr\:.*', s, re.IGNORECASE): #TODO is this needed?
-            return True
-        elif re.search(r'^((nsec1|npub1)[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{25,64})$', s):
+        # if re.search(r'^nostr\:.*', s, re.IGNORECASE): #TODO is this needed?
+        #     return True
+        if re.search(r'^((nsec1|npub1)[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{25,64})$', s):
             # TODO: Handle other nostr messages
             print("is a nostr address = true") #DEBUG
             return True
@@ -1065,6 +1065,7 @@ class NostrJsonEventQrDecoder(BaseSingleFrameQrDecoder):
     def __init__(self):
         super().__init__()
         self.nostr_json_event = None
+        self.nostr_address = None
 
     def add(self, segment, qr_type=QRType.NOSTR__JSON_EVENT):
         print("we are in the decode.nostrjsoneventqrdecoder")
@@ -1076,6 +1077,9 @@ class NostrJsonEventQrDecoder(BaseSingleFrameQrDecoder):
 
     def get_nostr_json_event(self):
         return self.nostr_json_event
+    
+    def get_nostr_address(self):
+        return self.nostr_address
 
 
 class BitcoinAddressQrDecoder(BaseSingleFrameQrDecoder):
