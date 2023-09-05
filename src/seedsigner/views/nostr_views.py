@@ -66,7 +66,7 @@ class NostrMenuView(View):
 ****************************************************************************"""
 class NostrLoadNsecView(View):
     def run(self):
-        return Destination(NotYetImplementedView)
+        # return Destination(NotYetImplementedView)
         raise NotYetImplementedView("Storing NOSTR nsec not yet ready")
         self.controller.image_entropy_preview_frames = None
         ret = ToolsImageEntropyLivePreviewScreen().display()
