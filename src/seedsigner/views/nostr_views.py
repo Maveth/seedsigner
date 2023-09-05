@@ -81,7 +81,7 @@ class NostrMenuView(View):
             
 
         elif button_data[selected_menu_num] == SIGN:
-            return Destination(NotYetImplementedView)
+            return Destination(NostrSignEventStartView)
             
 
 
@@ -100,3 +100,17 @@ class NostrLoadNsecView(BaseNostrView):
         
         self.controller.image_entropy_preview_frames = ret
         return Destination(ToolsImageEntropyFinalImageView)
+    
+    
+class NostrSignEventStartView(BaseNostrView):
+    def run(self):
+        from seedsigner.gui.screens.nostr_screens import NostrSignEventStartScreen
+        from seedsigner.views.scan_views import ScanView
+        selected_menu_num = NostrSignEventStartScreen(
+            title="Sign Event"
+        ).display()
+
+        if selected_menu_num == RET_CODE__BACK_BUTTON:
+            return Destination(BackStackView)
+        
+        return Destination(ScanView)

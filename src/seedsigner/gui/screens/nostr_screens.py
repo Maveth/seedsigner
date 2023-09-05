@@ -32,3 +32,22 @@ class NostrBaseTopNavScreen(BaseTopNavScreen):
         self.top_nav_button_selected_color = NOSTR_ACCENT_COLOR
         super().__post_init__()
         
+
+
+"""****************************************************************************
+    Sign Event
+****************************************************************************"""
+@dataclass
+class NostrSignEventStartScreen(NostrButtonListScreen):
+    def __post_init__(self):
+        # Customize defaults
+        self.is_bottom_list = True
+        self.button_data = [("Scan", FontAwesomeIconConstants.QRCODE)]
+
+        super().__post_init__()
+
+        self.components.append(TextArea(
+            text="Scan the event hash",
+            is_text_centered=True,
+            screen_y=self.top_nav.height + 3*GUIConstants.COMPONENT_PADDING
+        ))
