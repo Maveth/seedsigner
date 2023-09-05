@@ -25,6 +25,7 @@ from .view import View, Destination, BackStackView
 
 
 class ToolsMenuView(View):
+    NOSTR = ("Nostr",SeedSignerIconConstants.NOSTR)
     IMAGE = (" New seed", FontAwesomeIconConstants.CAMERA)
     DICE = ("New seed", FontAwesomeIconConstants.DICE)
     KEYBOARD = ("Calc 12th/24th word", FontAwesomeIconConstants.KEYBOARD)
@@ -32,7 +33,7 @@ class ToolsMenuView(View):
     ADDRESS = "Verify address"
 
     def run(self):
-        button_data = [self.IMAGE, self.DICE, self.KEYBOARD, self.EXPLORER, self.ADDRESS]
+        button_data = [self.NOSTR, self.IMAGE, self.DICE, self.KEYBOARD, self.EXPLORER, self.ADDRESS]
 
         selected_menu_num = self.run_screen(
             ButtonListScreen,
@@ -43,6 +44,10 @@ class ToolsMenuView(View):
 
         if selected_menu_num == RET_CODE__BACK_BUTTON:
             return Destination(BackStackView)
+        
+        elif button_data[selected_menu_num] == self.NOSTR:
+            from seedsigner.views.nostr_views import NostrMenuView
+            return Destination(NostrMenuView)
 
         elif button_data[selected_menu_num] == self.IMAGE:
             return Destination(ToolsImageEntropyLivePreviewView)
