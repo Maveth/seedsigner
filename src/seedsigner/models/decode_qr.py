@@ -560,10 +560,12 @@ class DecodeQR:
     @staticmethod #DEBUG - TODO this should probably do a more robust search
     def is_nostr_json_event(s):
         print("we are checking if this is an event") #DEBUG
-        if re.search(r'^.*event.*$', s, re.IGNORECASE):
+        print(s)
+        if re.search(r'^*event*$', s, re.IGNORECASE):
             print("is a nostr json_event id = true") #DEBUG
             return True
         else:
+            print("it is not an event")
             return False
 
 
