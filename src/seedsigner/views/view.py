@@ -190,7 +190,7 @@ class MainMenuView(View):
 
     def run(self):
         from seedsigner.gui.screens.screen import MainMenuScreen
-        button_data = [self.SCAN, self.SEEDS, self.TOOLS, self.SETTINGS, self.NOSTR]
+        button_data = [self.SCAN, self.SEEDS, self.TOOLS, self.SETTINGS]
         selected_menu_num = self.run_screen(
             MainMenuScreen,
             title="Home",
