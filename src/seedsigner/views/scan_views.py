@@ -163,6 +163,12 @@ class ScanView(View):
                         message=qr_data["message"],
                     )
                 )
+                
+            elif self.decoder.qr_type == QRType.NOSTR__JSON_EVENT:
+                from seedsigner.views.nostr_views import NostrSignEventReviewView
+                json_event = self.decoder.get_json_event()
+                return Destination(NostrSignEventReviewView, view_args=dict(json_event=json_event), skip_current_view=True)
+
             
             else:
                 return Destination(NotYetImplementedView)
