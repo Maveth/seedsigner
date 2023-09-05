@@ -1,6 +1,6 @@
 import hashlib
 import os
-
+import json
 import time
 
 from embit.descriptor import Descriptor
@@ -114,3 +114,18 @@ class NostrSignEventStartView(BaseNostrView):
             return Destination(BackStackView)
         
         return Destination(ScanView)
+    
+class NostrSignEventReviewView(BaseNostrView):
+    def __init__(self, serialized_event: str = None, json_event: str = None):
+        super().__init__()
+        if json_event:
+            event_dict = json.loads(json_event)
+            serialized_event = nostr.serialize_event(event_dict)
+
+        self.controller.nostr_data["raw_serialized_event"] = serialized_event
+        self.serialized_event = json.loads(serialized_event)
+    
+
+    def run(self):
+        from seedsigner.gui.screens.nostr_screens import NostrSignEventReviewScreen
+
