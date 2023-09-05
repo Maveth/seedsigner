@@ -396,23 +396,23 @@ class DecodeQR:
             elif "sortedmulti" in s:
                 return QRType.WALLET__GENERIC
             
-            try:
-                # Nostr json {"EVENT.ID":"Hash"}
-                #This is a compressed version of the event, to save space we are only using a json that is the hash
-                #This means we cant verify that signature within seedsigner
+            # try:
+            #     # Nostr json {"EVENT.ID":"Hash"}
+            #     #This is a compressed version of the event, to save space we are only using a json that is the hash
+            #     #This means we cant verify that signature within seedsigner
                 
-                """
-                    {
-                        "EVENT.ID":"5f61dbc70077f61dd1b639d2302907b1e06c2ef54c249a7f20c830cb71811f29"
-                    }
-                """
-                json_content = json.loads(s)
-                expected_attrs = ["EVENT.ID"]
+            #     """
+            #         {
+            #             "EVENT.ID":"5f61dbc70077f61dd1b639d2302907b1e06c2ef54c249a7f20c830cb71811f29"
+            #         }
+            #     """
+            #     json_content = json.loads(s)
+            #     expected_attrs = ["EVENT.ID"]
                 
-                if len([k for k in json_content.keys() if k in expected_attrs]) == len(expected_attrs):
-                    return QRType.NOSTR__JSON_EVENT
-            except Exception:
-                pass
+            #     if len([k for k in json_content.keys() if k in expected_attrs]) == len(expected_attrs):
+            #         return QRType.NOSTR__JSON_EVENT
+            # except Exception:
+            #     pass
             
 
             # Seed
@@ -426,6 +426,10 @@ class DecodeQR:
             # Nostr Address
             elif DecodeQR.is_nostr_address(s):
                 return QRType.NOSTR_ADDRESS
+            
+            # Nostr event id
+            elif DecodeQR.is_nostr_json_event(s):
+                return QRType.NOSTR__JSON_EVENT
 
             # message signing
             elif DecodeQR.is_sign_message(s):
@@ -555,6 +559,7 @@ class DecodeQR:
         
     @staticmethod #DEBUG - TODO this should probably do a more robust search
     def is_nostr_json_event(s):
+        print("we are checking if this is an event") #DEBUG
         if re.search(r'^.*event.*$', s, re.IGNORECASE):
             print("is a nostr json_event id = true") #DEBUG
             return True
@@ -1054,10 +1059,11 @@ class NostrJsonEventQrDecoder(BaseSingleFrameQrDecoder):
         self.nostr_json_event = None
 
     def add(self, segment, qr_type=QRType.NOSTR__JSON_EVENT):
+        print("we are in the decode.nostrjsoneventqrdecoder")
         self.nostr_json_event = segment.strip()
         return DecodeQRStatus.COMPLETE
 
-    def get_json_event(self):
+    def get_nostr_json_event(self):
         return self.nostr_json_event
 
 
