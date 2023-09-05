@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from datetime import datetime
 from typing import List
-from seedsigner.gui.components import Button, CheckboxButton, FontAwesomeIconConstants, GUIConstants, Icon, IconButton, TextArea
+from seedsigner.gui.components import Button, CheckboxButton, FontAwesomeIconConstants, SeedSignerIconConstants, GUIConstants, Icon, IconButton, TextArea
 
 from seedsigner.gui.screens.screen import BaseTopNavScreen, ButtonListScreen, WarningEdgesMixin
 from seedsigner.hardware.buttons import HardwareButtonsConstants
@@ -42,7 +42,7 @@ class NostrSignEventStartScreen(NostrButtonListScreen):
     def __post_init__(self):
         # Customize defaults
         self.is_bottom_list = True
-        self.button_data = [("Scan", FontAwesomeIconConstants.QRCODE)]
+        self.button_data = [("Scan", SeedSignerIconConstants.SCAN)]
 
         super().__post_init__()
 
