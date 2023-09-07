@@ -57,7 +57,7 @@ class NostrMenuView(View):
         SIGN = ("Sign Message Hash", FontAwesomeIconConstants.CAMERA)
         
         
-        button_data = [SEEDS, IMAGE, KEYBOARD, SIGN]
+        button_data = [SIGN, SEEDS, IMAGE, KEYBOARD]
         screen = NostrButtonListScreen(
             title="Nostr Menu",
             is_button_text_centered=False,

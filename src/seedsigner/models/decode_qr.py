@@ -1065,8 +1065,6 @@ class NostrJsonEventQrDecoder(BaseSingleFrameQrDecoder):
     def __init__(self):
         super().__init__()
         self.nostr_json_event = None
-        self.nostr_address = None
-        self.nostr_address_type = None
 
     def add(self, segment, qr_type=QRType.NOSTR__JSON_EVENT):
         print("we are in the decode.nostrjsoneventqrdecoder")
@@ -1078,12 +1076,6 @@ class NostrJsonEventQrDecoder(BaseSingleFrameQrDecoder):
 
     def get_nostr_json_event(self):
         return self.nostr_json_event
-    
-    def get_nostr_address(self):
-        return self.nostr_address
-    
-    def get_nostr_address_type(self):
-        return self.nostr_address_type
 
 
 class BitcoinAddressQrDecoder(BaseSingleFrameQrDecoder):
