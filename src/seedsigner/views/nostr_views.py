@@ -104,15 +104,18 @@ class NostrLoadNsecView(BaseNostrView):
     
 class NostrSignEventStartView(BaseNostrView):
     def run(self):
+        print("NostrSignEventStartView.1")
         from seedsigner.gui.screens.nostr_screens import NostrSignEventStartScreen
         from seedsigner.views.scan_views import ScanView
         selected_menu_num = NostrSignEventStartScreen(
             title="Sign Event"
         ).display()
+        print("NostrSignEventStartView.2")
 
         if selected_menu_num == RET_CODE__BACK_BUTTON:
             return Destination(BackStackView)
         
+        print("NostrSignEventStartView.3")
         return Destination(ScanView)
     
 class NostrSignEventReviewView(BaseNostrView):

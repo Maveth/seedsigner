@@ -552,6 +552,7 @@ class DecodeQR:
 
     @staticmethod
     def is_nostr_address(s):
+        print("decode - line 555 - running is_nostr_address")
         # if re.search(r'^nostr\:.*', s, re.IGNORECASE): #TODO is this needed?
         #     return True
         if re.search(r'^((nsec1|npub1)[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{25,64})$', s):
@@ -1016,7 +1017,7 @@ class NostrAddressQrDecoder(BaseSingleFrameQrDecoder):
         self.nostr_address_type = None
     
     def add(self, segment, qr_type=QRType.NOSTR_ADDRESS):
-        print("checking is nostr") #DEBUG
+        print("checking is nostr address") #DEBUG
         r = re.search(r'((nsec1|npub1)[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{25,64})', segment)
         
         if r != None:

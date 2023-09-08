@@ -39,6 +39,8 @@ class ScanView(View):
 
     def run(self):
         from seedsigner.gui.screens.scan_screens import ScanScreen
+        
+        print("scan.views.line43")
 
         # Start the live preview and background QR reading
         self.run_screen(
@@ -47,8 +49,12 @@ class ScanView(View):
             decoder=self.decoder
         )
 
+        print("scan.views.line52")
+        
         # Handle the results
         if self.decoder.is_complete:
+            
+            print("decoder complete - scan.views.line57")
             if not self.is_valid_qr_type:
                 # We recognized the QR type but it was not the type expected for the
                 # current flow.
@@ -137,7 +143,7 @@ class ScanView(View):
                 
             #nostr
             elif self.decoder.is_nostr_address:
-                print ("entering scan_views.nostr - is_nostr_address is TRUE") #DEBUG
+                print ("entering scan_views.nostr - is_nostr_address is TRUE - line 146") #DEBUG
                 from seedsigner.views.seed_views import NostrAddressStartView
                 nostr_address = self.decoder.get_nostr_address()
                 nostr_address_type = self.decoder.get_nostr_address_type()
@@ -167,7 +173,7 @@ class ScanView(View):
             elif self.decoder.is_nostr_json_event:   # .qr_type == QRType.NOSTR__JSON_EVENT:
                 from seedsigner.views.nostr_views import NostrSignEventReviewView
                 json_event = self.decoder.get_nostr_json_event()
-                print("we are in the scanviews about to do event REVIEW")
+                print("we are in the scanviews about to do event REVIEW= line 176")
                 
                 return Destination(
                     NostrSignEventReviewView,
