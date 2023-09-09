@@ -1077,7 +1077,9 @@ class NostrJsonEventQrDecoder(BaseSingleFrameQrDecoder):
         return DecodeQRStatus.COMPLETE
 
     def get_nostr_event(self):
-        return self.nostr_event
+        if self.get_nostr_event != None:
+            return self.nostr_event
+        return None
 
 
 class BitcoinAddressQrDecoder(BaseSingleFrameQrDecoder):
