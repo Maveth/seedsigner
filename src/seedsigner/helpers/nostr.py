@@ -133,9 +133,19 @@ def sign_event_id(nostr_add: str, nostr_add_type: str, nostr_event: str):
     # nostr_root = derive_nostr_key(seed=seed)
     # sig = nostr_root.schnorr_sign(nostr_event.digest())
     # sig = nostr_private_key.sign(nostr_event.digest())
-    EVENTHASH = bytes.fromhex(nostr_event)
-    print ("EVENTHASH in hex: ", EVENTHASH)
-    sig = PK1.sign(EVENTHASH.encode())
+    # Parse the JSON event and extract the hash
+    event_data = json.loads(nostr_event)
+    event_id_hex = event_data.get("EVENT.ID", "")
+    
+    if not event_id_hex:
+        print("No EVENT.ID found in the JSON event.")
+        return None
+    
+    # Convert the hexstring to bytes
+    EVENTHASH = bytes.fromhex(event_id_hex)
+    print("EVENTHASH in hex:", event_id_hex)
+    
+    sig = PK1.sign(EVENTHASH)
     print("and we got the following signature:",sig)
     return sig
 
