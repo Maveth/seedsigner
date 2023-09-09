@@ -4,6 +4,7 @@ from typing import List
 from embit import bip32
 from embit import ec
 from hashlib import sha256
+# import spec256k1
 from seedsigner.helpers import bech32
 from seedsigner.models.seed import Seed
 # from seedsigner.models.nostr import Nostr
@@ -135,6 +136,10 @@ def sign_event_id(nostr_add: str, nostr_add_type: str, nostr_event: str):
     # Parse the JSON event and extract the hash
     event_data = json.loads(nostr_event)
     event_id_hex = event_data.get("EVENT.ID", "")
+    
+    PK2= ec.PrivateKey(PK1)
+    print("THIS IS A TEST: is this an ok privatekey",PK2)
+    
     
     if not event_id_hex:
         print("No EVENT.ID found in the JSON event.")
