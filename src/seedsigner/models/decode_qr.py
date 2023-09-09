@@ -1003,7 +1003,7 @@ class SignMessageQrDecoder(BaseSingleFrameQrDecoder):
 
         return DecodeQRStatus.COMPLETE
 
-
+    print("we are in decode. line 1006)")
     def get_qr_data(self) -> dict:
         return dict(derivation_path=self.derivation_path, message=self.message)
 

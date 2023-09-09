@@ -50,12 +50,12 @@ class ScanView(View):
             decoder=self.decoder
         )
 
-        print("scan.views.line52")
+        print("scan.views.line53")
         
         # Handle the results
         if self.decoder.is_complete:
             
-            print("decoder complete - scan.views.line57")
+            print("decoder complete - scan.views.line58")
             if not self.is_valid_qr_type:
                 # We recognized the QR type but it was not the type expected for the
                 # current flow.
@@ -258,6 +258,9 @@ class ScanNostrAddView(ScanView):
 class ScanNostrJsonEventView(ScanView):
     instructions_text = "Scan an Event Id"
     invalid_qr_type_message = "Expected a Nostr Json Event Id"
+    
+    print(instructions_text)
+    print("scan_views line 263")
         
     @property
     def is_valid_qr_type(self):
