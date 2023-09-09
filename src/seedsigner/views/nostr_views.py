@@ -102,7 +102,7 @@ class NostrSignEventStartView(BaseNostrView):
     def run(self):
         print("NostrSignEventStartView.1")
         from seedsigner.gui.screens.nostr_screens import NostrSignEventStartScreen
-        from seedsigner.views.scan_views import ScanView
+        from seedsigner.views.scan_views import ScanNostrJsonEventView
         selected_menu_num = NostrSignEventStartScreen(
             title="Sign Event"
         ).display()
@@ -112,7 +112,7 @@ class NostrSignEventStartView(BaseNostrView):
             return Destination(BackStackView)
         
         print("NostrSignEventStartView.3")
-        return Destination(ScanView)
+        return Destination(ScanNostrJsonEventView)
     
 class NostrSignEventReviewView(BaseNostrView):
     def __init__(self, serialized_event: str = None, json_event: str = None):

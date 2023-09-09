@@ -243,3 +243,22 @@ class ScanAddressView(ScanView):
     @property
     def is_valid_qr_type(self):
         return self.decoder.is_address
+    
+    
+    
+class ScanNostrAddView(ScanView):
+    instructions_text = "Scan a Nostr address"
+    invalid_qr_type_message = "Expected a Nostr Nsec Address"
+        
+    @property
+    def is_valid_qr_type(self):
+        return self.decoder.is_nostr_address
+    
+    
+class ScanNostrJsonEventView(ScanView):
+    instructions_text = "Scan an Event Id"
+    invalid_qr_type_message = "Expected a Nostr Json Event Id"
+        
+    @property
+    def is_valid_qr_type(self):
+        return self.decoder.is_nostr_json_event
