@@ -174,6 +174,8 @@ class ScanView(View):
                 skip_current_view=True
                 )
 
+            ## THE CODE BELOW seems to have bug for get_qr_data - I might be missing something here.
+            ## it might only trigger if it gets this far and never exits.
             
             elif self.decoder.is_sign_message:
                 from seedsigner.views.seed_views import SeedSignMessageStartView

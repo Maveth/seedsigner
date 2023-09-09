@@ -116,12 +116,25 @@ class NostrSignEventStartView(BaseNostrView):
         return Destination(ScanNostrJsonEventView)
     
 class NostrSignEventReviewView(BaseNostrView):
-    def __init__(self, serialized_event: str = None, json_event: str = None):
+    def __init__(self, nostr_add: str, nostr_add_type: str, serialized_event: str = None, nostr_event: str = None):
         super().__init__()
+        self.nostr_event = nostr_event,
+        self.nostr_add=nostr_add,
+        self.nostr_add_type=nostr_add_type,
+        
         print("WE GOT THE THE REVIEW PROCESS")
         print("WE GOT THE THE REVIEW PROCESS")
         print("WE GOT THE THE REVIEW PROCESS")
         print("WE GOT THE THE REVIEW PROCESS")
+        print(nostr_add)
+        print(nostr_add_type)
+        print(nostr_event)
+        
+        
+        from seedsigner.helpers.nostr import sign_event_id
+        
+        sign_event_id(nostr_add="",nostr_event="")
+        print*"did we get anything)"
         
         raise NotYetImplementedView("Storing NOSTR nsec not yet ready")
         if json_event:

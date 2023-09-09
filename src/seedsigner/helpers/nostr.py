@@ -6,6 +6,7 @@ from embit import ec
 from hashlib import sha256
 from seedsigner.helpers import bech32
 from seedsigner.models.seed import Seed
+from seedsigner.models.nostr import Nostr
 
 
 
@@ -48,6 +49,8 @@ def derive_nostr_key(seed: Seed) -> bip32.HDKey:
         Note: You could derive sibling seeds (e.g. m/44h/1237h/0h/0/1) from the same root
         Seed, but so far Nostr use cases & best practices are limited to just a single
         direct path from mnemonic to npub/nsec. No sibling or child Nostr keys.
+        
+        Note: This would be a good way to do delegation via an external watchtower
     """
     root = bip32.HDKey.from_seed(seed.seed_bytes)
     return root.derive("m/44h/1237h/0h/0/0")
@@ -86,6 +89,11 @@ def pubkey_hex_to_npub(pubkey_hex: str) -> str:
     converted_bits = bech32.convertbits(unhexlify(pubkey_hex), 8, 5)
     return bech32.bech32_encode("npub", converted_bits, bech32.Encoding.BECH32)
 
+#Since we will not always have a seed, we need to have the ability to do this directly
+def privkey_hex_to_nsec(privkey_hex: str) -> str:
+    converted_bits = bech32.convertbits(unhexlify(privkey_hex), 8, 5)
+    return bech32.bech32_encode("nsec", converted_bits, bech32.Encoding.BECH32)
+
 
 def npub_to_hex(npub: str) -> str:
     hrp, data, spec = bech32.bech32_decode(npub)
@@ -93,6 +101,29 @@ def npub_to_hex(npub: str) -> str:
     return bytes(raw_public_key).hex()
 
 
+#Since we will not always have a seed, we need to have the ability to do this directly
+def nsec_to_hex(nsec: str) -> str:
+    hrp, data, spec = bech32.bech32_decode(nsec)
+    raw_priv_key = bech32.convertbits(data, 5, 8)[:-1]
+    return bytes(raw_priv_key).hex()
+
+
+
+##TODO we will need to have a method to do signing without a seed.
+## many people do not have a seed, and created a privatekey without the bip32
+"""****************************************************************************
+    Signing an event ID only 
+    (as Signing below, but sha256(full_message.encode()) IS the event_id for nostr)
+****************************************************************************"""
+def sign_event_id(nostr_add: str, nostr_event: str):
+    """ Hashes the full_message and then signs """
+    print("we are attempting to sign something, nostr event id:",nostr_event, "with nostr_address:",nostr_add)
+    
+    # nostr_root = derive_nostr_key(seed=seed)
+    # sig = nostr_root.schnorr_sign(nostr_event.digest())
+    sig = nostr_add.sign(nostr_event.digest())
+    print("and we got the following signature:",sig)
+    return sig
 
 """****************************************************************************
     Signing
@@ -104,7 +135,7 @@ def sign_message(seed: Seed, full_message: str):
     return sig
 
 
-
+##TODO we are going to do signing of the event IDS not full messages.
 """****************************************************************************
     Events
 ****************************************************************************"""
@@ -119,6 +150,8 @@ def sign_event(seed: Seed, serialized_event: str):
     return sign_message(seed=seed, full_message=serialized_event)
 
 
+
+## not going to impletement this version of delegation below
 
 """****************************************************************************
     NIP-26 Delegation
