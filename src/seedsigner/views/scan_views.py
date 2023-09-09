@@ -143,7 +143,7 @@ class ScanView(View):
                 )
                 
             #nostr
-            elif self.decoder.is_nostr_address:
+            elif self.decoder.is_nostr_add:
                 print ("entering scan_views.nostr - is_nostr_address is TRUE - line 147") #DEBUG
                 print("is_nostr_address: ", self.decoder.is_nostr_add)
                 
