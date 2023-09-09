@@ -153,8 +153,8 @@ class ScanView(View):
                     NostrAddressStartView,
                     skip_current_view=True,
                     view_args={
-                        "nostr_address": nostr_add,
-                        "nostr_address_type": nostr_add_type,
+                        "nostr_add": nostr_add,
+                        "nostr_add_type": nostr_add_type,
                     }
                 )
                 
