@@ -145,15 +145,15 @@ class ScanView(View):
             elif self.decoder.is_nostr_address:
                 print ("entering scan_views.nostr - is_nostr_address is TRUE - line 146") #DEBUG
                 from seedsigner.views.seed_views import NostrAddressStartView
-                nostr_address = self.decoder.get_nostr_address()
-                nostr_address_type = self.decoder.get_nostr_address_type()
+                nostr_add = self.decoder.get_nostr_add()
+                nostr_add_type = self.decoder.get_nostr_add_type()
                 
                 return Destination(
                     NostrAddressStartView,
                     skip_current_view=True,
                     view_args={
-                        "nostr_address": nostr_address,
-                        "nostr_address_type": nostr_address_type,
+                        "nostr_address": nostr_add,
+                        "nostr_address_type": nostr_add_type,
                     }
                 )
                 
@@ -172,7 +172,7 @@ class ScanView(View):
                 
             elif self.decoder.is_nostr_json_event:   # .qr_type == QRType.NOSTR__JSON_EVENT:
                 from seedsigner.views.nostr_views import NostrSignEventReviewView
-                json_event = self.decoder.get_nostr_json_event()
+                json_event = self.decoder.get_nostr_event()
                 print("we are in the scanviews about to do event REVIEW= line 176")
                 
                 return Destination(
