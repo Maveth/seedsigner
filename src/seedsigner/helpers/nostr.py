@@ -140,11 +140,14 @@ def sign_event_id(nostr_add: str, nostr_add_type: str, nostr_event: str):
         print("No EVENT.ID found in the JSON event.")
         return None
     
+    
+
+    
     # Convert the hexstring to bytes
     EVENTHASH = bytes.fromhex(event_id_hex)
     print("EVENTHASH in hex:", event_id_hex, "\n EVENTHISH in bytes:", EVENTHASH)
     pk2=ec.PrivateKey(PK1)
-    PK2=bip32.HDKey(PK1.hex(), bytes)
+    PK2=bip32.HDKey(PK1,  b"\x04")
     print ("THIS IS PK2, is it private?:",PK2.is_private)
     
     sig = PK2.schnorr_sign(EVENTHASH)
