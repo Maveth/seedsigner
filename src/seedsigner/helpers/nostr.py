@@ -156,8 +156,8 @@ def sign_event_id(nostr_add: str, nostr_add_type: str, nostr_event: str):
     EVENTHASH = bytes.fromhex(event_id_hex)
     print("EVENTHASH in hex:", event_id_hex, "\n EVENTHISH in bytes:", EVENTHASH)
     
-    PK2=bip32.HDKey(PK1)
-    print ("THIS IS PK2, is it private?:",PK2.is_private)
+    # PK2=bip32.HDKey(PK1)
+    # print ("THIS IS PK2, is it private?:",PK2.is_private)
     
     sig = PK2.schnorr_sign(EVENTHASH)
     print("and we got the following signature:",sig)
