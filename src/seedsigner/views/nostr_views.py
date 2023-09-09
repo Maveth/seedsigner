@@ -145,8 +145,8 @@ class NostrAddressStartView(View):
     
       def __init__(self, nostr_add: str, nostr_add_type: str):
         super().__init__()
-        self.nostr_address=nostr_add,
-        self.nostr_address_type=nostr_add_type,
+        self.nostr_add=nostr_add,
+        self.nostr_add_type=nostr_add_type,
         
         #like below, if option is disabled then it should do so
         #if not then should check is stored
