@@ -117,15 +117,14 @@ def nsec_to_hex(nsec: str) -> str:
 ****************************************************************************"""
 def sign_event_id(nostr_add: str, nostr_add_type: str, nostr_event: str):
     """ Hashes the full_message and then signs """
-    print("we are attempting to sign something, nostr event id:",nostr_event, " \nwith nostr_address:",nostr_add, " \n address type:",nostr_add_type)
+    print("we are attempting to sign something, \nnostr event id:",nostr_event, " \nwith nostr_address:",nostr_add, " \naddress type:",nostr_add_type)
+    print("")
     
     PK1= nsec_to_hex (nostr_add)
-    print ("hex string key is: ",PK1)
-    
     PK1 = bytes.fromhex(PK1)  # Convert the hexadecimal string to bytes
 
     # PK1 = nostr_add.encode().fromhex()  # Convert the hexadecimal string to bytes
-    print ("converted:",PK1 ,"/n back to hex:", PK1.hex())  # Print the bytes as a hexadecimal string
+    print ("Private key converted bytes:",PK1 ,"\n back to hex:", PK1.hex())  # Print the bytes as a hexadecimal string
     
     # nostr_private_key = ec.PrivateKey(secret=PK1)
     # print("after convert using ec.PrivateKey:",nostr_private_key)
@@ -143,9 +142,9 @@ def sign_event_id(nostr_add: str, nostr_add_type: str, nostr_event: str):
     
     # Convert the hexstring to bytes
     EVENTHASH = bytes.fromhex(event_id_hex)
-    print("EVENTHASH in hex:", event_id_hex)
+    print("EVENTHASH in hex:", event_id_hex, "\n EVENTHISH in bytes:", EVENTHASH)
     
-    sig = PK1.sign(EVENTHASH)
+    sig = PK1.schnorr_sign(EVENTHASH)
     print("and we got the following signature:",sig)
     return sig
 
