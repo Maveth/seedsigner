@@ -68,21 +68,17 @@ class NostrMenuView(View):
         if selected_menu_num == RET_CODE__BACK_BUTTON:
             return Destination(BackStackView)
 
-        elif button_data[selected_menu_num] == SEEDS:
-            
+        elif button_data[selected_menu_num] == SEEDS:            
             return Destination(NostrLoadNsecView)
         
         elif button_data[selected_menu_num] == IMAGE:
-            return Destination(NotYetImplementedView)
-            
+            return Destination(NotYetImplementedView)            
 
         elif button_data[selected_menu_num] == KEYBOARD:
-            return Destination(NotYetImplementedView)
-            
+            return Destination(NotYetImplementedView)            
 
         elif button_data[selected_menu_num] == SIGN:
-            return Destination(NostrSignEventStartView)
-            
+            return Destination(NostrSignEventStartView)            
 
 
 """****************************************************************************
