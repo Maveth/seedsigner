@@ -118,6 +118,11 @@ class NostrSignEventStartView(BaseNostrView):
 class NostrSignEventReviewView(BaseNostrView):
     def __init__(self, serialized_event: str = None, json_event: str = None):
         super().__init__()
+        print("WE GOT THE THE REVIEW PROCESS")
+        print("WE GOT THE THE REVIEW PROCESS")
+        print("WE GOT THE THE REVIEW PROCESS")
+        print("WE GOT THE THE REVIEW PROCESS")
+        
         raise NotYetImplementedView("Storing NOSTR nsec not yet ready")
         if json_event:
             event_dict = json.loads(json_event)
