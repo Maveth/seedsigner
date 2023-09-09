@@ -115,9 +115,9 @@ def nsec_to_hex(nsec: str) -> str:
     Signing an event ID only 
     (as Signing below, but sha256(full_message.encode()) IS the event_id for nostr)
 ****************************************************************************"""
-def sign_event_id(nostr_add: str, nostr_event: str):
+def sign_event_id(nostr_add: str, nostr_add_type: str, nostr_event: str):
     """ Hashes the full_message and then signs """
-    print("we are attempting to sign something, nostr event id:",nostr_event, "with nostr_address:",nostr_add)
+    print("we are attempting to sign something, nostr event id:",nostr_event, " \nwith nostr_address:",nostr_add, " \n address type:",nostr_add_type)
     
     # nostr_root = derive_nostr_key(seed=seed)
     # sig = nostr_root.schnorr_sign(nostr_event.digest())
