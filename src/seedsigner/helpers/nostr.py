@@ -122,7 +122,9 @@ def sign_event_id(nostr_add: str, nostr_add_type: str, nostr_event: str):
     PK1= nsec_to_hex (nostr_add)
     print ("hex string key is: ",PK1)
     
-    PK1 = nostr_add.encode().fromhex()  # Convert the hexadecimal string to bytes
+    PK1 = bytes.fromhex(nostr_add)  # Convert the hexadecimal string to bytes
+
+    # PK1 = nostr_add.encode().fromhex()  # Convert the hexadecimal string to bytes
     print ("converted:",PK1 ,"/n back to hex:", PK1.hex())  # Print the bytes as a hexadecimal string
     
     nostr_private_key = ec.PrivateKey(secret=PK1)
