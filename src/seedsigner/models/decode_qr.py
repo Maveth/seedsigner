@@ -561,7 +561,6 @@ class DecodeQR:
             return True
         else:
             print("not an address")
-            print(is_nostr_address)
             return False
         
         
