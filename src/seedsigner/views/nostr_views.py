@@ -133,8 +133,9 @@ class NostrSignEventReviewView(BaseNostrView):
         
         from seedsigner.helpers.nostr import sign_event_id
         
+        print ("about to try signing")
         sign_event_id(nostr_add="",nostr_event="")
-        print*"did we get anything)"
+        print("did we get anything?????")
         
         raise NotYetImplementedView("Storing NOSTR nsec not yet ready")
         if json_event:
