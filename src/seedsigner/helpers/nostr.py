@@ -119,9 +119,14 @@ def sign_event_id(nostr_add: str, nostr_add_type: str, nostr_event: str):
     """ Hashes the full_message and then signs """
     print("we are attempting to sign something, nostr event id:",nostr_event, " \nwith nostr_address:",nostr_add, " \n address type:",nostr_add_type)
     
+    PK1= nsec_to_hex (nostr_add)
+    print ("hex key will be",PK1)
+    nostr_private_key = ec.PrivateKey(secret=PK1)
+    print("after convert:",nostr_private_key)
+    
     # nostr_root = derive_nostr_key(seed=seed)
     # sig = nostr_root.schnorr_sign(nostr_event.digest())
-    sig = nostr_add.sign(nostr_event.digest())
+    sig = nostr_private_key.sign(nostr_event.digest())
     print("and we got the following signature:",sig)
     return sig
 
