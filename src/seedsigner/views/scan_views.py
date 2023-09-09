@@ -164,14 +164,21 @@ class ScanView(View):
             elif self.decoder.is_nostr_event:   # .qr_type == QRType.NOSTR__JSON_EVENT:
                 from seedsigner.views.nostr_views import NostrSignEventReviewView
                 nostr_event = self.decoder.get_nostr_event()
-                print("we are in the scanviews about to do event REVIEW= line 176")
+                print("we are in the scanviews about to do event REVIEW= line 167")
+                #TODO we need to have some code in here to make sure that we have an address
+                ##lets hardcode one for now
+                ##the following key is listed in nip19 as a sample, unsafe to use for real world
+                nostr_add = "nsec1vl029mgpspedva04g90vltkh6fvh240zqtv9k0t9af8935ke9laqsnlfe5"
+                nostr_add_type = "nsec"
                 
                 return Destination(
                     NostrSignEventReviewView,
-                    view_args=dict(
-                        nostr_event=nostr_event
-                    ),
-                skip_current_view=True
+                    skip_current_view=True,
+                    view_args={
+                        "nostr_add": nostr_add,
+                        "nostr_add_type": nostr_add_type,
+                        "nostr_event" : nostr_event,
+                    }
                 )
 
             ## THE CODE BELOW seems to have bug for get_qr_data - I might be missing something here.
