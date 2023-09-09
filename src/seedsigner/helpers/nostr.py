@@ -132,7 +132,8 @@ def sign_event_id(nostr_add: str, nostr_add_type: str, nostr_event: str):
     
     # nostr_root = derive_nostr_key(seed=seed)
     # sig = nostr_root.schnorr_sign(nostr_event.digest())
-    sig = nostr_private_key.sign(nostr_event.digest())
+    # sig = nostr_private_key.sign(nostr_event.digest())
+    sig = nostr_private_key.sign(nostr_event.encode())
     print("and we got the following signature:",sig)
     return sig
 
