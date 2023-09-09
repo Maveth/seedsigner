@@ -140,6 +140,10 @@ def sign_event_id(nostr_add: str, nostr_add_type: str, nostr_event: str):
     PK2= ec.PrivateKey(PK1)
     print("THIS IS A TEST: is this an ok privatekey",PK2)
     
+    pub1 = PK2.get_public_key
+    print ("this makes the follwing public key:",pub1)
+    
+    
     
     if not event_id_hex:
         print("No EVENT.ID found in the JSON event.")
