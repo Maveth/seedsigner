@@ -134,3 +134,27 @@ class NostrSignEventReviewView(BaseNostrView):
         raise NotYetImplementedView("Storing NOSTR nsec not yet ready")
         from seedsigner.gui.screens.nostr_screens import NostrSignEventReviewScreen
 
+ 
+"""****************************************************************************
+    Nostr Address Views
+****************************************************************************"""
+#TODO this should have the class for what to do after nostr address is scanned
+# inital goal is to store it like a seed is stored (temporarly)
+
+class NostrAddressStartView(View):
+    
+      def __init__(self, nostr_add: str, nostr_add_type: str):
+        super().__init__()
+        self.nostr_address=nostr_add,
+        self.nostr_address_type=nostr_add_type,
+        
+        #like below, if option is disabled then it should do so
+        #if not then should check is stored
+        # the bulk of the signed might be done with the below code
+        #for now we just want to print a success and leave
+        print("got to Address start view")
+        print("got to Address start view")
+        print("got to Address start view")
+        
+        raise NotYetImplementedView("Storing NOSTR nsec not yet ready")
+        
