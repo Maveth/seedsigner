@@ -199,19 +199,19 @@ class DecodeQR:
             return self.decoder.get_address_type()
 
 
-    def get_nostr_address(self):
-        if self.is_nostr_address:
-            return self.decoder.get_nostr_address()
+    def get_nostr_add(self):
+        if self.is_nostr_add:
+            return self.decoder.get_nostr_add()
 
 
-    def get_nostr_address_type(self):
-        if self.is_nostr_address:
-            return self.decoder.get_nostr_address_type()
+    def get_nostr_add_type(self):
+        if self.is_nostr_add:
+            return self.decoder.get_nostr_add_type()
 
         
-    def get_nostr_json_event(self):
-        if self.is_nostr_json_event:
-            return self.decoder.get_nostr_json_event()
+    def get_nostr_event(self):
+        if self.is_nostr_event:
+            return self.decoder.get_nostr_event()
 
 
 
@@ -305,12 +305,12 @@ class DecodeQR:
         
     
     @property
-    def is_nostr_address(self):
+    def is_nostr_add(self):
         return self.qr_type == QRType.NOSTR_ADDRESS
     
        
     @property
-    def is_nostr_json_event(self):
+    def is_nostr_event(self):
         return self.qr_type == QRType.NOSTR__JSON_EVENT
     
 
@@ -560,6 +560,8 @@ class DecodeQR:
             print("is a nostr address = true") #DEBUG
             return True
         else:
+            print("not an address")
+            print(is_nostr_address)
             return False
         
         
@@ -1013,50 +1015,50 @@ class NostrAddressQrDecoder(BaseSingleFrameQrDecoder):
     #TODO this we want to store this like a seed, to use to sign message hashs
     def __init__(self):
         super().__init__()
-        self.nostr_address = None
-        self.nostr_address_type = None
+        self.nostr_add = None
+        self.nostr_add_type = None
     
     def add(self, segment, qr_type=QRType.NOSTR_ADDRESS):
         print("checking is nostr address") #DEBUG
         r = re.search(r'((nsec1|npub1)[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{25,64})', segment)
         
         if r != None:
-            self.nostr_address = r.group(1)
+            self.nostr_add = r.group(1)
         
-            if re.search(r'^((nsec1|npub1)[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{25,64})$', self.nostr_address) != None:
+            if re.search(r'^((nsec1|npub1)[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{25,64})$', self.nostr_add) != None:
                 self.complete = True
                 self.collected_segments = 1
                 
                 # get address type
-                r = re.search(r'^((nsec1|npub1)[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{25,64})$', self.nostr_address)
+                r = re.search(r'^((nsec1|npub1)[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{25,64})$', self.nostr_add)
                 if r != None:
                     r = r.group(2)
                 
                 if r == "nsec1":
                     # Nostr Nsec Privatekey
                     print("found nsec") #DEBUGING
-                    self.nostr_address_type = (SettingsConstants.NOSTR_SEC)
+                    self.nostr_add_type = (SettingsConstants.NOSTR_SEC)
 
                 elif r == "npub1":
                     # Nostr Npub Publickey #TODO allow this to scan both, for what dunno?
                     print("found npub") #DEBUGING
-                    self.nostr_address_type = (SettingsConstants.NOSTR_PUB)
+                    self.nostr_add_type = (SettingsConstants.NOSTR_PUB)
                 
-                print(self.nostr_address)
-                print(self.nostr_address_type)
+                print(self.nostr_add)
+                print(self.nostr_add_type)
                 return DecodeQRStatus.COMPLETE
 
         return DecodeQRStatus.INVALID
         
-    def get_nostr_address(self):
-        if self.nostr_address != None:
-            return self.nostr_address
+    def get_nostr_add(self):
+        if self.nostr_add != None:
+            return self.nostr_add
         return None
                 
-    def get_nostr_address_type(self):
-        if self.nostr_address_type != None:
-            if self.nostr_address_type != None:
-                return self.nostr_address_type
+    def get_nostr_add_type(self):
+        if self.nostr_add_type != None:
+            if self.nostr_add_type != None:
+                return self.nostr_add_type
             else:
                 return "Unknown"
         return None
@@ -1065,18 +1067,18 @@ class NostrAddressQrDecoder(BaseSingleFrameQrDecoder):
 class NostrJsonEventQrDecoder(BaseSingleFrameQrDecoder):
     def __init__(self):
         super().__init__()
-        self.nostr_json_event = None
+        self.nostr_event = None
 
     def add(self, segment, qr_type=QRType.NOSTR__JSON_EVENT):
         print("we are in the decode.nostrjsoneventqrdecoder")
         print (segment)
-        self.nostr_json_event = segment.strip()
-        print (self.nostr_json_event)
+        self.nostr_event = segment.strip()
+        print (self.nostr_event)
         
         return DecodeQRStatus.COMPLETE
 
-    def get_nostr_json_event(self):
-        return self.nostr_json_event
+    def get_nostr_event(self):
+        return self.nostr_event
 
 
 class BitcoinAddressQrDecoder(BaseSingleFrameQrDecoder):
