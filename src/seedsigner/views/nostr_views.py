@@ -102,7 +102,6 @@ class NostrSignEventStartView(BaseNostrView):
     def run(self):
         print("NostrSignEventStartView.1")
         from seedsigner.gui.screens.nostr_screens import NostrSignEventStartScreen
-        from seedsigner.views.scan_views import ScanNostrJsonEventView
         selected_menu_num = NostrSignEventStartScreen(
             title="Sign Event"
         ).display()
@@ -112,6 +111,8 @@ class NostrSignEventStartView(BaseNostrView):
             return Destination(BackStackView)
         
         print("NostrSignEventStartView.3")
+        from seedsigner.views.scan_views import ScanNostrJsonEventView
+        self.controller.resume_main_flow = Controller.FLOW__NOSTR_EVENT
         return Destination(ScanNostrJsonEventView)
     
 class NostrSignEventReviewView(BaseNostrView):

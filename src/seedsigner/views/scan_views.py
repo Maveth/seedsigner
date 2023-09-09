@@ -252,7 +252,7 @@ class ScanNostrAddView(ScanView):
         
     @property
     def is_valid_qr_type(self):
-        return self.decoder.is_nostr_address
+        return self.decoder.is_nostr_add
     
     
 class ScanNostrJsonEventView(ScanView):
@@ -264,4 +264,4 @@ class ScanNostrJsonEventView(ScanView):
         
     @property
     def is_valid_qr_type(self):
-        return self.decoder.is_nostr_json_event
+        return self.decoder.is_nostr_event
