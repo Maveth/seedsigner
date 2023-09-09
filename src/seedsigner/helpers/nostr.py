@@ -6,7 +6,7 @@ from embit import ec
 from hashlib import sha256
 from seedsigner.helpers import bech32
 from seedsigner.models.seed import Seed
-from seedsigner.models.nostr import Nostr
+# from seedsigner.models.nostr import Nostr
 
 
 
