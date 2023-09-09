@@ -127,13 +127,15 @@ def sign_event_id(nostr_add: str, nostr_add_type: str, nostr_event: str):
     # PK1 = nostr_add.encode().fromhex()  # Convert the hexadecimal string to bytes
     print ("converted:",PK1 ,"/n back to hex:", PK1.hex())  # Print the bytes as a hexadecimal string
     
-    nostr_private_key = ec.PrivateKey(secret=PK1)
-    print("after convert using ec.PrivateKey:",nostr_private_key)
+    # nostr_private_key = ec.PrivateKey(secret=PK1)
+    # print("after convert using ec.PrivateKey:",nostr_private_key)
     
     # nostr_root = derive_nostr_key(seed=seed)
     # sig = nostr_root.schnorr_sign(nostr_event.digest())
     # sig = nostr_private_key.sign(nostr_event.digest())
-    sig = nostr_private_key.sign(nostr_event.encode())
+    EVENTHASH = bytes.fromhex(nostr_event)
+    print ("EVENTHASH in hex: ", EVENTHASH)
+    sig = PK1.sign(EVENTHASH.encode())
     print("and we got the following signature:",sig)
     return sig
 
