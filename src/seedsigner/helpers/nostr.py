@@ -120,9 +120,13 @@ def sign_event_id(nostr_add: str, nostr_add_type: str, nostr_event: str):
     print("we are attempting to sign something, nostr event id:",nostr_event, " \nwith nostr_address:",nostr_add, " \n address type:",nostr_add_type)
     
     PK1= nsec_to_hex (nostr_add)
-    print ("hex key will be",PK1)
+    print ("hex string key is: ",PK1)
+    
+    PK1 = nostr_add.encode().fromhex()  # Convert the hexadecimal string to bytes
+    print ("converted:",PK1 ,"/n back to hex:", PK1.hex())  # Print the bytes as a hexadecimal string
+    
     nostr_private_key = ec.PrivateKey(secret=PK1)
-    print("after convert:",nostr_private_key)
+    print("after convert using ec.PrivateKey:",nostr_private_key)
     
     # nostr_root = derive_nostr_key(seed=seed)
     # sig = nostr_root.schnorr_sign(nostr_event.digest())
