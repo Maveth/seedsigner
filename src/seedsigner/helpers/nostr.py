@@ -137,6 +137,10 @@ def sign_event_id(nostr_add: str, nostr_add_type: str, nostr_event: str):
     pub1 = PK2.get_public_key()
     print ("this makes the follwing public key:",pub1)
     
+    pub1_uncompressed = pub1.sec()
+    print(pub1_uncompressed)
+    print("WHAT ABOUT THIS ABOVE IS IT RIGHT")
+    
     if not event_id_hex:
         print("No EVENT.ID found in the JSON event.")
         return None
