@@ -119,33 +119,31 @@ def nsec_to_hex(nsec: str) -> str:
 def sign_event_id(nostr_add: str, nostr_add_type: str, nostr_event: str):
     """ signs a hash (event_ID), with privatekey """
     
+    #TODO DEBUG REMOVE PRINTS
     print("we are attempting to sign something, \nnostr event id:",nostr_event,
           " \nwith nostr_address:",nostr_add,
           " \naddress type:",nostr_add_type)
     
     PK1= nsec_to_hex (nostr_add)  #convert nsec bech32 to HEX
     PK1 = bytes.fromhex(PK1)  # Convert the hexadecimal string to bytes
-
-    print ("Private key converted bytes:\n",PK1 ,"\n back to hex:\n", PK1.hex(),"\n")  # Print the bytes as a hexadecimal string
-    
     event_data = json.loads(nostr_event)
     event_id_hex = event_data.get("EVENT.ID", "")
     
     PK2= ec.PrivateKey(PK1)
-    print("THIS IS A TEST: This turns it into a compressed private key in WIF format",PK2)
+    # print("THIS IS A TEST: This turns it into a compressed private key in WIF format",PK2)
         
-    pub1 = PK2.get_public_key()
-    print ("this makes the follwing public key:",pub1)
+    # pub1 = PK2.get_public_key()
+    # print ("this makes the follwing public key:",pub1)
     
-    pub1_uncompressed = pub1.sec()
-    print(pub1_uncompressed)
-    print("WHAT ABOUT THIS ABOVE IS IT RIGHT")
-    pub1_hex_string = pub1_uncompressed.hex() 
-    print(pub1_hex_string)
-    print("length is ",len(pub1_uncompressed))
+    # pub1_uncompressed = pub1.sec()
+    # print(pub1_uncompressed)
+    # print("WHAT ABOUT THIS ABOVE IS IT RIGHT")
+    # pub1_hex_string = pub1_uncompressed.hex() 
+    # print(pub1_hex_string)
+    # print("length is ",len(pub1_uncompressed))
     
-    uncompressed_pub_key_hex = pub1.xonly().hex()
-    print(uncompressed_pub_key_hex)
+    # uncompressed_pub_key_hex = pub1.xonly().hex()
+    # print(uncompressed_pub_key_hex)
     
     if not event_id_hex:
         print("No EVENT.ID found in the JSON event.")
@@ -153,17 +151,17 @@ def sign_event_id(nostr_add: str, nostr_add_type: str, nostr_event: str):
     
     # Convert the hexstring to bytes
     EVENTHASH = bytes.fromhex(event_id_hex)
-    print("EVENTHASH in hex:", event_id_hex, "\n EVENTHISH in bytes:", EVENTHASH)
+    # print("EVENTHASH in hex:", event_id_hex, "\n EVENTHISH in bytes:", EVENTHASH)
     
 
     sig = PK2.schnorr_sign(EVENTHASH)
     print("and we got the following signature:",sig.to_string())
     
-    pub2=bytes.fromhex(pub1.to_string())
-    sig2=bytes.fromhex(sig.to_string())
-    print("trying different method",pub1.schnorr_verify(sig, EVENTHASH))
-    is_valid = ec.secp256k1.schnorrsig_verify(sig2, EVENTHASH, pub1_uncompressed)
-    print("Signature verification result:", is_valid)
+    # pub2=bytes.fromhex(pub1.to_string())
+    # sig2=bytes.fromhex(sig.to_string())
+    # print("trying different method",pub1.schnorr_verify(sig, EVENTHASH))
+    # is_valid = ec.secp256k1.schnorrsig_verify(sig2, EVENTHASH, pub1_uncompressed)
+    # print("Signature verification result:", is_valid)
 
     # print("test is :", ec.secp256k1.schnorrsig_verify(sig2,EVENTHASH,pub2))
     
