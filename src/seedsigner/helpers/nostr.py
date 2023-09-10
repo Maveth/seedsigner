@@ -147,7 +147,7 @@ def sign_event_id(nostr_add: str, nostr_add_type: str, nostr_event: str):
     
     
     sig = PK2.schnorr_sign(EVENTHASH)
-    print("and we got the following signature:",sig.to_string)
+    print("and we got the following signature:",sig.to_string())
     
     pub2=bytes.fromhex(pub1.to_string())
     sig2=bytes.fromhex(sig.to_string())
