@@ -118,63 +118,40 @@ def nsec_to_hex(nsec: str) -> str:
 ****************************************************************************"""
 def sign_event_id(nostr_add: str, nostr_add_type: str, nostr_event: str):
     """ signs a hash (event_ID), with privatekey """
-    print("we are attempting to sign something, \nnostr event id:",nostr_event, " \nwith nostr_address:",nostr_add, " \naddress type:",nostr_add_type)
-    print("")
+    
+    print("we are attempting to sign something, \nnostr event id:",nostr_event,
+          " \nwith nostr_address:",nostr_add,
+          " \naddress type:",nostr_add_type)
     
     PK1= nsec_to_hex (nostr_add)  #convert nsec bech32 to HEX
     PK1 = bytes.fromhex(PK1)  # Convert the hexadecimal string to bytes
 
-    # PK1 = nostr_add.encode().fromhex()  # Convert the hexadecimal string to bytes
     print ("Private key converted bytes:\n",PK1 ,"\n back to hex:\n", PK1.hex(),"\n")  # Print the bytes as a hexadecimal string
     
-    # nostr_private_key = ec.PrivateKey(secret=PK1)
-    # print("after convert using ec.PrivateKey:",nostr_private_key)
-    
-    # nostr_root = derive_nostr_key(seed=seed)
-    # sig = nostr_root.schnorr_sign(nostr_event.digest())
-    # sig = nostr_private_key.sign(nostr_event.digest())
-    # Parse the JSON event and extract the hash
     event_data = json.loads(nostr_event)
     event_id_hex = event_data.get("EVENT.ID", "")
     
     PK2= ec.PrivateKey(PK1)
     print("THIS IS A TEST: This turns it into a compressed private key in WIF format",PK2)
-    private_key = PK2.from_wif()
-    print ("can this be used?::",private_key)
-    # signature = private_key.sign(bytes.fromhex(event_id_hex))
-    
+        
     pub1 = PK2.get_public_key()
     print ("this makes the follwing public key:",pub1)
-    
-    
     
     if not event_id_hex:
         print("No EVENT.ID found in the JSON event.")
         return None
     
-    
-
-    
     # Convert the hexstring to bytes
     EVENTHASH = bytes.fromhex(event_id_hex)
     print("EVENTHASH in hex:", event_id_hex, "\n EVENTHISH in bytes:", EVENTHASH)
     
-    # PK2=bip32.HDKey(PK1)
-    # print ("THIS IS PK2, is it private?:",PK2.is_private)
     
     sig = PK2.schnorr_sign(EVENTHASH)
-    # sig3 = ec.secp256k1.ecdsa_sign(EVENTHASH,PK2)
     print("and we got the following signature:",sig)
-    # print("and we got the following signature:",sig3)
     
-    # print("LETS VERIFY THE SIGNATURE")
-    # pub1="d4d4fdde8ab4924b1e452e896709a3bd236da4c0576274b52af5992d4d34762c"
     pub2=bytes.fromhex(pub1.to_string())
     sig2=bytes.fromhex(sig.to_string())
-    # sig3=sig.to_string()
-    # test=ec.secp256k1.ecdsa_verify(sig2,EVENTHASH,pub2)
-    test = ec.secp256k1.schnorrsig_verify(sig2,EVENTHASH,pub2)
-    print("test is :", test)
+    print("test is :", ec.secp256k1.schnorrsig_verify(sig2,EVENTHASH,pub2))
     
     
     return sig
