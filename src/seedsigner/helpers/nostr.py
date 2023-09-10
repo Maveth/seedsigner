@@ -140,6 +140,7 @@ def sign_event_id(nostr_add: str, nostr_add_type: str, nostr_event: str):
     pub1_uncompressed = pub1.sec()
     print(pub1_uncompressed)
     print("WHAT ABOUT THIS ABOVE IS IT RIGHT")
+    print("length is ",len(pub1_uncompressed))
     
     if not event_id_hex:
         print("No EVENT.ID found in the JSON event.")
