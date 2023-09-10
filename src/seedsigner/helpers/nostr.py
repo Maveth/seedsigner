@@ -166,7 +166,7 @@ def sign_event_id(nostr_add: str, nostr_add_type: str, nostr_event: str):
     
     # print("LETS VERIFY THE SIGNATURE")
     # pub1="d4d4fdde8ab4924b1e452e896709a3bd236da4c0576274b52af5992d4d34762c"
-    pub2=bytes.fromhex(pub1)
+    pub2=bytes.fromhex(pub1.to_string())
     sig2=bytes.fromhex(sig.to_string())
     # sig3=sig.to_string()
     # test=ec.secp256k1.ecdsa_verify(sig2,EVENTHASH,pub2)
