@@ -117,15 +117,15 @@ def nsec_to_hex(nsec: str) -> str:
     (as Signing below, but sha256(full_message.encode()) IS the event_id for nostr)
 ****************************************************************************"""
 def sign_event_id(nostr_add: str, nostr_add_type: str, nostr_event: str):
-    """ Hashes the full_message and then signs """
+    """ signs a hash (event_ID), with privatekey """
     print("we are attempting to sign something, \nnostr event id:",nostr_event, " \nwith nostr_address:",nostr_add, " \naddress type:",nostr_add_type)
     print("")
     
-    PK1= nsec_to_hex (nostr_add)
+    PK1= nsec_to_hex (nostr_add)  #convert nsec bech32 to HEX
     PK1 = bytes.fromhex(PK1)  # Convert the hexadecimal string to bytes
 
     # PK1 = nostr_add.encode().fromhex()  # Convert the hexadecimal string to bytes
-    print ("Private key converted bytes:",PK1 ,"\n back to hex:", PK1.hex())  # Print the bytes as a hexadecimal string
+    print ("Private key converted bytes:\n",PK1 ,"\n back to hex:\n", PK1.hex(),"\n")  # Print the bytes as a hexadecimal string
     
     # nostr_private_key = ec.PrivateKey(secret=PK1)
     # print("after convert using ec.PrivateKey:",nostr_private_key)
@@ -138,12 +138,13 @@ def sign_event_id(nostr_add: str, nostr_add_type: str, nostr_event: str):
     event_id_hex = event_data.get("EVENT.ID", "")
     
     PK2= ec.PrivateKey(PK1)
-    print("THIS IS A TEST: is this an ok privatekey",PK2)
+    print("THIS IS A TEST: This turns it into a compressed private key in WIF format",PK2)
+    private_key = PK2.from_wif()
+    print ("can this be used?::",private_key)
+    # signature = private_key.sign(bytes.fromhex(event_id_hex))
     
     pub1 = PK2.get_public_key()
     print ("this makes the follwing public key:",pub1)
-    output = ec.PublicKey.parse(bytes.fromhex(pub1.to_string()))
-    print (output)
     
     
     
