@@ -131,7 +131,7 @@ def sign_event_id(nostr_add: str, nostr_add_type: str, nostr_event: str):
     event_data = json.loads(nostr_event)
     event_id_hex = event_data.get("EVENT.ID", "")
     
-    PK2= ec.secp256k1.PrivateKey(PK1)
+    PK2= ec.PrivateKey(PK1)
     print("THIS IS A TEST: This turns it into a compressed private key in WIF format",PK2)
         
     pub1 = PK2.get_public_key()
