@@ -155,12 +155,13 @@ def sign_event_id(nostr_add: str, nostr_add_type: str, nostr_event: str):
     EVENTHASH = bytes.fromhex(event_id_hex)
     print("EVENTHASH in hex:", event_id_hex, "\n EVENTHISH in bytes:", EVENTHASH)
     
-    
+
     sig = PK2.schnorr_sign(EVENTHASH)
     print("and we got the following signature:",sig.to_string())
     
     pub2=bytes.fromhex(pub1.to_string())
     sig2=bytes.fromhex(sig.to_string())
+    print("trying different method",pub1.schnorr_verify(sig2, EVENTHASH))
     is_valid = ec.secp256k1.schnorrsig_verify(sig2, EVENTHASH, pub1_uncompressed)
     print("Signature verification result:", is_valid)
 
