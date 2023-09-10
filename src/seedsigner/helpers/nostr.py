@@ -160,17 +160,17 @@ def sign_event_id(nostr_add: str, nostr_add_type: str, nostr_event: str):
     # print ("THIS IS PK2, is it private?:",PK2.is_private)
     
     sig = PK2.schnorr_sign(EVENTHASH)
-    sig3 = ec.secp256k1.ecdsa_sign(EVENTHASH,PK2)
+    # sig3 = ec.secp256k1.ecdsa_sign(EVENTHASH,PK2)
     print("and we got the following signature:",sig)
-    print("and we got the following signature:",sig3)
+    # print("and we got the following signature:",sig3)
     
-    print("LETS VERIFY THE SIGNATURE")
-    pub1="d4d4fdde8ab4924b1e452e896709a3bd236da4c0576274b52af5992d4d34762c"
+    # print("LETS VERIFY THE SIGNATURE")
+    # pub1="d4d4fdde8ab4924b1e452e896709a3bd236da4c0576274b52af5992d4d34762c"
     pub2=bytes.fromhex(pub1)
     sig2=bytes.fromhex(sig.to_string())
     sig3=sig.to_string()
-    test=ec.secp256k1.ecdsa_verify(sig2,EVENTHASH,pub2)
-    ec.secp256k1.schnorrsig_verify(sig2,EVENTHASH,pub2)
+    # test=ec.secp256k1.ecdsa_verify(sig2,EVENTHASH,pub2)
+    test = ec.secp256k1.schnorrsig_verify(sig2,EVENTHASH,pub2)
     print("test is :", test)
     
     
