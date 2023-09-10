@@ -140,6 +140,8 @@ def sign_event_id(nostr_add: str, nostr_add_type: str, nostr_event: str):
     pub1_uncompressed = pub1.sec()
     print(pub1_uncompressed)
     print("WHAT ABOUT THIS ABOVE IS IT RIGHT")
+    pub1_hex_string = pub1_uncompressed.hex() 
+    print(pub1_hex_string)
     print("length is ",len(pub1_uncompressed))
     
     if not event_id_hex:
