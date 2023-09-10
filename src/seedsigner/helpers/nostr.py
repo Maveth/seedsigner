@@ -142,7 +142,7 @@ def sign_event_id(nostr_add: str, nostr_add_type: str, nostr_event: str):
     
     pub1 = PK2.get_public_key()
     print ("this makes the follwing public key:",pub1)
-    output = ec.PublicKey.parse(bytes.fromhex(pub1.to_string))
+    output = ec.PublicKey.parse(bytes.fromhex(pub1.to_string()))
     print (output)
     
     
