@@ -144,6 +144,9 @@ def sign_event_id(nostr_add: str, nostr_add_type: str, nostr_event: str):
     print(pub1_hex_string)
     print("length is ",len(pub1_uncompressed))
     
+    uncompressed_pub_key_hex = pub1.xonly().hex()
+    print(uncompressed_pub_key_hex)
+    
     if not event_id_hex:
         print("No EVENT.ID found in the JSON event.")
         return None
