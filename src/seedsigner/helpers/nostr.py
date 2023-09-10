@@ -155,7 +155,7 @@ def sign_event_id(nostr_add: str, nostr_add_type: str, nostr_event: str):
     
     pub2=bytes.fromhex(pub1.to_string())
     sig2=bytes.fromhex(sig.to_string())
-    is_valid = ec.secp256k1.schnorrsig_verify(sig2, EVENTHASH, pub2)
+    is_valid = ec.secp256k1.schnorrsig_verify(sig2, EVENTHASH, pub1_uncompressed)
     print("Signature verification result:", is_valid)
 
     # print("test is :", ec.secp256k1.schnorrsig_verify(sig2,EVENTHASH,pub2))
