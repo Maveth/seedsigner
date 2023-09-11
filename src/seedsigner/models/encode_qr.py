@@ -40,6 +40,7 @@ class EncodeQR:
     wordlist_language_code: str = SettingsConstants.WORDLIST_LANGUAGE__ENGLISH
     bitcoin_address: str = None
     signed_message: str = None
+    signed_event: str = None
 
     def __post_init__(self):
         self.qr = QR()
@@ -102,6 +103,9 @@ class EncodeQR:
         # Misc formats
         elif self.qr_type == QRType.BITCOIN_ADDRESS:
             self.encoder = BitcoinAddressEncoder(address=self.bitcoin_address)
+            
+        elif self.qr_type == QRType.NOSTR__SIGNED_EVENT:
+            self.encoder = NostrEventSignature(signed_event=self.signed_event)
 
         elif self.qr_type == QRType.SIGN_MESSAGE:
             self.encoder = SignedMessageEncoder(signed_message=self.signed_message)
@@ -338,6 +342,22 @@ class BitcoinAddressEncoder(BaseStaticQrEncoder):
 
     def next_part(self):
         return self.address
+    
+
+class NostrEventSignature(BaseStaticQrEncoder):
+    """
+    A signature message will fit in a single-frame QR
+    """
+    
+    #TODO I HOPE IT WILL ANYWAYS
+    
+    def __init__(self, signed_message: str):
+        super().__init__()
+        self.signed_message = signed_message
+
+
+    def next_part(self):
+        return self.signed_message
 
 
 

@@ -6,6 +6,10 @@ from seedsigner.gui.components import Button, CheckboxButton, FontAwesomeIconCon
 from seedsigner.gui.screens.screen import BaseTopNavScreen, ButtonListScreen, WarningEdgesMixin
 from seedsigner.hardware.buttons import HardwareButtonsConstants
 
+from PIL import Image, ImageDraw, ImageFilter
+from seedsigner.gui.renderer import Renderer
+from seedsigner.helpers.qr import QR
+
 
 
 NOSTR_BACKGROUND_COLOR = "#5d006f"
@@ -51,3 +55,30 @@ class NostrSignEventStartScreen(NostrButtonListScreen):
             is_text_centered=True,
             screen_y=self.top_nav.height + 3*GUIConstants.COMPONENT_PADDING
         ))
+
+
+@dataclass
+class NostrSignatureQRWholeQRScreen(WarningEdgesMixin, ButtonListScreen):
+    qr_data: str = None
+    num_modules: int = None
+
+    def __post_init__(self):
+        self.title = "NostrSignature"
+        self.button_data = [f"Begin {self.num_modules}x{self.num_modules}"]
+        self.is_bottom_list = True
+        self.status_color = GUIConstants.DIRE_WARNING_COLOR
+        super().__post_init__()
+
+        qr_height = self.buttons[0].screen_y - self.top_nav.height - GUIConstants.COMPONENT_PADDING
+        qr_width = qr_height
+
+        qr = QR()
+        qr_image = qr.qrimage(
+            data=self.qr_data,
+            width=qr_width,
+            height=qr_height,
+            border=1,
+            style=QR.STYLE__ROUNDED
+        ).convert("RGBA")
+
+        self.paste_images.append((qr_image, (int((self.canvas_width - qr_width)/2), self.top_nav.height)))

@@ -22,6 +22,7 @@ class QRType:
     BITCOIN_ADDRESS = "bitcoin_address"
     NOSTR_ADDRESS = 'nostr_address'
     NOSTR__JSON_EVENT = "nostr__json_event"
+    NOSTR__SIGNED_EVENT = "nostr__signed_event"
 
     SIGN_MESSAGE = "sign_message"
 

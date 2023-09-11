@@ -7,6 +7,7 @@ from embit.descriptor import Descriptor
 from PIL import Image
 from PIL.ImageOps import autocontrast
 from seedsigner.controller import Controller
+from seedsigner.gui.screens import nostr_screens
 from seedsigner.gui.screens.screen import LoadingScreenThread, QRDisplayScreen
 from seedsigner.gui.screens.nostr_screens import NostrButtonListScreen
 from seedsigner.hardware.camera import Camera
@@ -116,11 +117,12 @@ class NostrSignEventStartView(BaseNostrView):
         return Destination(ScanNostrJsonEventView)
     
 class NostrSignEventReviewView(BaseNostrView):
-    def __init__(self, nostr_add: str, nostr_add_type: str, serialized_event: str = None, nostr_event: str = None):
+    def __init__(self, nostr_add: str, nostr_add_type: str, nostr_signature: str = None, nostr_event: str = None):
         super().__init__()
         self.nostr_event = nostr_event,
         self.nostr_add=nostr_add,
         self.nostr_add_type=nostr_add_type,
+        self.nostr_signature = nostr_signature,
         
         print("WE GOT THE THE REVIEW PROCESS")
         print(nostr_add)
@@ -130,15 +132,27 @@ class NostrSignEventReviewView(BaseNostrView):
         
         from seedsigner.helpers.nostr import sign_event_id
         
-        sig = sign_event_id(nostr_add=nostr_add,nostr_add_type=nostr_add_type,nostr_event=nostr_event)
-        print("we got sig: ",sig)
+        nostr_signature = sign_event_id(nostr_add=nostr_add,nostr_add_type=nostr_add_type,nostr_event=nostr_event)
+        print("we got sig: ",nostr_signature)
         
         raise NotYetImplementedView("Display qr of signature")
     
-
     def run(self):
-        raise NotYetImplementedView("Storing NOSTR nsec not yet ready")
-        from seedsigner.gui.screens.nostr_screens import NostrSignEventReviewScreen
+        e = EncodeQR(
+            qr_type=self.nostr_signature
+        )
+        data = e.next_part()
+
+        ret = nostr_screens.NostrSignatureQRWholeQRScreen(
+            qr_data=data,
+            num_modules=self.num_modules,
+        ).display()
+
+        if ret == RET_CODE__BACK_BUTTON:
+            return Destination(BackStackView)
+        
+        else:
+            return Destination(BackStackView)
 
  
 """****************************************************************************
