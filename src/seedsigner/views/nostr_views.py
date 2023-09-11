@@ -133,13 +133,16 @@ class NostrSignEventReviewView(BaseNostrView):
         
         from seedsigner.helpers.nostr import sign_event_id
         
-        nostr_signature = sign_event_id(nostr_add=nostr_add,nostr_add_type=nostr_add_type,nostr_event=nostr_event)
+        self.nostr_signature = sign_event_id(nostr_add=nostr_add,nostr_add_type=nostr_add_type,nostr_event=nostr_event)
         print("we got sig:",nostr_signature)
+        print("we got sig:",self.nostr_signature)
         
         # raise NotYetImplementedView("Display qr of signature")
     
     def run(self):
-        print("line 142 nostr view",self.nostr_signature)
+        
+        print("line 142 nostr view: ",self.nostr_signature)
+        # print("line 142 nostr view: ",nostr_signature)
         
         e = EncodeQR(
             qr_type=QRType.NOSTR__SIGNED_EVENT,
