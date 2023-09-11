@@ -117,11 +117,12 @@ class NostrSignEventStartView(BaseNostrView):
         return Destination(ScanNostrJsonEventView)
     
 class NostrSignEventReviewView(BaseNostrView):
-    def __init__(self, nostr_add: str, nostr_add_type: str, nostr_signature: str = None, nostr_event: str = None):
+    def __init__(self, nostr_add: str, nostr_add_type: str, nostr_signature: str = None, nostr_qrtype: str = None, nostr_event: str = None):
         super().__init__()
         self.nostr_event = nostr_event,
         self.nostr_add=nostr_add,
-        self.nostr_add_type=nostr_add_type,
+        self.nostr_qrtype = nostr_qrtype,
+        self.nostr_add_type = nostr_add_type,
         self.nostr_signature = nostr_signature,
         
         print("WE GOT THE THE REVIEW PROCESS")
@@ -139,7 +140,8 @@ class NostrSignEventReviewView(BaseNostrView):
     
     def run(self):
         e = EncodeQR(
-            qr_type=self.nostr_signature
+            qr_type="NOSTR__SIGNED_EVENT",
+            nostr_signature = self.nostr_signature
         )
         data = e.next_part()
 
