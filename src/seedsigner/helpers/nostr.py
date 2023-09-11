@@ -119,53 +119,26 @@ def nsec_to_hex(nsec: str) -> str:
 def sign_event_id(nostr_add: str, nostr_add_type: str, nostr_event: str):
     """ signs a hash (event_ID), with privatekey """
     
-    #TODO DEBUG REMOVE PRINTS
-    print("we are attempting to sign something, \nnostr event id:",nostr_event,
-          " \nwith nostr_address:",nostr_add,
-          " \naddress type:",nostr_add_type)
+    #TODO make this so it can take either nsec OR seed
+    #or make 2 functions
     
-    PK1= nsec_to_hex (nostr_add)  #convert nsec bech32 to HEX
-    PK1 = bytes.fromhex(PK1)  # Convert the hexadecimal string to bytes
     event_data = json.loads(nostr_event)
-    event_id_hex = event_data.get("EVENT.ID", "")
+    event_id_hex = event_data.get("EVENT.ID", "") #strip out the event ID
     
-    PK2= ec.PrivateKey(PK1)
-    # print("THIS IS A TEST: This turns it into a compressed private key in WIF format",PK2)
-        
-    # pub1 = PK2.get_public_key()
-    # print ("this makes the follwing public key:",pub1)
-    
-    # pub1_uncompressed = pub1.sec()
-    # print(pub1_uncompressed)
-    # print("WHAT ABOUT THIS ABOVE IS IT RIGHT")
-    # pub1_hex_string = pub1_uncompressed.hex() 
-    # print(pub1_hex_string)
-    # print("length is ",len(pub1_uncompressed))
-    
-    # uncompressed_pub_key_hex = pub1.xonly().hex()
-    # print(uncompressed_pub_key_hex)
-    
+    #run sanity checks
     if not event_id_hex:
         print("No EVENT.ID found in the JSON event.")
         return None
     
-    # Convert the hexstring to bytes
-    EVENTHASH = bytes.fromhex(event_id_hex)
-    # print("EVENTHASH in hex:", event_id_hex, "\n EVENTHISH in bytes:", EVENTHASH)
+    if not nostr_add_type == "nsec":
+        print("we expect nsec")
+        return None
     
-
-    sig = PK2.schnorr_sign(EVENTHASH)
-    print("and we got the following signature:",sig.to_string())
+    PK1= nsec_to_hex (nostr_add)  #convert nsec bech32 to HEX
+    # PK1 = bytes.fromhex(PK1)  # Convert the hexadecimal string to bytes
+    PK2= ec.PrivateKey(bytes.fromhex(PK1)) #get WIF format secret privatekey used by seedsigner ec import
     
-    # pub2=bytes.fromhex(pub1.to_string())
-    # sig2=bytes.fromhex(sig.to_string())
-    # print("trying different method",pub1.schnorr_verify(sig, EVENTHASH))
-    # is_valid = ec.secp256k1.schnorrsig_verify(sig2, EVENTHASH, pub1_uncompressed)
-    # print("Signature verification result:", is_valid)
-
-    # print("test is :", ec.secp256k1.schnorrsig_verify(sig2,EVENTHASH,pub2))
-    
-    
+    sig = PK2.schnorr_sign(bytes.fromhex(event_id_hex))
     return sig
 
 """****************************************************************************
