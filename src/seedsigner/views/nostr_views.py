@@ -141,7 +141,7 @@ class NostrSignEventReviewView(BaseNostrView):
     def run(self):
         
         e = EncodeQR(
-            qr_type="NOSTR__SIGNED_EVENT",
+            qr_type=QRType.NOSTR__SIGNED_EVENT,
             nostr_signature = self.nostr_signature
         )
         data = e.next_part()
