@@ -351,13 +351,13 @@ class NostrEventSignature(BaseStaticQrEncoder):
     
     #TODO I HOPE IT WILL ANYWAYS
     
-    def __init__(self, signed_message: str):
+    def __init__(self, nostr_signature: str):
         super().__init__()
-        self.signed_message = signed_message
+        self.nostr_signature = nostr_signature
 
 
     def next_part(self):
-        return self.signed_message
+        return self.nostr_signature
 
 
 
