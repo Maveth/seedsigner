@@ -148,10 +148,12 @@ class NostrSignEventReviewView(BaseNostrView):
             qr_type=QRType.NOSTR__SIGNED_EVENT,
             nostr_signature = self.nostr_signature
         )
-        data = e.next_part()
-
+        signature_data = e.next_part()
+        data = {"event.signature": signature_data.decode('utf-8')} # Decode bytes to a UTF-8 string
+        json_data = json.dumps (data)
+        print (json_data)
         ret = nostr_screens.NostrSignatureQRWholeQRScreen(
-            qr_data=data,
+            qr_data=json_data,
         ).display()
 
         if ret == RET_CODE__BACK_BUTTON:
