@@ -152,7 +152,6 @@ class NostrSignEventReviewView(BaseNostrView):
 
         ret = nostr_screens.NostrSignatureQRWholeQRScreen(
             qr_data=data,
-            num_modules=self.num_modules,
         ).display()
 
         if ret == RET_CODE__BACK_BUTTON:
