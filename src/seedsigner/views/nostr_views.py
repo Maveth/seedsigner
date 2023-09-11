@@ -146,10 +146,10 @@ class NostrSignEventReviewView(BaseNostrView):
         
         e = EncodeQR(
             qr_type=QRType.NOSTR__SIGNED_EVENT,
-            nostr_signature = self.nostr_signature
+            nostr_signature = '{"event.signature": "' + self.nostr_signature + '"}'
         )
-        signature_data = e.next_part()
-        data = '{"event.signature": "' + signature_data + '"}'
+        data = e.next_part()
+        # data = '{"event.signature": "' + signature_data + '"}'
         print (data)
         ret = nostr_screens.NostrSignatureQRWholeQRScreen(
             qr_data=data,
