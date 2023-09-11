@@ -123,9 +123,6 @@ class NostrSignEventReviewView(BaseNostrView):
         self.nostr_add_type=nostr_add_type,
         
         print("WE GOT THE THE REVIEW PROCESS")
-        print("WE GOT THE THE REVIEW PROCESS")
-        print("WE GOT THE THE REVIEW PROCESS")
-        print("WE GOT THE THE REVIEW PROCESS")
         print(nostr_add)
         print(nostr_add_type)
         print(nostr_event)
@@ -133,17 +130,10 @@ class NostrSignEventReviewView(BaseNostrView):
         
         from seedsigner.helpers.nostr import sign_event_id
         
-        print ("about to try signing")
-        sign_event_id(nostr_add=nostr_add,nostr_add_type=nostr_add_type,nostr_event=nostr_event)
-        print("did we get anything?????")
+        sig = sign_event_id(nostr_add=nostr_add,nostr_add_type=nostr_add_type,nostr_event=nostr_event)
+        print("we got sig: ",sig)
         
-        raise NotYetImplementedView("Storing NOSTR nsec not yet ready")
-        if json_event:
-            event_dict = json.loads(json_event)
-            serialized_event = nostr.serialize_event(event_dict)
-
-        self.controller.nostr_data["raw_serialized_event"] = serialized_event
-        self.serialized_event = json.loads(serialized_event)
+        raise NotYetImplementedView("Display qr of signature")
     
 
     def run(self):
