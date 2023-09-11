@@ -40,7 +40,7 @@ class EncodeQR:
     wordlist_language_code: str = SettingsConstants.WORDLIST_LANGUAGE__ENGLISH
     bitcoin_address: str = None
     signed_message: str = None
-    signed_event: str = None
+    nostr_signature : str = None
 
     def __post_init__(self):
         self.qr = QR()
@@ -105,7 +105,7 @@ class EncodeQR:
             self.encoder = BitcoinAddressEncoder(address=self.bitcoin_address)
             
         elif self.qr_type == QRType.NOSTR__SIGNED_EVENT:
-            self.encoder = NostrEventSignature(signed_event=self.signed_event)
+            self.encoder = NostrEventSignature(nostr_signature=self.nostr_signature )
 
         elif self.qr_type == QRType.SIGN_MESSAGE:
             self.encoder = SignedMessageEncoder(signed_message=self.signed_message)
