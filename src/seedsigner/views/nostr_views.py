@@ -135,7 +135,7 @@ class NostrSignEventReviewView(BaseNostrView):
         nostr_signature = sign_event_id(nostr_add=nostr_add,nostr_add_type=nostr_add_type,nostr_event=nostr_event)
         print("we got sig: ",nostr_signature)
         
-        raise NotYetImplementedView("Display qr of signature")
+        # raise NotYetImplementedView("Display qr of signature")
     
     def run(self):
         e = EncodeQR(
