@@ -7,7 +7,6 @@ from seedsigner.models.decode_qr import DecodeQR
 from seedsigner.models.seed import Seed
 from seedsigner.models.settings import SettingsConstants
 from seedsigner.views.settings_views import SettingsIngestSettingsQRView
-from seedsigner.views.nostr_views import NostrAddressStartView
 from seedsigner.views.view import BackStackView, ErrorView, MainMenuView, NotYetImplementedView, OptionDisabledView, View, Destination
 
 
@@ -147,7 +146,7 @@ class ScanView(View):
                 print ("entering scan_views.nostr - is_nostr_address is TRUE - line 147") #DEBUG
                 print("is_nostr_address: ", self.decoder.is_nostr_add)
                 
-                # from seedsigner.views.nostr_views import NostrAddressStartView
+                from seedsigner.views.nostr_views import NostrAddressStartView
                 nostr_add = self.decoder.get_nostr_add()
                 nostr_add_type = self.decoder.get_nostr_add_type()
                 
