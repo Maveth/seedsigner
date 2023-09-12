@@ -198,9 +198,11 @@ class NostrAddressStartView(View):
         self.controller.storage.add_nsec(self.nostr_add)
         
         print("we just tried to save nsec got:")
-        print(self.controller.storage.get_nsec)
-        raise NotYetImplementedView("Storing NOSTR nsec not yet ready")
-    
+        print(self.controller.storage.get_nsec())
+        # raise NotYetImplementedView("Storing NOSTR nsec not yet ready")
+
+        #TODO THIS SHOULD DISPLAY SOMETHING ON THE SCREEN SO WE KNOW IT WAS SUCCESSFUL
+        return Destination(BackStackView)
     #TODO this needs to scan and address, then it needs to store it
     #Scanning functionality already works, so just need to call scanning,
     #need to figure out temp storage
