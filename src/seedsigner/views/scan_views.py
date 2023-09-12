@@ -174,13 +174,15 @@ class ScanView(View):
                 
                 
                 nostr_add = self.controller.storage.get_nsec()
-                if nostr_add.startswith('nsec'):
-                    nostr_add_type = "nsec"
-                elif nostr_add.startswith('npub'):
-                    nostr_add_type = "npub"
-                    print("Invalid")
-                    raise Exception(f"expecting a nsec key")
-                else: 
+                print("we got an address from storage:",nostr_add)
+                # if nostr_add.startswith('nsec'):
+                nostr_add_type = "nsec"
+                # elif nostr_add.startswith('npub'):
+                #     nostr_add_type = "npub"
+                #     print("Invalid")
+                #     raise Exception(f"expecting a nsec key")
+                # else: 
+                if nostr_add == "" :
                     print("I think we have no nsec, try and scan for one?")
                     #TODO maybe we should ask first
                     Destination(ScanNostrAddView)
