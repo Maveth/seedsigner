@@ -173,9 +173,10 @@ class ScanView(View):
                 ##the following key is listed in nip19 as a sample, unsafe to use for real world
                 
                 
-                nostr_add = self.controller.storage.get_nsec()
+                nostr_add = self.controller.storage.get_nsec()[0]
                 print("we got an address from storage:",nostr_add)
                 # if nostr_add.startswith('nsec'):
+                print(nostr_add.startswith('nsec'))
                 nostr_add_type = "nsec"
                 # elif nostr_add.startswith('npub'):
                 #     nostr_add_type = "npub"
