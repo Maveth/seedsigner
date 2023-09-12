@@ -13,6 +13,7 @@ from seedsigner.gui.screens.nostr_screens import NostrButtonListScreen
 from seedsigner.hardware.camera import Camera
 from seedsigner.gui.components import FontAwesomeIconConstants, GUIConstants, SeedSignerIconConstants
 from seedsigner.gui.screens import (RET_CODE__BACK_BUTTON, ButtonListScreen)
+from seedsigner.gui.screens.nostr_screens import NostrSignEventStartScreen
 from seedsigner.gui.screens.tools_screens import ToolsCalcFinalWordDoneScreen, ToolsCalcFinalWordFinalizePromptScreen, ToolsCalcFinalWordScreen, ToolsCoinFlipEntryScreen, ToolsDiceEntropyEntryScreen, ToolsImageEntropyFinalImageScreen, ToolsImageEntropyLivePreviewScreen, ToolsAddressExplorerAddressTypeScreen
 from seedsigner.helpers import embit_utils, mnemonic_generation
 from seedsigner.helpers import nostr
@@ -22,6 +23,7 @@ from seedsigner.models.seed import Seed
 from seedsigner.models.settings_definition import SettingsConstants
 from seedsigner.views.seed_views import SeedDiscardView, SeedFinalizeView, SeedMnemonicEntryView, SeedWordsWarningView, SeedExportXpubScriptTypeView
 from seedsigner.views.view import NotYetImplementedView, OptionDisabledView, View, Destination, BackStackView, MainMenuView
+from seedsigner.views.scan_views import ScanNostrAddView, ScanNostrJsonEventView
 
 from .view import View, Destination, BackStackView
 
@@ -52,9 +54,9 @@ class BaseNostrView(View):
 
 class NostrMenuView(View):
     def run(self): 
-        SEEDS = ("Generate New Seed",SeedSignerIconConstants.SEEDS)
-        IMAGE = ("Load Nsec", FontAwesomeIconConstants.CAMERA)
-        KEYBOARD = ("Load Nsec", FontAwesomeIconConstants.KEYBOARD)
+        SEEDS = ("Get Nsec from Seed",SeedSignerIconConstants.SEEDS)
+        IMAGE = ("Scan Nsec", FontAwesomeIconConstants.CAMERA)
+        KEYBOARD = ("Enter Nsec", FontAwesomeIconConstants.KEYBOARD)
         SIGN = ("Sign Message Hash", FontAwesomeIconConstants.CAMERA)
         
         
@@ -73,7 +75,7 @@ class NostrMenuView(View):
             return Destination(NostrLoadNsecView)
         
         elif button_data[selected_menu_num] == IMAGE:
-            return Destination(NotYetImplementedView)            
+            return Destination(ScanNostrAddView)            
 
         elif button_data[selected_menu_num] == KEYBOARD:
             return Destination(NotYetImplementedView)            
@@ -88,6 +90,11 @@ class NostrMenuView(View):
 class NostrLoadNsecView(BaseNostrView):
     def run(self):
         # return Destination(NotYetImplementedView)
+        #TODO this is to load a nsec from a seed, review code from
+        #https://gist.github.com/kdmukai/ae9911ed6fb92f8e7d2c553555b0cb86
+        
+        print("Generate a new seed from here")
+        
         raise NotYetImplementedView("Storing NOSTR nsec not yet ready")
         self.controller.image_entropy_preview_frames = None
         ret = ToolsImageEntropyLivePreviewScreen().display()
@@ -102,7 +109,12 @@ class NostrLoadNsecView(BaseNostrView):
 class NostrSignEventStartView(BaseNostrView):
     def run(self):
         print("NostrSignEventStartView.1")
-        from seedsigner.gui.screens.nostr_screens import NostrSignEventStartScreen
+        if self.controller.storage.nsec == "":
+            print ("NO NSEC IN STORAGE")
+            print("loadnsec First")
+            raise NotYetImplementedView("NOSTR nsec not loaded")
+    
+            
         selected_menu_num = NostrSignEventStartScreen(
             title="Sign Event"
         ).display()
@@ -112,7 +124,7 @@ class NostrSignEventStartView(BaseNostrView):
             return Destination(BackStackView)
         
         print("NostrSignEventStartView.3")
-        from seedsigner.views.scan_views import ScanNostrJsonEventView
+        # from seedsigner.views.scan_views import ScanNostrJsonEventView
         self.controller.resume_main_flow = Controller.FLOW__NOSTR_EVENT
         return Destination(ScanNostrJsonEventView)
     
@@ -125,7 +137,7 @@ class NostrSignEventReviewView(BaseNostrView):
         self.nostr_add_type = nostr_add_type,
         self.nostr_signature = nostr_signature,
         
-        print("WE GOT THE THE REVIEW PROCESS")
+        print("WE GOT THE THE REVIEW PROCESS") #TODO DEBUG REMOVE
         print(nostr_add)
         print(nostr_add_type)
         print(nostr_event)
@@ -158,6 +170,7 @@ class NostrSignEventReviewView(BaseNostrView):
         if ret == RET_CODE__BACK_BUTTON:
             return Destination(BackStackView)
         
+        #TODO MENU BUTTON NAMES
         else:
             return Destination(BackStackView)
 
@@ -182,6 +195,14 @@ class NostrAddressStartView(View):
         print("got to Address start view")
         print("got to Address start view")
         print("got to Address start view")
+        self.controller.storage.seeds[seed_num]
         
         raise NotYetImplementedView("Storing NOSTR nsec not yet ready")
+    
+    #TODO this needs to scan and address, then it needs to store it
+    #Scanning functionality already works, so just need to call scanning,
+    #need to figure out temp storage
+    #and delete the key as well.
+    # note TO SELF: all info deleted when seedsigner unplugged.
+        
         

@@ -151,6 +151,10 @@ class ScanView(View):
                 nostr_add = self.decoder.get_nostr_add()
                 nostr_add_type = self.decoder.get_nostr_add_type()
                 
+                
+                #TODO store nsec 
+                self.controller.storage.add_nsec(nostr_add)
+                
                 return Destination(
                     NostrAddressStartView,
                     skip_current_view=True,
@@ -168,8 +172,22 @@ class ScanView(View):
                 #TODO we need to have some code in here to make sure that we have an address
                 ##lets hardcode one for now
                 ##the following key is listed in nip19 as a sample, unsafe to use for real world
-                nostr_add = "nsec1vl029mgpspedva04g90vltkh6fvh240zqtv9k0t9af8935ke9laqsnlfe5"
-                nostr_add_type = "nsec"
+                
+                
+                nostr_add = self.controller.storage.get_nsec()
+                if nostr_add.startswith('nsec'):
+                    nostr_add_type = "nsec"
+                elif nostr_add.startswith('npub'):
+                    nostr_add_type = "npub"
+                    print("Invalid")
+                    raise Exception(f"expecting a nsec key")
+                else: 
+                    print("I think we have no nsec, try and scan for one?")
+                    #TODO maybe we should ask first
+                    Destination(ScanNostrAddView)
+                
+                # nostr_add = "nsec1vl029mgpspedva04g90vltkh6fvh240zqtv9k0t9af8935ke9laqsnlfe5"
+                # nostr_add_type = "nsec"
                 
                 return Destination(
                     NostrSignEventReviewView,

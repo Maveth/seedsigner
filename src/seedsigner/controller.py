@@ -219,7 +219,15 @@ class Controller(Singleton):
             del self.storage.seeds[seed_num]
         else:
             raise Exception(f"There is no seed_num {seed_num}; only {len(self.storage.seeds)} in memory.")
-
+        
+    
+    def get_nsec(self) -> 'Nsec':
+            return self.storage.nsec()
+        
+    
+    def remove_nsec(self):
+        self.storage.remove_nsec()
+            
 
     def pop_prev_from_back_stack(self):
         if len(self.back_stack) > 0:
