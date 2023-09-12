@@ -2,7 +2,23 @@ from typing import List
 from seedsigner.models.seed import Seed, InvalidSeedException
 from seedsigner.models.settings_definition import SettingsConstants
 
+class Nsec:
+    def __init__(self):
+        #nsec is a string
+        self.nsec : str 
 
+    def add_nsec(self, nsec):
+        # Add a new root key to the storage
+        self.nsec = nsec
+
+    def remove_nsec(self):
+        # make nsec null
+        self.nsec = ""
+
+    def get_nsec(self):
+        #return the nsec string
+        return self.nsec
+    
 
 class SeedStorage:
     def __init__(self) -> None:
