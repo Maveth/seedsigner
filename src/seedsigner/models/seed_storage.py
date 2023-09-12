@@ -1,10 +1,13 @@
 from typing import List
 from seedsigner.models.seed import Seed, InvalidSeedException
 from seedsigner.models.settings_definition import SettingsConstants
+    
 
-class Nsec:
-    def __init__(self):
-        #nsec is a string
+class SeedStorage:
+    def __init__(self) -> None:
+        self.seeds: List[Seed] = []
+        self.pending_seed: Seed = None
+        self._pending_mnemonic: List[str] = []
         self.nsec : str 
 
     def add_nsec(self, nsec):
@@ -19,13 +22,6 @@ class Nsec:
         #return the nsec string
         return self.nsec
     
-
-class SeedStorage:
-    def __init__(self) -> None:
-        self.seeds: List[Seed] = []
-        self.pending_seed: Seed = None
-        self._pending_mnemonic: List[str] = []
-
 
     def set_pending_seed(self, seed: Seed):
         self.pending_seed = seed
