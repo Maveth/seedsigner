@@ -195,8 +195,10 @@ class NostrAddressStartView(View):
         print("got to Address start view")
         print("got to Address start view")
         print("got to Address start view")
-        self.controller.storage.seeds[seed_num]
+        self.controller.storage.add_nsec(self.nostr_add)
         
+        print("we just tried to save nsec got:")
+        print(self.controller.storage.get_nsec)
         raise NotYetImplementedView("Storing NOSTR nsec not yet ready")
     
     #TODO this needs to scan and address, then it needs to store it
