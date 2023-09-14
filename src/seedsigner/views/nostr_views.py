@@ -176,10 +176,8 @@ class NostrSignEventReviewView(BaseNostrView):
 
  
 """****************************************************************************
-    Nostr Address Views
+    Nostr Nsec Address Views
 ****************************************************************************"""
-#TODO this should have the class for what to do after nostr address is scanned
-# inital goal is to store it like a seed is stored (temporarly)
 
 class NostrAddressStartView(View):
     
@@ -188,25 +186,15 @@ class NostrAddressStartView(View):
         self.nostr_add=nostr_add,
         self.nostr_add_type=nostr_add_type,
         
-        #like below, if option is disabled then it should do so
-        #if not then should check is stored
-        # the bulk of the signed might be done with the below code
-        #for now we just want to print a success and leave
-        print("got to Address start view")
-        print("got to Address start view")
         print("got to Address start view")
         self.controller.storage.add_nsec(self.nostr_add)
         
         print("we just tried to save nsec got:")
         print(self.controller.storage.get_nsec())
-        # raise NotYetImplementedView("Storing NOSTR nsec not yet ready")
+        print("since still a tuple changing to:")
+        print(self.controller.storage.get_nsec()[0])
 
         #TODO THIS SHOULD DISPLAY SOMETHING ON THE SCREEN SO WE KNOW IT WAS SUCCESSFUL
-        return Destination(BackStackView)
-    #TODO this needs to scan and address, then it needs to store it
-    #Scanning functionality already works, so just need to call scanning,
-    #need to figure out temp storage
-    #and delete the key as well.
-    # note TO SELF: all info deleted when seedsigner unplugged.
+        return Destination(NostrMenuView)
         
         
