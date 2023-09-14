@@ -93,7 +93,7 @@ class NostrMenuView(View):
             return Destination(NostrSignEventStartView)
         
         elif button_data[selected_menu_num] == REMOVE:
-            return Destination(NotYetImplementedView)            
+            return Destination(NostrRemoveNsecView)            
 
 
 """****************************************************************************
@@ -106,8 +106,8 @@ class NostrLoadNsecView(BaseNostrView):
         #https://gist.github.com/kdmukai/ae9911ed6fb92f8e7d2c553555b0cb86
         
         print("Generate a new seed from here")
+        return Destination(NotYetImplementedView)     
         
-        raise NotYetImplementedView("Storing NOSTR nsec not yet ready")
         self.controller.image_entropy_preview_frames = None
         ret = ToolsImageEntropyLivePreviewScreen().display()
 
@@ -117,10 +117,19 @@ class NostrLoadNsecView(BaseNostrView):
         self.controller.image_entropy_preview_frames = ret
         return Destination(ToolsImageEntropyFinalImageView)
     
+class NostrRemoveNsecView(BaseNostrView):
+    def run(self):
+        if self.controller.storage.nsec == "":
+            print("DEBUG : No Nsecloaded, return") #THIS SHOULD NEVER PRINT
+            raise NotYetImplementedView("DEBUG : No Nsecloaded")
+        else:
+            self.controller.storage.remove_nsec(self)
+        return Destination(BackStackView) 
+        
+    
     
 class NostrSignEventStartView(BaseNostrView):
     def run(self):
-        print("NostrSignEventStartView.1")
         if self.controller.storage.nsec == "":
             print ("NO NSEC IN STORAGE")
             print("loadnsec First")
@@ -130,12 +139,10 @@ class NostrSignEventStartView(BaseNostrView):
         selected_menu_num = NostrSignEventStartScreen(
             title="Sign Event"
         ).display()
-        print("NostrSignEventStartView.2")
 
         if selected_menu_num == RET_CODE__BACK_BUTTON:
             return Destination(BackStackView)
         
-        print("NostrSignEventStartView.3")
         # from seedsigner.views.scan_views import ScanNostrJsonEventView
         self.controller.resume_main_flow = Controller.FLOW__NOSTR_EVENT
         return Destination(ScanNostrJsonEventView)
@@ -149,23 +156,22 @@ class NostrSignEventReviewView(BaseNostrView):
         self.nostr_add_type = nostr_add_type,
         self.nostr_signature = nostr_signature,
         
-        print("WE GOT THE THE REVIEW PROCESS") #TODO DEBUG REMOVE
-        print(nostr_add)
-        print(nostr_add_type)
-        print(nostr_event)
+        # print("WE GOT THE THE REVIEW PROCESS") #TODO DEBUG REMOVE
+        # print(nostr_add)
+        # print(nostr_add_type)
+        # print(nostr_event)
         
         
         from seedsigner.helpers.nostr import sign_event_id
-        
         self.nostr_signature = sign_event_id(nostr_add=nostr_add,nostr_add_type=nostr_add_type,nostr_event=nostr_event)
         # print("we got sig:",nostr_signature)
-        print("we got sig:",self.nostr_signature)
-        
+        # print("we got sig:",self.nostr_signature)
         # raise NotYetImplementedView("Display qr of signature")
     
     def run(self):
         
-        print("line 142 nostr view: ",self.nostr_signature)
+        
+        # print("line 142 nostr view: ",self.nostr_signature)
         # print("line 142 nostr view: ",nostr_signature)
         
         e = EncodeQR(
@@ -182,9 +188,9 @@ class NostrSignEventReviewView(BaseNostrView):
         if ret == RET_CODE__BACK_BUTTON:
             return Destination(BackStackView)
         
-        #TODO MENU BUTTON NAMES
-        else:
-            return Destination(BackStackView)
+        # #TODO MENU BUTTON NAMES
+        # else:
+        #     return Destination(BackStackView)
 
  
 """****************************************************************************
