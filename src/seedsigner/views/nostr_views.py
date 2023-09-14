@@ -123,7 +123,7 @@ class NostrRemoveNsecView(BaseNostrView):
             print("DEBUG : No Nsecloaded, return") #THIS SHOULD NEVER PRINT
             raise NotYetImplementedView("DEBUG : No Nsecloaded")
         else:
-            self.controller.storage.remove_nsec(self)
+            self.controller.storage.remove_nsec()
         return Destination(BackStackView) 
         
     

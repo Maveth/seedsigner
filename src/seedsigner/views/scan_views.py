@@ -172,9 +172,15 @@ class ScanView(View):
                 #TODO we need to have some code in here to make sure that we have an address
                 ##lets hardcode one for now
                 ##the following key is listed in nip19 as a sample, unsafe to use for real world
+                try:
+                    nostr_add = self.controller.storage.get_nsec()[0]
+                except IndexError:
+                    # Handle the IndexError when there is no stored data
+                    print("No NSEC data is available. Please import NSEC data first or check your storage.")
+                    # You can also raise an exception or perform other error-handling actions as needed.
+
                 
-                
-                nostr_add = self.controller.storage.get_nsec()[0]
+                # nostr_add = self.controller.storage.get_nsec()[0]
                 print("we got an address from storage:",nostr_add)
                 # if nostr_add.startswith('nsec'):
                 print(nostr_add.startswith('nsec'))
