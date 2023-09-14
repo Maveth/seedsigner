@@ -191,9 +191,8 @@ class NostrSignEventReviewView(BaseNostrView):
         ).display()
 
         if ret == RET_CODE__BACK_BUTTON:
-            return Destination(BackStackView)
+            return Destination(NostrMenuView)
         
-        #TODO maybe here we can do a scan another option?
         else:
             print("does this execute")
             return Destination(BackStackView)
