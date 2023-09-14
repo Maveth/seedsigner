@@ -58,13 +58,13 @@ class NostrSignEventStartScreen(NostrButtonListScreen):
 
 
 @dataclass
-class NostrSignatureQRWholeQRScreen(WarningEdgesMixin, ButtonListScreen):
+class NostrSignatureQRWholeQRScreen(WarningEdgesMixin, NostrButtonListScreen):
     qr_data: str = None
-    num_modules: int = None
+    # num_modules: int = None
 
     def __post_init__(self):
-        self.title = "NostrSignature"
-        self.button_data = [f"Begin {self.num_modules}x{self.num_modules}"]
+        self.title = "Nostr Signature"
+        self.button_data = [f"Scan this into client"]
         self.is_bottom_list = True
         self.status_color = GUIConstants.DIRE_WARNING_COLOR
         super().__post_init__()
