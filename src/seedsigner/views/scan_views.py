@@ -178,6 +178,7 @@ class ScanView(View):
                     # Handle the IndexError when there is no stored data
                     print("No NSEC data is available. Please import NSEC data first or check your storage.")
                     # You can also raise an exception or perform other error-handling actions as needed.
+                    raise NotYetImplementedView("DEBUG : No Nsecloaded")
 
                 
                 # nostr_add = self.controller.storage.get_nsec()[0]
