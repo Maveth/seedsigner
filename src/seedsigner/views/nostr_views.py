@@ -193,9 +193,10 @@ class NostrSignEventReviewView(BaseNostrView):
         if ret == RET_CODE__BACK_BUTTON:
             return Destination(BackStackView)
         
-        # #TODO MENU BUTTON NAMES
-        # else:
-        #     return Destination(BackStackView)
+        #TODO maybe here we can do a scan another option?
+        else:
+            print("does this execute")
+            return Destination(BackStackView)
 
  
 """****************************************************************************
@@ -211,13 +212,13 @@ class NostrAddressStartView(View):
     
     def run(self):
         
-        print("got to Address start view")
+        # print("got to Address start view")
         self.controller.storage.add_nsec(self.nostr_add)
         
-        print("we just tried to save nsec got:")
-        print(self.controller.storage.get_nsec())
-        print("since still a tuple changing to:")
-        print(self.controller.storage.get_nsec()[0])
+        # print("we just tried to save nsec got:")
+        # print(self.controller.storage.get_nsec())
+        # print("since still a tuple changing to:")
+        # print(self.controller.storage.get_nsec()[0])
         LargeIconStatusScreen(
             title="Nsec Loaded",
             show_back_button=False,
@@ -225,8 +226,7 @@ class NostrAddressStartView(View):
             text="Nsec successfully loaded!",
             button_data=["OK"]
         ).display()
-
-        #TODO THIS SHOULD DISPLAY SOMETHING ON THE SCREEN SO WE KNOW IT WAS SUCCESSFUL
+        
         return Destination(NostrMenuView)
         
         
