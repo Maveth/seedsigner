@@ -8,7 +8,7 @@ from PIL import Image
 from PIL.ImageOps import autocontrast
 from seedsigner.controller import Controller
 from seedsigner.gui.screens import nostr_screens
-from seedsigner.gui.screens.screen import LoadingScreenThread, QRDisplayScreen
+from seedsigner.gui.screens.screen import LargeIconStatusScreen, LoadingScreenThread, QRDisplayScreen
 from seedsigner.gui.screens.nostr_screens import NostrButtonListScreen
 from seedsigner.hardware.camera import Camera
 from seedsigner.gui.components import FontAwesomeIconConstants, GUIConstants, SeedSignerIconConstants
@@ -62,12 +62,13 @@ class NostrMenuView(View):
         IMAGE = ("Scan Nsec", FontAwesomeIconConstants.CAMERA)
         KEYBOARD = ("Enter Nsec", FontAwesomeIconConstants.KEYBOARD)
         SIGN = ("Sign Message Hash", FontAwesomeIconConstants.CAMERA)
-        REMOVE = ("Remove Stored Nsec", SeedSignerIconConstants.RESTART) #TODO Maybe a trashcan is better look it up
+        SHARED = ("Create Shared Secret for DMS", FontAwesomeIconConstants.LOCK)
+        REMOVE = ("Remove Stored Nsec", SeedSignerIconConstants.RESTART)
         
         if self.controller.storage.nsec == "":
             button_data = [SEEDS, IMAGE, KEYBOARD]
         else:
-            button_data = [SIGN, REMOVE]
+            button_data = [SIGN, SHARED, REMOVE]
             
         screen = NostrButtonListScreen(
             title="Nostr Menu",
@@ -88,6 +89,10 @@ class NostrMenuView(View):
 
         elif button_data[selected_menu_num] == KEYBOARD:
             return Destination(NotYetImplementedView)            
+        
+        
+        elif button_data[selected_menu_num] == SHARED:
+            return Destination(NotYetImplementedView)       
 
         elif button_data[selected_menu_num] == SIGN:
             return Destination(NostrSignEventStartView)
@@ -213,6 +218,13 @@ class NostrAddressStartView(View):
         print(self.controller.storage.get_nsec())
         print("since still a tuple changing to:")
         print(self.controller.storage.get_nsec()[0])
+        LargeIconStatusScreen(
+            title="Nsec Loaded",
+            show_back_button=False,
+            status_headline="Success!",
+            text="Nsec successfully loaded!",
+            button_data=["OK"]
+        ).display()
 
         #TODO THIS SHOULD DISPLAY SOMETHING ON THE SCREEN SO WE KNOW IT WAS SUCCESSFUL
         return Destination(NostrMenuView)

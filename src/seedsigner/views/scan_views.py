@@ -182,7 +182,7 @@ class ScanView(View):
                 
                     selected_menu_num = WarningScreen(
                         status_headline="No Nsec",
-                        text="Scanned a nostr event id hash, we need a nsec loaded to sign it, load nsec?.",
+                        text="Scanned a nostr event id hash, we need a nsec loaded to sign it, scan a nsec instead?.",
                         button_data=["Continue"],
                     ).display()
 
