@@ -181,10 +181,12 @@ class NostrSignEventReviewView(BaseNostrView):
 
 class NostrAddressStartView(View):
     
-      def __init__(self, nostr_add: str, nostr_add_type: str):
+    def __init__(self, nostr_add: str, nostr_add_type: str):
         super().__init__()
         self.nostr_add=nostr_add,
         self.nostr_add_type=nostr_add_type,
+    
+    def run(self):
         
         print("got to Address start view")
         self.controller.storage.add_nsec(self.nostr_add)
