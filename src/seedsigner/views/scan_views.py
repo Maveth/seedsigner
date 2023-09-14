@@ -2,7 +2,7 @@ import re
 
 from embit.descriptor import Descriptor
 
-from seedsigner.gui.screens.screen import RET_CODE__BACK_BUTTON
+from seedsigner.gui.screens.screen import RET_CODE__BACK_BUTTON, WarningScreen
 from seedsigner.models.decode_qr import DecodeQR
 from seedsigner.models.seed import Seed
 from seedsigner.models.settings import SettingsConstants
@@ -178,7 +178,22 @@ class ScanView(View):
                     # Handle the IndexError when there is no stored data
                     print("No NSEC data is available. Please import NSEC data first or check your storage.")
                     # You can also raise an exception or perform other error-handling actions as needed.
-                    raise NotYetImplementedView("DEBUG : No Nsecloaded")
+                    # raise NotYetImplementedView("DEBUG : No Nsecloaded")
+                
+                    selected_menu_num = WarningScreen(
+                        status_headline="No Nsec",
+                        text="Scanned a nostr event id hash, we need a nsec loaded to sign it, load nsec?.",
+                        button_data=["Continue"],
+                    ).display()
+
+                    if selected_menu_num == RET_CODE__BACK_BUTTON:
+                        return Destination(BackStackView)
+
+                    # Only one exit point
+                    return Destination(
+                        ScanNostrAddView,
+                        skip_current_view=True,  # Prevent going BACK to WarningViews
+                    )
 
                 
                 # nostr_add = self.controller.storage.get_nsec()[0]
