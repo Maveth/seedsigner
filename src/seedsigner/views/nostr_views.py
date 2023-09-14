@@ -35,6 +35,10 @@ class BaseNostrView(View):
     @property
     def seed(self) -> Seed:
         return self.controller.storage.seeds[self.seed_num]
+    
+    # @property  #TODO is this needed - doesnt seem so....
+    # def nsec(self) -> Nsec:
+    #     return self.controller.storage.nsec[0]
 
     @property
     def nostr_npub(self) -> str:
@@ -58,9 +62,13 @@ class NostrMenuView(View):
         IMAGE = ("Scan Nsec", FontAwesomeIconConstants.CAMERA)
         KEYBOARD = ("Enter Nsec", FontAwesomeIconConstants.KEYBOARD)
         SIGN = ("Sign Message Hash", FontAwesomeIconConstants.CAMERA)
+        REMOVE = ("Remove Stored Nsec", SeedSignerIconConstants.RESTART) #TODO Maybe a trashcan is better look it up
         
-        
-        button_data = [SIGN, SEEDS, IMAGE, KEYBOARD]
+        if self.controller.storage.nsec == "":
+            button_data = [SEEDS, IMAGE, KEYBOARD]
+        else:
+            button_data = [SIGN, REMOVE]
+            
         screen = NostrButtonListScreen(
             title="Nostr Menu",
             is_button_text_centered=False,
@@ -69,7 +77,8 @@ class NostrMenuView(View):
         selected_menu_num = screen.display()
 
         if selected_menu_num == RET_CODE__BACK_BUTTON:
-            return Destination(BackStackView)
+            #TODO This should go back to man menu, can get caught in a loop here
+            return Destination(MainMenuView)
 
         elif button_data[selected_menu_num] == SEEDS:            
             return Destination(NostrLoadNsecView)
@@ -81,7 +90,10 @@ class NostrMenuView(View):
             return Destination(NotYetImplementedView)            
 
         elif button_data[selected_menu_num] == SIGN:
-            return Destination(NostrSignEventStartView)            
+            return Destination(NostrSignEventStartView)
+        
+        elif button_data[selected_menu_num] == REMOVE:
+            return Destination(NotYetImplementedView)            
 
 
 """****************************************************************************
