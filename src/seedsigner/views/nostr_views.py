@@ -125,6 +125,7 @@ class NostrLoadNsecView(BaseNostrView):
 class NostrRemoveNsecView(BaseNostrView):
     def run(self):
         if self.controller.storage.nsec == "":
+            #THIS MENU OPTION IS NOW REMOVED if nsec is ""
             print("DEBUG : No Nsecloaded, return") #THIS SHOULD NEVER PRINT
             raise NotYetImplementedView("DEBUG : No Nsecloaded")
         else:
@@ -135,10 +136,11 @@ class NostrRemoveNsecView(BaseNostrView):
     
 class NostrSignEventStartView(BaseNostrView):
     def run(self):
-        if self.controller.storage.nsec == "":
-            print ("NO NSEC IN STORAGE")
-            print("loadnsec First")
-            raise NotYetImplementedView("NOSTR nsec not loaded")
+        #THIS MENU OPTION IS DISABLED IF NO NSEC
+        # if self.controller.storage.nsec == "":
+        #     print ("NO NSEC IN STORAGE")
+        #     print("loadnsec First")
+        #     raise NotYetImplementedView("NOSTR nsec not loaded")
     
             
         selected_menu_num = NostrSignEventStartScreen(

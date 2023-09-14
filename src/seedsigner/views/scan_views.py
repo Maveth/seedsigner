@@ -6,6 +6,7 @@ from seedsigner.gui.screens.screen import RET_CODE__BACK_BUTTON, WarningScreen
 from seedsigner.models.decode_qr import DecodeQR
 from seedsigner.models.seed import Seed
 from seedsigner.models.settings import SettingsConstants
+from seedsigner.views.nostr_views import NostrMenuView
 from seedsigner.views.settings_views import SettingsIngestSettingsQRView
 from seedsigner.views.view import BackStackView, ErrorView, MainMenuView, NotYetImplementedView, OptionDisabledView, View, Destination
 
@@ -168,21 +169,14 @@ class ScanView(View):
             elif self.decoder.is_nostr_event:   # .qr_type == QRType.NOSTR__JSON_EVENT:
                 from seedsigner.views.nostr_views import NostrSignEventReviewView
                 nostr_event = self.decoder.get_nostr_event()
-                print("we are in the scanviews about to do event REVIEW= line 167")
-                #TODO we need to have some code in here to make sure that we have an address
-                ##lets hardcode one for now
-                ##the following key is listed in nip19 as a sample, unsafe to use for real world
+                
                 try:
                     nostr_add = self.controller.storage.get_nsec()[0]
                 except IndexError:
-                    # Handle the IndexError when there is no stored data
-                    print("No NSEC data is available. Please import NSEC data first or check your storage.")
-                    # You can also raise an exception or perform other error-handling actions as needed.
-                    # raise NotYetImplementedView("DEBUG : No Nsecloaded")
-                
+                    #No Nsec is stored, goto nostr menu to add nsec
                     selected_menu_num = WarningScreen(
                         status_headline="No Nsec",
-                        text="Scanned a nostr event id hash, we need a nsec loaded to sign it, scan a nsec instead?.",
+                        text="Scanned a nostr event id hash, we need a nsec loaded to sign it, Load Nsec from seed/scan/keyboard.",
                         button_data=["Continue"],
                     ).display()
 
@@ -191,13 +185,16 @@ class ScanView(View):
 
                     # Only one exit point
                     return Destination(
-                        ScanNostrAddView,
+                        NostrMenuView,
                         skip_current_view=True,  # Prevent going BACK to WarningViews
                     )
 
                 
                 # nostr_add = self.controller.storage.get_nsec()[0]
                 print("we got an address from storage:",nostr_add)
+                
+                
+                #TODO - might error but shouldnt, since its a valid nostr addr
                 # if nostr_add.startswith('nsec'):
                 print(nostr_add.startswith('nsec'))
                 nostr_add_type = "nsec"
@@ -208,6 +205,7 @@ class ScanView(View):
                 # else: 
                 if nostr_add == "" :
                     print("I think we have no nsec, try and scan for one?")
+                    #THIS SHOULD NOT SHOW UP ANYMORE
                     #TODO maybe we should ask first
                     Destination(ScanNostrAddView)
                 
