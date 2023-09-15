@@ -185,7 +185,7 @@ class ScanView(View):
 
                     # Only one exit point
                     return Destination(
-                        NostrMenuView,
+                        ScanNostrAddView,
                         skip_current_view=True,  # Prevent going BACK to WarningViews
                     )
 
