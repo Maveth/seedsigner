@@ -57,18 +57,31 @@ class BaseNostrView(View):
         return nostr.get_privkey_hex(self.seed)
 
 class NostrMenuView(View):
+    def __init__(self):
+        super().__init__()
+        self.seeds = []
+        for seed in self.controller.storage.seeds:
+            self.seeds.append({
+                "fingerprint": seed.get_fingerprint(self.settings.get_value(SettingsConstants.SETTING__NETWORK))
+            })
+
+        
+        
     def run(self): 
         SEEDS = ("Get Nsec from Seed",SeedSignerIconConstants.SEEDS)
         IMAGE = ("Scan Nsec", FontAwesomeIconConstants.CAMERA)
         KEYBOARD = ("Enter Nsec", FontAwesomeIconConstants.KEYBOARD)
         SIGN = ("Sign Message Hash", FontAwesomeIconConstants.CAMERA)
-        SHARED = ("Create Shared Secret for DMS", FontAwesomeIconConstants.LOCK)
         REMOVE = ("Remove Stored Nsec", SeedSignerIconConstants.RESTART)
         
+        
         if self.controller.storage.nsec == "":
-            button_data = [SEEDS, IMAGE, KEYBOARD]
+            if not self.seeds:
+                button_data = [IMAGE, KEYBOARD]
+            else:
+                button_data = [SEEDS, IMAGE, KEYBOARD]
         else:
-            button_data = [SIGN, SHARED, REMOVE]
+            button_data = [SIGN, REMOVE]
             
         screen = NostrButtonListScreen(
             title="Nostr Menu",
@@ -78,7 +91,6 @@ class NostrMenuView(View):
         selected_menu_num = screen.display()
 
         if selected_menu_num == RET_CODE__BACK_BUTTON:
-            #TODO This should go back to man menu, can get caught in a loop here
             return Destination(MainMenuView)
 
         elif button_data[selected_menu_num] == SEEDS:            
@@ -89,10 +101,6 @@ class NostrMenuView(View):
 
         elif button_data[selected_menu_num] == KEYBOARD:
             return Destination(NotYetImplementedView)            
-        
-        
-        elif button_data[selected_menu_num] == SHARED:
-            return Destination(NotYetImplementedView)       
 
         elif button_data[selected_menu_num] == SIGN:
             return Destination(NostrSignEventStartView)
@@ -105,12 +113,55 @@ class NostrMenuView(View):
     Nostr Menus
 ****************************************************************************"""
 class NostrLoadNsecView(BaseNostrView):
-    def run(self):
-        # return Destination(NotYetImplementedView)
+        
         #TODO this is to load a nsec from a seed, review code from
         #https://gist.github.com/kdmukai/ae9911ed6fb92f8e7d2c553555b0cb86
         
-        print("Generate a new seed from here")
+        
+    LOAD = "Load a seed"
+
+    def __init__(self):
+        super().__init__()
+        self.seeds = []
+        for seed in self.controller.storage.seeds:
+            self.seeds.append({
+                "fingerprint": seed.get_fingerprint(self.settings.get_value(SettingsConstants.SETTING__NETWORK))
+            })
+
+
+    def run(self):
+        if not self.seeds:
+            # Nothing to do here unless we have a seed loaded
+            #THIS SHOULD NOT SHOW UP as this menu is hidden unless there is a seed
+            return Destination(NostrMenuView, clear_history=True)
+
+        button_data = []
+        for seed in self.seeds:
+            button_data.append((seed["fingerprint"], SeedSignerIconConstants.FINGERPRINT))
+        button_data.append("Load a seed")
+
+        selected_menu_num = self.run_screen(
+            ButtonListScreen,
+            title="In-Memory Seeds",
+            is_button_text_centered=False,
+            button_data=button_data
+        )
+
+        if len(self.seeds) > 0 and selected_menu_num < len(self.seeds):
+            print("this option seems wierd",selected_menu_num)
+            raise Warning("this option seems wierd")
+            return Destination(SeedOptionsView, view_args={"seed_num": selected_menu_num})
+
+        elif selected_menu_num == len(self.seeds):
+            print("this option seems wierder",selected_menu_num)
+            raise Warning("this option seems wierder")
+            return Destination(LoadSeedView)
+
+        elif selected_menu_num == RET_CODE__BACK_BUTTON:
+            return Destination(BackStackView)
+        
+        #WE SHOULD NOT GET THIS FAR
+        print("DANGER WILL ROBINSON",selected_menu_num)
         return Destination(NotYetImplementedView)     
         
         self.controller.image_entropy_preview_frames = None
