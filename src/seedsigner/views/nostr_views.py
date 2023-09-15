@@ -148,7 +148,7 @@ class NostrLoadNsecView(BaseNostrView):
         )
 
         if len(self.seeds) > 0 and selected_menu_num < len(self.seeds):
-            print("nsec:",nostr.get_nsec(self.seeds[selected_menu_num]))
+            print("nsec:",nostr.get_nsec(self.seed[selected_menu_num]))
             print("this option seems wierd",selected_menu_num)
             raise Warning("this option seems wierd")
             return Destination(SeedOptionsView, view_args={"seed_num": selected_menu_num})
