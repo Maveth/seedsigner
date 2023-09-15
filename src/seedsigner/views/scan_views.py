@@ -6,7 +6,7 @@ from seedsigner.gui.screens.screen import RET_CODE__BACK_BUTTON, WarningScreen
 from seedsigner.models.decode_qr import DecodeQR
 from seedsigner.models.seed import Seed
 from seedsigner.models.settings import SettingsConstants
-from seedsigner.views.nostr_views import NostrMenuView
+# from seedsigner.views.nostr_views import NostrMenuView
 from seedsigner.views.settings_views import SettingsIngestSettingsQRView
 from seedsigner.views.view import BackStackView, ErrorView, MainMenuView, NotYetImplementedView, OptionDisabledView, View, Destination
 
