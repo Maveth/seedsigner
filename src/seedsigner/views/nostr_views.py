@@ -28,9 +28,9 @@ from seedsigner.views.scan_views import ScanNostrAddView, ScanNostrJsonEventView
 from .view import View, Destination, BackStackView
 
 class BaseNostrView(View):
-    @property
-    def seed_num(self) -> int:
-        return self.controller.nostr_data["seed_num"]
+    # @property
+    # def seed_num(self) -> int:
+    #     return self.controller.nostr_data["seed_num"]
     
     @property
     def seed(self) -> Seed:
@@ -148,8 +148,12 @@ class NostrLoadNsecView(BaseNostrView):
         )
 
         if len(self.seeds) > 0 and selected_menu_num < len(self.seeds):
-            print("nsec:",nostr.get_nsec(self.seed[selected_menu_num]))
             print("this option seems wierd",selected_menu_num)
+            print("self.seeds",self.seeds)
+            print("self.seeds",self.seed)
+            
+            print("nsec:",nostr.get_nsec(self.seed[selected_menu_num]))
+            
             raise Warning("this option seems wierd")
             return Destination(SeedOptionsView, view_args={"seed_num": selected_menu_num})
 
