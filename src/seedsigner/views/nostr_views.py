@@ -148,14 +148,16 @@ class NostrLoadNsecView(BaseNostrView):
         )
 
         if len(self.seeds) > 0 and selected_menu_num < len(self.seeds):
+            print("nsec:",nostr.get_nsec(self.seeds[selected_menu_num]))
             print("this option seems wierd",selected_menu_num)
             raise Warning("this option seems wierd")
             return Destination(SeedOptionsView, view_args={"seed_num": selected_menu_num})
 
-        elif selected_menu_num == len(self.seeds):
-            print("this option seems wierder",selected_menu_num)
-            raise Warning("this option seems wierder")
-            return Destination(LoadSeedView)
+        #THIS OPTION WOULD LET YOU CREATE A NEW SEED
+        # elif selected_menu_num == len(self.seeds):
+        #     print("this option seems wierder",selected_menu_num)
+        #     raise Warning("this option seems wierder")
+        #     return Destination(LoadSeedView)
 
         elif selected_menu_num == RET_CODE__BACK_BUTTON:
             return Destination(BackStackView)
@@ -182,8 +184,6 @@ class NostrRemoveNsecView(BaseNostrView):
         else:
             self.controller.storage.remove_nsec()
         return Destination(BackStackView) 
-        
-    
     
 class NostrSignEventStartView(BaseNostrView):
     def run(self):
