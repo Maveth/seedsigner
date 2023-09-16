@@ -222,6 +222,9 @@ class Controller(Singleton):
         
     
     def get_nsec(self) -> 'Nsec':
+            print("we are in the controller section")
+            print ("we have nsec:", self.storage.nsec)
+            print("should this be a list?")
             return self.storage.nsec()
         
     
