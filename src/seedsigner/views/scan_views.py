@@ -154,7 +154,7 @@ class ScanView(View):
                 
                 #TODO store nsec 
                 self.controller.storage.add_nsec(nostr_add)
-                print("added address to storage:",self.controller.storage.get_nsec()[0])
+                print("added address to storage:",self.controller.storage.get_nsec())
                 
                 return Destination(
                     NostrAddressStartView,
