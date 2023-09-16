@@ -8,22 +8,22 @@ class SeedStorage:
         self.seeds: List[Seed] = []
         self.pending_seed: Seed = None
         self._pending_mnemonic: List[str] = []
-        # self.nsec: str = ""  # Initialize nsec as an empty string 
+        self.nsec: str = ""  # Initialize nsec as an empty string 
 
     def add_nsec(self, nsec) -> str:
         # Add a new root key to the storage
-        self.nsec = (nsec, )
+        self.nsec = (nsec)
 
     def remove_nsec(self):
         # make nsec null
-        self.nsec = ("",)
+        self.nsec = ("")
 
     def get_nsec(self) -> str:
         #return the nsec string
         print("we are in the storage section")
         print ("we have nsec:", self.nsec)
         print("should this be a list?")
-        return self.nsec[0]
+        return self.nsec
     
 
     def set_pending_seed(self, seed: Seed):
