@@ -209,9 +209,9 @@ class DecodeQR:
             return self.decoder.get_nostr_add_type()
 
         
-    def get_nostr_event(self):
-        if self.is_nostr_event:
-            return self.decoder.get_nostr_event()
+    def get_nostr_event_id(self):
+        if self.is_nostr_event_id:
+            return self.decoder.get_nostr_event_id()
 
 
 
