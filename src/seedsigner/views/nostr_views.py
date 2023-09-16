@@ -28,9 +28,9 @@ from seedsigner.views.scan_views import ScanNostrAddView, ScanNostrJsonEventView
 from .view import View, Destination, BackStackView
 
 class BaseNostrView(View):
-    # @property
-    # def seed_num(self) -> int:
-    #     return self.controller.nostr_data["seed_num"]
+    @property
+    def seed_num(self) -> int:
+        return self.controller.nostr_data["seed_num"]
     
     @property
     def seed(self) -> Seed:
@@ -147,6 +147,8 @@ class NostrLoadNsecView(BaseNostrView):
             button_data=button_data
         )
 
+
+        ##TODO THIS IS WERE WE ARE STUCK ATM
         if len(self.seeds) > 0 and selected_menu_num < len(self.seeds):
             print("this option seems wierd",selected_menu_num)
             print("self.seeds",self.seeds)
