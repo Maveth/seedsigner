@@ -76,6 +76,7 @@ class NostrMenuView(View):
         
         
         if self.controller.storage.nsec == "":
+            
             if not self.seeds:
                 button_data = [IMAGE, KEYBOARD]
             else:
@@ -138,7 +139,7 @@ class NostrLoadNsecView(BaseNostrView):
         button_data = []
         for seed in self.seeds:
             button_data.append((seed["fingerprint"], SeedSignerIconConstants.FINGERPRINT))
-        button_data.append("Load a seed")
+        # button_data.append("Load a seed") #Use this to load a new seed into memory
 
         selected_menu_num = self.run_screen(
             ButtonListScreen,
@@ -152,11 +153,11 @@ class NostrLoadNsecView(BaseNostrView):
         if len(self.seeds) > 0 and selected_menu_num < len(self.seeds):
             print("this option seems wierd",selected_menu_num)
             print("self.seeds",self.seeds)
-            print("self.seeds",self.seed)
+            # print("self.seeds",self.seed) #THIS ONE DIDNT PRINT
             
-            print("nsec:",nostr.get_nsec(self.seed[selected_menu_num]))
+            print("nsec:",nostr.get_nsec(self.seeds[selected_menu_num]))
             
-            raise Warning("this option seems wierd")
+            raise Warning("Are we getting this far?")
             return Destination(SeedOptionsView, view_args={"seed_num": selected_menu_num})
 
         #THIS OPTION WOULD LET YOU CREATE A NEW SEED
@@ -167,19 +168,6 @@ class NostrLoadNsecView(BaseNostrView):
 
         elif selected_menu_num == RET_CODE__BACK_BUTTON:
             return Destination(BackStackView)
-        
-        #WE SHOULD NOT GET THIS FAR
-        print("DANGER WILL ROBINSON",selected_menu_num)
-        return Destination(NotYetImplementedView)     
-        
-        self.controller.image_entropy_preview_frames = None
-        ret = ToolsImageEntropyLivePreviewScreen().display()
-
-        if ret == RET_CODE__BACK_BUTTON:
-            return Destination(BackStackView)
-        
-        self.controller.image_entropy_preview_frames = ret
-        return Destination(ToolsImageEntropyFinalImageView)
     
 class NostrRemoveNsecView(BaseNostrView):
     def run(self):
