@@ -10,7 +10,7 @@ class SeedStorage:
         self._pending_mnemonic: List[str] = []
         # self.nsec: str = ""  # Initialize nsec as an empty string 
 
-    def add_nsec(self, nsec):
+    def add_nsec(self, nsec) -> str:
         # Add a new root key to the storage
         self.nsec = nsec
 
@@ -18,7 +18,7 @@ class SeedStorage:
         # make nsec null
         self.nsec = ""
 
-    def get_nsec(self):
+    def get_nsec(self) -> str:
         #return the nsec string
         print("we are in the storage section")
         print ("we have nsec:", self.nsec)
