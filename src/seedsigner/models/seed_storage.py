@@ -20,6 +20,9 @@ class SeedStorage:
 
     def get_nsec(self):
         #return the nsec string
+        print("we are in the storage section")
+        print ("we have nsec:", self.nsec)
+        print("should this be a list?")
         return self.nsec
     
 
