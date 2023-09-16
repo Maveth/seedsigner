@@ -13,7 +13,7 @@ from seedsigner.gui.screens.nostr_screens import NostrButtonListScreen
 from seedsigner.hardware.camera import Camera
 from seedsigner.gui.components import FontAwesomeIconConstants, GUIConstants, SeedSignerIconConstants
 from seedsigner.gui.screens import (RET_CODE__BACK_BUTTON, ButtonListScreen)
-from seedsigner.gui.screens.nostr_screens import NostrSignEventStartScreen
+from seedsigner.gui.screens.nostr_screens import NostrSignEventIDStartScreen
 from seedsigner.gui.screens.tools_screens import ToolsCalcFinalWordDoneScreen, ToolsCalcFinalWordFinalizePromptScreen, ToolsCalcFinalWordScreen, ToolsCoinFlipEntryScreen, ToolsDiceEntropyEntryScreen, ToolsImageEntropyFinalImageScreen, ToolsImageEntropyLivePreviewScreen, ToolsAddressExplorerAddressTypeScreen
 from seedsigner.helpers import embit_utils, mnemonic_generation
 from seedsigner.helpers import nostr
@@ -55,6 +55,11 @@ class BaseNostrView(View):
     @property
     def nostr_privkey_hex(self) -> str:
         return nostr.get_privkey_hex(self.seed)
+    
+    
+"""****************************************************************************
+    Nostr Main Menu
+****************************************************************************"""
 
 class NostrMenuView(View):
     def __init__(self):
@@ -72,6 +77,7 @@ class NostrMenuView(View):
         IMAGE = ("Scan Nsec", FontAwesomeIconConstants.CAMERA)
         KEYBOARD = ("Enter Nsec", FontAwesomeIconConstants.KEYBOARD)
         SIGN = ("Sign Message Hash", FontAwesomeIconConstants.CAMERA)
+        FULLSIGN = ("Sign Full Event", FontAwesomeIconConstants.CAMERA)
         REMOVE = ("Remove Stored Nsec", SeedSignerIconConstants.RESTART)
         
         
@@ -82,7 +88,7 @@ class NostrMenuView(View):
             else:
                 button_data = [SEEDS, IMAGE, KEYBOARD]
         else:
-            button_data = [SIGN, REMOVE]
+            button_data = [SIGN, REMOVE, FULLSIGN]
             
         screen = NostrButtonListScreen(
             title="Nostr Menu",
@@ -95,31 +101,31 @@ class NostrMenuView(View):
             return Destination(MainMenuView)
 
         elif button_data[selected_menu_num] == SEEDS:            
-            return Destination(NostrLoadNsecView)
+            return Destination(NostrLoadNsecSeedView)
         
         elif button_data[selected_menu_num] == IMAGE:
             return Destination(ScanNostrAddView)            
 
+        #TODO Use keyboard to load in a nsec
         elif button_data[selected_menu_num] == KEYBOARD:
             return Destination(NotYetImplementedView)            
 
         elif button_data[selected_menu_num] == SIGN:
-            return Destination(NostrSignEventStartView)
+            return Destination(NostrSignEventIDStartView)
         
         elif button_data[selected_menu_num] == REMOVE:
-            return Destination(NostrRemoveNsecView)            
+            return Destination(NostrRemoveNsecView)   
+        
+        #TODO add full event signing, including DMS
+        elif button_data[selected_menu_num] == REMOVE:
+            return Destination(NotYetImplementedView)                
 
 
 """****************************************************************************
     Nostr Menus
 ****************************************************************************"""
-class NostrLoadNsecView(BaseNostrView):
-        
-        #TODO this is to load a nsec from a seed, review code from
-        #https://gist.github.com/kdmukai/ae9911ed6fb92f8e7d2c553555b0cb86
-        
-        
-    LOAD = "Load a seed"
+
+class NostrLoadNsecSeedView(BaseNostrView):
 
     def __init__(self):
         super().__init__()
@@ -132,14 +138,11 @@ class NostrLoadNsecView(BaseNostrView):
 
     def run(self):
         if not self.seeds:
-            # Nothing to do here unless we have a seed loaded
-            #THIS SHOULD NOT SHOW UP as this menu is hidden unless there is a seed
             return Destination(NostrMenuView, clear_history=True)
 
         button_data = []
         for seed in self.seeds:
             button_data.append((seed["fingerprint"], SeedSignerIconConstants.FINGERPRINT))
-        # button_data.append("Load a seed") #Use this to load a new seed into memory
 
         selected_menu_num = self.run_screen(
             ButtonListScreen,
@@ -148,23 +151,9 @@ class NostrLoadNsecView(BaseNostrView):
             button_data=button_data
         )
 
-
-        ##TODO THIS IS WERE WE ARE STUCK ATM
         if len(self.seeds) > 0 and selected_menu_num < len(self.seeds):
-            print("this option seems wierd",selected_menu_num)
-            print("self.seeds",self.seeds)
-            print("self.controller.get_seed(selected_menu_num) : ", self.controller.get_seed(selected_menu_num))
-            
-            # print("self.seeds",self.seeds.__getattribute__)
-        
-            
-            # print("self.seeds",self.seed) #THIS ONE DIDNT PRINT
             self.nostr_add = nostr.get_nsec(self.controller.get_seed(selected_menu_num))
-            print("nsec:",self.nostr_add)
             self.controller.storage.add_nsec(self.nostr_add)
-            print("nec stored = ", self.controller.storage.nsec)
-
-            
             LargeIconStatusScreen(
                 title="Nsec Loaded",
                 show_back_button=False,
@@ -172,15 +161,7 @@ class NostrLoadNsecView(BaseNostrView):
                 text="Nsec successfully loaded!",
                 button_data=["OK"]
             ).display()
-            
-            # raise Warning("Are we getting this far?")
             return Destination(NostrMenuView, clear_history=True)
-
-        #THIS OPTION WOULD LET YOU CREATE A NEW SEED
-        # elif selected_menu_num == len(self.seeds):
-        #     print("this option seems wierder",selected_menu_num)
-        #     raise Warning("this option seems wierder")
-        #     return Destination(LoadSeedView)
 
         elif selected_menu_num == RET_CODE__BACK_BUTTON:
             return Destination(BackStackView)
@@ -195,16 +176,10 @@ class NostrRemoveNsecView(BaseNostrView):
             self.controller.storage.remove_nsec()
         return Destination(BackStackView) 
     
-class NostrSignEventStartView(BaseNostrView):
-    def run(self):
-        #THIS MENU OPTION IS DISABLED IF NO NSEC
-        # if self.controller.storage.nsec == "":
-        #     print ("NO NSEC IN STORAGE")
-        #     print("loadnsec First")
-        #     raise NotYetImplementedView("NOSTR nsec not loaded")
-    
+class NostrSignEventIDStartView(BaseNostrView):
+    def run(self):    
             
-        selected_menu_num = NostrSignEventStartScreen(
+        selected_menu_num = NostrSignEventIDStartScreen(
             title="Sign Event"
         ).display()
 
@@ -215,7 +190,7 @@ class NostrSignEventStartView(BaseNostrView):
         self.controller.resume_main_flow = Controller.FLOW__NOSTR_EVENT
         return Destination(ScanNostrJsonEventView)
     
-class NostrSignEventReviewView(BaseNostrView):
+class NostrSignEventIDReviewView(BaseNostrView):
     def __init__(self, nostr_add: str, nostr_add_type: str, nostr_signature: str = None, nostr_qrtype: str = None, nostr_event: str = None):
         super().__init__()
         self.nostr_event = nostr_event,
@@ -224,30 +199,17 @@ class NostrSignEventReviewView(BaseNostrView):
         self.nostr_add_type = nostr_add_type,
         self.nostr_signature = nostr_signature,
         
-        # print("WE GOT THE THE REVIEW PROCESS") #TODO DEBUG REMOVE
-        # print(nostr_add)
-        # print(nostr_add_type)
-        # print(nostr_event)
-        
         
         from seedsigner.helpers.nostr import sign_event_id
         self.nostr_signature = sign_event_id(nostr_add=nostr_add,nostr_add_type=nostr_add_type,nostr_event=nostr_event)
-        # print("we got sig:",nostr_signature)
-        # print("we got sig:",self.nostr_signature)
-        # raise NotYetImplementedView("Display qr of signature")
     
     def run(self):
         
-        
-        # print("line 142 nostr view: ",self.nostr_signature)
-        # print("line 142 nostr view: ",nostr_signature)
-        
         e = EncodeQR(
-            qr_type=QRType.NOSTR__SIGNED_EVENT,
+            qr_type=QRType.NOSTR_EVENT_SIGNATURE,
             nostr_signature = '{"event.signature": "' + self.nostr_signature.to_string() + '"}'
         )
         data = e.next_part()
-        # data = '{"event.signature": "' + signature_data + '"}'
         print (data)
         ret = nostr_screens.NostrSignatureQRWholeQRScreen(
             qr_data=data,
@@ -273,14 +235,7 @@ class NostrAddressStartView(View):
         self.nostr_add_type=nostr_add_type,
     
     def run(self):
-        
-        # print("got to Address start view")
         self.controller.storage.add_nsec(self.nostr_add)
-        
-        # print("we just tried to save nsec got:")
-        # print(self.controller.storage.get_nsec())
-        # print("since still a tuple changing to:")
-        # print(self.controller.storage.get_nsec()[0])
         LargeIconStatusScreen(
             title="Nsec Loaded",
             show_back_button=False,

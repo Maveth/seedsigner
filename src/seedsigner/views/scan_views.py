@@ -166,8 +166,8 @@ class ScanView(View):
                 )
                 
                 
-            elif self.decoder.is_nostr_event:   # .qr_type == QRType.NOSTR__JSON_EVENT:
-                from seedsigner.views.nostr_views import NostrSignEventReviewView
+            elif self.decoder.is_nostr_event_id:   # .qr_type == QRType.NOSTR__JSON_EVENT:
+                from seedsigner.views.nostr_views import NostrSignEventIDReviewView
                 nostr_event = self.decoder.get_nostr_event()
                 
                 try:
@@ -213,7 +213,7 @@ class ScanView(View):
                 # nostr_add_type = "nsec"
                 
                 return Destination(
-                    NostrSignEventReviewView,
+                    NostrSignEventIDReviewView,
                     skip_current_view=True,
                     view_args={
                         "nostr_add": nostr_add,

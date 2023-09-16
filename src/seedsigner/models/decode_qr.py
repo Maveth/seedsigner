@@ -86,8 +86,8 @@ class DecodeQR:
             elif self.qr_type == QRType.NOSTR_ADDRESS:
                 self.decoder = NostrAddressQrDecoder() #Single Nostr Address required for storage
                 
-            elif self.qr_type == QRType.NOSTR__JSON_EVENT:
-                self.decoder = NostrJsonEventQrDecoder()
+            elif self.qr_type == QRType.NOSTR_JSON_EVENT_ID:
+                self.decoder = NostrJsonEventIDQrDecoder()
 
             elif self.qr_type == QRType.SIGN_MESSAGE:
                 self.decoder = SignMessageQrDecoder() # Single Segment sign message request
@@ -310,8 +310,8 @@ class DecodeQR:
     
        
     @property
-    def is_nostr_event(self):
-        return self.qr_type == QRType.NOSTR__JSON_EVENT
+    def is_nostr_event_id(self):
+        return self.qr_type == QRType.NOSTR_JSON_EVENT_ID
     
 
     @property
@@ -433,8 +433,8 @@ class DecodeQR:
                 return QRType.NOSTR_ADDRESS
             
             # Nostr event id
-            elif DecodeQR.is_nostr_json_event(s):
-                return QRType.NOSTR__JSON_EVENT
+            elif DecodeQR.is_nostr_json_event_id(s):
+                return QRType.NOSTR_JSON_EVENT_ID
 
             # message signing
             elif DecodeQR.is_sign_message(s):
@@ -565,7 +565,7 @@ class DecodeQR:
         
         
     @staticmethod
-    def is_nostr_json_event(s):  #     is_nostr_json_event(s):
+    def is_nostr_json_event_id(s):  #     is_nostr_json_event(s):
         print("we are checking if this is an event") # DEBUG
         print(s)
         if re.search(r'^\{"event\.id":', s, re.IGNORECASE):
@@ -1063,13 +1063,13 @@ class NostrAddressQrDecoder(BaseSingleFrameQrDecoder):
         return None
     
 
-class NostrJsonEventQrDecoder(BaseSingleFrameQrDecoder):
+class NostrJsonEventIDQrDecoder(BaseSingleFrameQrDecoder):
     def __init__(self):
         super().__init__()
         self.nostr_event = None
 
-    def add(self, segment, qr_type=QRType.NOSTR__JSON_EVENT):
-        print("we are in the decode.nostrjsoneventqrdecoder")
+    def add(self, segment, qr_type=QRType.NOSTR_JSON_EVENT_ID):
+        print("we are in the decode.nostrjsonevent ID qrdecoder")
         print (segment)
         self.nostr_event = segment.strip()
         print (self.nostr_event)

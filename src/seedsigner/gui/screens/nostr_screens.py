@@ -42,7 +42,7 @@ class NostrBaseTopNavScreen(BaseTopNavScreen):
     Sign Event
 ****************************************************************************"""
 @dataclass
-class NostrSignEventStartScreen(NostrButtonListScreen):
+class NostrSignEventIDStartScreen(NostrButtonListScreen):
     def __post_init__(self):
         # Customize defaults
         self.is_bottom_list = True
