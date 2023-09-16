@@ -196,7 +196,7 @@ class ScanView(View):
                 
                 #TODO - might error but shouldnt, since its a valid nostr addr
                 # if nostr_add.startswith('nsec'):
-                print("addres strats with nsec: ",nostr_add.startswith('nsec'))
+                print("addres strats with nsec: ",nostr_add.tostring().startswith('nsec'))
                 nostr_add_type = "nsec"
                 # elif nostr_add.startswith('npub'):
                 #     nostr_add_type = "npub"
