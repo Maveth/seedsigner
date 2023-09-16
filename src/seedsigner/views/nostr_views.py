@@ -121,8 +121,9 @@ class NostrLoadNsecView(BaseNostrView):
         
     LOAD = "Load a seed"
 
-    def __init__(self):
+    def __init__(self, nostr_add: str,):
         super().__init__()
+        self.nostr_add=nostr_add
         self.seeds = []
         for seed in self.controller.storage.seeds:
             self.seeds.append({
@@ -159,9 +160,11 @@ class NostrLoadNsecView(BaseNostrView):
         
             
             # print("self.seeds",self.seed) #THIS ONE DIDNT PRINT
-            
-            print("nsec:",nostr.get_nsec(self.controller.get_seed(selected_menu_num)))
-            self.controller.storage.add_nsec(nostr.get_nsec(self.controller.get_seed(selected_menu_num)))
+            self.nostr_add = nostr.get_nsec(self.controller.get_seed(selected_menu_num))
+            print("nsec:",self.nostr_add)
+            self.controller.storage.add_nsec(self.nostr_add)
+            print("nec stored = ", self.controller.storage.nsec)
+
             
             LargeIconStatusScreen(
                 title="Nsec Loaded",
