@@ -168,7 +168,7 @@ class ScanView(View):
                 
             elif self.decoder.is_nostr_event_id:   # .qr_type == QRType.NOSTR__JSON_EVENT:
                 from seedsigner.views.nostr_views import NostrSignEventIDReviewView
-                nostr_event = self.decoder.get_nostr_event()
+                nostr_event = self.decoder.get_nostr_event_id()
                 
                 try:
                     nostr_add = self.controller.storage.get_nsec()
@@ -196,7 +196,7 @@ class ScanView(View):
                 
                 #TODO - might error but shouldnt, since its a valid nostr addr
                 # if nostr_add.startswith('nsec'):
-                print(nostr_add.startswith('nsec'))
+                print("addres strats with nsec: ",nostr_add.startswith('nsec'))
                 nostr_add_type = "nsec"
                 # elif nostr_add.startswith('npub'):
                 #     nostr_add_type = "npub"
@@ -208,9 +208,7 @@ class ScanView(View):
                     #THIS SHOULD NOT SHOW UP ANYMORE
                     #TODO maybe we should ask first
                     Destination(ScanNostrAddView)
-                
-                # nostr_add = "nsec1vl029mgpspedva04g90vltkh6fvh240zqtv9k0t9af8935ke9laqsnlfe5"
-                # nostr_add_type = "nsec"
+            
                 
                 return Destination(
                     NostrSignEventIDReviewView,
