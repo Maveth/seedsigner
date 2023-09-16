@@ -154,7 +154,7 @@ class ScanView(View):
                 
                 #TODO store nsec 
                 self.controller.storage.add_nsec(nostr_add)
-                print("added address to storage:",self.controller.storage.get_nsec())
+                print("added address, pulled from storage:",self.controller.storage.get_nsec())
                 
                 return Destination(
                     NostrAddressStartView,
@@ -172,6 +172,7 @@ class ScanView(View):
                 
                 try:
                     nostr_add = self.controller.storage.get_nsec()
+                    print("pulled address from storage:",nostr_add)
                 except IndexError:
                     #No Nsec is stored, goto nostr menu to add nsec
                     selected_menu_num = WarningScreen(
