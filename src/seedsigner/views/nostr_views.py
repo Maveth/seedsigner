@@ -153,6 +153,11 @@ class NostrLoadNsecView(BaseNostrView):
         if len(self.seeds) > 0 and selected_menu_num < len(self.seeds):
             print("this option seems wierd",selected_menu_num)
             print("self.seeds",self.seeds)
+            print("self.controller.get_seed(self.seeds) : ", self.controller.get_seed(self.seeds))
+            
+            print("self.seeds",self.seeds.__getattribute__)
+        
+            
             # print("self.seeds",self.seed) #THIS ONE DIDNT PRINT
             
             print("nsec:",nostr.get_nsec(self.seeds[selected_menu_num]))
