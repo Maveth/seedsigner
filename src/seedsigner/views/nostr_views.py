@@ -161,9 +161,18 @@ class NostrLoadNsecView(BaseNostrView):
             # print("self.seeds",self.seed) #THIS ONE DIDNT PRINT
             
             print("nsec:",nostr.get_nsec(self.controller.get_seed(selected_menu_num)))
+            self.controller.storage.add_nsec(nostr.get_nsec(self.controller.get_seed(selected_menu_num)))
             
-            raise Warning("Are we getting this far?")
-            return Destination(SeedOptionsView, view_args={"seed_num": selected_menu_num})
+            LargeIconStatusScreen(
+                title="Nsec Loaded",
+                show_back_button=False,
+                status_headline="Success!",
+                text="Nsec successfully loaded!",
+                button_data=["OK"]
+            ).display()
+            
+            # raise Warning("Are we getting this far?")
+            return Destination(NostrMenuView, clear_history=True)
 
         #THIS OPTION WOULD LET YOU CREATE A NEW SEED
         # elif selected_menu_num == len(self.seeds):
