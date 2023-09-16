@@ -307,7 +307,7 @@ class ScanNostrAddView(ScanView):
         return self.decoder.is_nostr_add
     
     
-class ScanNostrJsonEventView(ScanView):
+class ScanNostrJsonEventIDView(ScanView):
     instructions_text = "Scan an Event Id"
     invalid_qr_type_message = "Expected a Nostr Json Event Id"
     
@@ -316,4 +316,4 @@ class ScanNostrJsonEventView(ScanView):
         
     @property
     def is_valid_qr_type(self):
-        return self.decoder.is_nostr_event
+        return self.decoder.is_nostr_event_id

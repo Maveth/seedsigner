@@ -23,7 +23,7 @@ from seedsigner.models.seed import Seed
 from seedsigner.models.settings_definition import SettingsConstants
 from seedsigner.views.seed_views import SeedDiscardView, SeedFinalizeView, SeedMnemonicEntryView, SeedWordsWarningView, SeedExportXpubScriptTypeView
 from seedsigner.views.view import NotYetImplementedView, OptionDisabledView, View, Destination, BackStackView, MainMenuView
-from seedsigner.views.scan_views import ScanNostrAddView, ScanNostrJsonEventView
+from seedsigner.views.scan_views import ScanNostrAddView, ScanNostrJsonEventIDView
 
 from .view import View, Destination, BackStackView
 
@@ -188,7 +188,7 @@ class NostrSignEventIDStartView(BaseNostrView):
         
         # from seedsigner.views.scan_views import ScanNostrJsonEventView
         self.controller.resume_main_flow = Controller.FLOW__NOSTR_EVENT
-        return Destination(ScanNostrJsonEventView)
+        return Destination(ScanNostrJsonEventIDView)
     
 class NostrSignEventIDReviewView(BaseNostrView):
     def __init__(self, nostr_add: str, nostr_add_type: str, nostr_signature: str = None, nostr_qrtype: str = None, nostr_event: str = None):
