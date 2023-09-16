@@ -221,15 +221,15 @@ class Controller(Singleton):
             raise Exception(f"There is no seed_num {seed_num}; only {len(self.storage.seeds)} in memory.")
         
     
-    def get_nsec(self) -> 'Nsec':
-            print("we are in the controller section")
-            print ("we have nsec:", self.storage.nsec)
-            print("should this be a list?")
-            return self.storage.nsec()
+    # def get_nsec(self) -> 'Nsec':
+    #         print("we are in the controller section")
+    #         print ("we have nsec:", self.storage.nsec)
+    #         print("should this be a list?")
+    #         return self.storage.nsec()
         
     
-    def remove_nsec(self):
-        self.storage.remove_nsec()
+    # def remove_nsec(self):
+    #     self.storage.remove_nsec()
             
 
     def pop_prev_from_back_stack(self):
