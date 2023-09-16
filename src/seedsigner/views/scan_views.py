@@ -171,7 +171,7 @@ class ScanView(View):
                 nostr_event = self.decoder.get_nostr_event()
                 
                 try:
-                    nostr_add = self.controller.storage.get_nsec()[0]
+                    nostr_add = self.controller.storage.get_nsec()
                 except IndexError:
                     #No Nsec is stored, goto nostr menu to add nsec
                     selected_menu_num = WarningScreen(
