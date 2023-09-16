@@ -155,12 +155,12 @@ class NostrLoadNsecView(BaseNostrView):
             print("self.seeds",self.seeds)
             print("self.controller.get_seed(selected_menu_num) : ", self.controller.get_seed(selected_menu_num))
             
-            print("self.seeds",self.seeds.__getattribute__)
+            # print("self.seeds",self.seeds.__getattribute__)
         
             
             # print("self.seeds",self.seed) #THIS ONE DIDNT PRINT
             
-            print("nsec:",nostr.get_nsec(self.seeds[selected_menu_num]))
+            print("nsec:",nostr.get_nsec(self.controller.get_seed(selected_menu_num)))
             
             raise Warning("Are we getting this far?")
             return Destination(SeedOptionsView, view_args={"seed_num": selected_menu_num})
