@@ -1076,8 +1076,8 @@ class NostrJsonEventIDQrDecoder(BaseSingleFrameQrDecoder):
         
         return DecodeQRStatus.COMPLETE
 
-    def get_nostr_event(self):
-        if self.get_nostr_event != None:
+    def get_nostr_event_id(self):
+        if self.get_nostr_event_id != None:
             return self.nostr_event
         return None
 
