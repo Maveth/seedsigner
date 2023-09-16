@@ -121,9 +121,8 @@ class NostrLoadNsecView(BaseNostrView):
         
     LOAD = "Load a seed"
 
-    def __init__(self, nostr_add: str):
+    def __init__(self):
         super().__init__()
-        self.nostr_add=nostr_add
         self.seeds = []
         for seed in self.controller.storage.seeds:
             self.seeds.append({
