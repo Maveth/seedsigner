@@ -232,8 +232,8 @@ class NostrSignEventReviewView(BaseNostrView):
             self.nostr_event_serialized = nostr.serialize_event(event_dict)
             self.nostr_event = self.nostr_event_serialized
         elif nostr_event_serialized:
-            self.serialized_event = json.loads(nostr_event_serialized)
-            self.nostr_event = self.serialized_event
+            self.nostr_event_serialized = json.loads(nostr_event_serialized)
+            self.nostr_event = self.nostr_event_serialized
             
         # self.controller.nostr_data["raw_serialized_event"] = serialized_event
         # self.serialized_event = json.loads(serialized_event)
@@ -255,6 +255,7 @@ class NostrSignEventReviewView(BaseNostrView):
     def run(self):
         
         sender_pubkey = self.nostr_event[nostr.SerializedEventFields.SENDER_PUBKEY]
+        print("we see the public key as: ",sender_pubkey)
         kind = self.nostr_event[nostr.SerializedEventFields.KIND]
         # kind_description = f"{nostr.KINDS[self.nostr_event[nostr.SerializedEventFields.KIND]]} (kind: {kind})"
         content = self.nostr_event[nostr.SerializedEventFields.CONTENT]
@@ -265,8 +266,8 @@ class NostrSignEventReviewView(BaseNostrView):
             print("message kind :", kind)
         
         print ("we need to get the public key from the stored nsec")
-        print("we have nsec:",self.nostr_add)
-        self.nostr_npub_hex = nostr.privkey_hex_get_pubkey_hex(self.nostr_add)
+        print("we have nsec:",self.nostr_add[0])
+        self.nostr_npub_hex = nostr.privkey_hex_get_pubkey_hex(self.nostr_add[0])
         print("private hex key is :", self.nostr_npub_hex)
         
         if sender_pubkey != self.nostr_pubkey_hex:
