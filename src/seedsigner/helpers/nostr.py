@@ -176,3 +176,12 @@ def sign_event(seed: Seed, serialized_event: str):
     return sign_message(seed=seed, full_message=serialized_event)
 
 
+def sign_event_with_key(nostr_add: str, serialized_event: str):
+    """ Hashes the full_message and then signs """
+    PK1= nsec_to_hex (nostr_add)  #convert nsec bech32 to HEX
+    PK2= ec.PrivateKey(bytes.fromhex(PK1)) #get WIF format secret privatekey used by seedsigner ec import
+    
+    sig = PK2.schnorr_sign(sha256(serialized_event.encode()).digest())
+    return sig
+
+
