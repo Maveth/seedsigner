@@ -583,7 +583,7 @@ class DecodeQR:
 
     @staticmethod
     def is_nostr_address(s):
-        print("decode - line 555 - running is_nostr_address")
+        print("dchecking is_nostr_address")
         # if re.search(r'^nostr\:.*', s, re.IGNORECASE): #TODO is this needed?
         #     return True
         if re.search(r'^((nsec1|npub1)[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{25,64})$', s):
@@ -597,7 +597,7 @@ class DecodeQR:
         
     @staticmethod
     def is_nostr_json_event_id(s):  #     is_nostr_json_event_id(s):
-        print("we are checking if this is an event") # DEBUG
+        print("we are checking if this is an event ID HASH ONLY") # DEBUG
         print(s)
         if re.search(r'^\{"event\.id":', s, re.IGNORECASE):
             print("is a nostr json_event id = true") # DEBUG
@@ -608,6 +608,7 @@ class DecodeQR:
 
     @staticmethod
     def is_nostr_json_event(s):  #     is_nostr_json_event(s):
+        print("checking is.json.event")
         # Nostr raw json Events:
         """
             {
@@ -635,6 +636,7 @@ class DecodeQR:
         
     @staticmethod
     def is_nostr_json_event_serialized(s):  #     is_nostr_json_event(s):
+        print("checking is serialized event")
         json_content = json.loads(s)
         if type(json_content) == list and json_content[0] == 0 and len(json_content) == 6:
             print("this seemns to be a nostr serialed event Json")

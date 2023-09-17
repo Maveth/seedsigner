@@ -217,7 +217,7 @@ class ScanView(View):
                 
             elif self.decoder.is_nostr_json_event:
                 # from seedsigner.views.nostr_views import NostrSignEventReviewView
-                
+                print("this is the self.decode.is_nostr_json_event")
                 nostr_event = self.decoder.get_json_event()
                 print("WE ARE IN SCAN VIEWS")
                 
@@ -272,7 +272,7 @@ class ScanView(View):
                 
             elif self.decoder.is_nostr_json_event_serialized:
                 # from seedsigner.views.nostr_views import NostrSignEventReviewView
-                
+                print("this is the self.decode.is_nostr_json_event_serialized")
                 nostr_event_serialized = self.decoder.get_serialized_event()
                 print("WE ARE IN SCAN VIEWS")
                 
