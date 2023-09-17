@@ -229,12 +229,17 @@ class NostrSignEventReviewView(BaseNostrView):
         super().__init__()
         if nostr_event:
             event_dict = json.loads(nostr_event)
-            serialized_event = nostr.serialize_event(event_dict)
+            self.nostr_event_serialized = nostr.serialize_event(event_dict)
+            self.nostr_event = self.nostr_event_serialized
+        elif nostr_event_serialized:
+            self.serialized_event = json.loads(nostr_event_serialized)
+            self.nostr_event = self.serialized_event
             
-        self.controller.nostr_data["raw_serialized_event"] = serialized_event
-        self.serialized_event = json.loads(serialized_event)
+        # self.controller.nostr_data["raw_serialized_event"] = serialized_event
+        # self.serialized_event = json.loads(serialized_event)
         
-        self.nostr_event = nostr_event,
+        # self.nostr_event = nostr_event_serialized,
+        print("converted nostr event, \n this should only be serialized:",self.nostr_event)
         self.nostr_add=nostr_add,
         self.nostr_qrtype = nostr_qrtype,
         self.nostr_add_type = nostr_add_type,
