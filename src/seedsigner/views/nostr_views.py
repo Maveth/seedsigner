@@ -9,11 +9,10 @@ from PIL.ImageOps import autocontrast
 from seedsigner.controller import Controller
 from seedsigner.gui.screens import nostr_screens
 from seedsigner.gui.screens.screen import LargeIconStatusScreen, LoadingScreenThread, QRDisplayScreen
-from seedsigner.gui.screens.nostr_screens import NostrButtonListScreen, NostrSigEventStartScreen, NostrSignFullEventStartScreen
+from seedsigner.gui.screens.nostr_screens import NostrButtonListScreen, NostrSignEventStartScreen
 from seedsigner.hardware.camera import Camera
 from seedsigner.gui.components import FontAwesomeIconConstants, GUIConstants, SeedSignerIconConstants
 from seedsigner.gui.screens import (RET_CODE__BACK_BUTTON, ButtonListScreen)
-from seedsigner.gui.screens.nostr_screens import NostrSignEventIDStartScreen
 from seedsigner.gui.screens.tools_screens import ToolsCalcFinalWordDoneScreen, ToolsCalcFinalWordFinalizePromptScreen, ToolsCalcFinalWordScreen, ToolsCoinFlipEntryScreen, ToolsDiceEntropyEntryScreen, ToolsImageEntropyFinalImageScreen, ToolsImageEntropyLivePreviewScreen, ToolsAddressExplorerAddressTypeScreen
 from seedsigner.helpers import embit_utils, mnemonic_generation
 from seedsigner.helpers import nostr
@@ -221,7 +220,7 @@ class NostrSignEventIDReviewView(BaseNostrView):
 class NostrSignEventStartView(BaseNostrView):
     def run(self):    
             
-        selected_menu_num = NostrSigEventStartScreen(
+        selected_menu_num = NostrSignEventStartScreen(
             title="Sign Full Nostr Event"
         ).display()
         

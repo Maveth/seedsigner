@@ -56,7 +56,7 @@ class NostrBaseTopNavScreen(BaseTopNavScreen):
 #             screen_y=self.top_nav.height + 3*GUIConstants.COMPONENT_PADDING
 #         ))
         
-class NostrSigEventStartScreen(NostrButtonListScreen):
+class NostrSignEventStartScreen(NostrButtonListScreen):
     def __post_init__(self):
         # Customize defaults
         self.is_bottom_list = True
