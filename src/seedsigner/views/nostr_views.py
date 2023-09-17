@@ -230,7 +230,7 @@ class NostrSignEventStartView(BaseNostrView):
         elif selected_menu_num == 1:
             self.controller.resume_main_flow = Controller.FLOW__NOSTR_EVENT
             #TODO porting over - might need to change
-            raise NotImplementedError()
+            return Destination(NotYetImplementedView)
             return Destination(ScanView)
 
         elif selected_menu_num == RET_CODE__BACK_BUTTON:
@@ -242,7 +242,7 @@ class NostrSignEventStartView(BaseNostrView):
         ##TODO WE SHOULD NOT GET HERE
         # from seedsigner.views.scan_views import ScanNostrJsonEventView
         # self.controller.resume_main_flow = Controller.FLOW__NOSTR_EVENT
-        raise NotImplementedError()
+        return Destination(NotYetImplementedView)
         
  
 """****************************************************************************
