@@ -8,7 +8,7 @@ class SeedStorage:
         self.seeds: List[Seed] = []
         self.pending_seed: Seed = None
         self._pending_mnemonic: List[str] = []
-        self.nsecs: []  # Initialize nsec as an empty list, BUG of no type,
+        self.nsecs: [] = []  # Initialize nsec as an empty list, BUG of no type,
         
     def add_nsec(self, nsec):
         # Add a new root key to the storage
