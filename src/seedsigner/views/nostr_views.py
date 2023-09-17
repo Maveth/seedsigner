@@ -9,7 +9,7 @@ from PIL.ImageOps import autocontrast
 from seedsigner.controller import Controller
 from seedsigner.gui.screens import nostr_screens
 from seedsigner.gui.screens.screen import LargeIconStatusScreen, LoadingScreenThread, QRDisplayScreen
-from seedsigner.gui.screens.nostr_screens import NostrButtonListScreen, NostrSignFullEventStartScreen
+from seedsigner.gui.screens.nostr_screens import NostrButtonListScreen, NostrSigEventStartScreen, NostrSignFullEventStartScreen
 from seedsigner.hardware.camera import Camera
 from seedsigner.gui.components import FontAwesomeIconConstants, GUIConstants, SeedSignerIconConstants
 from seedsigner.gui.screens import (RET_CODE__BACK_BUTTON, ButtonListScreen)
@@ -111,14 +111,10 @@ class NostrMenuView(View):
             return Destination(NotYetImplementedView)            
 
         elif button_data[selected_menu_num] == SIGN:
-            return Destination(NostrSignEventIDStartView)
+            return Destination(NostrSignEventStartView)
         
         elif button_data[selected_menu_num] == REMOVE:
-            return Destination(NostrRemoveNsecView)   
-        
-        #TODO add full event signing, including DMS
-        elif button_data[selected_menu_num] == FULLSIGN:
-            return Destination(NostrSignFullEventStartView)                
+            return Destination(NostrRemoveNsecView)               
 
 
 """****************************************************************************
@@ -176,19 +172,19 @@ class NostrRemoveNsecView(BaseNostrView):
             self.controller.storage.remove_nsec()
         return Destination(BackStackView) 
     
-class NostrSignEventIDStartView(BaseNostrView):
-    def run(self):    
+# class NostrSignEventIDStartView(BaseNostrView):
+#     def run(self):    
             
-        selected_menu_num = NostrSignEventIDStartScreen(
-            title="Sign Event"
-        ).display()
+#         selected_menu_num = NostrSignEventIDStartScreen(
+#             title="Sign Event"
+#         ).display()
 
-        if selected_menu_num == RET_CODE__BACK_BUTTON:
-            return Destination(BackStackView)
+#         if selected_menu_num == RET_CODE__BACK_BUTTON:
+#             return Destination(BackStackView)
         
-        # from seedsigner.views.scan_views import ScanNostrJsonEventView
-        self.controller.resume_main_flow = Controller.FLOW__NOSTR_EVENT_ID
-        return Destination(ScanNostrJsonEventIDView)
+#         # from seedsigner.views.scan_views import ScanNostrJsonEventView
+#         self.controller.resume_main_flow = Controller.FLOW__NOSTR_EVENT_ID
+#         return Destination(ScanNostrJsonEventIDView)
     
 class NostrSignEventIDReviewView(BaseNostrView):
     def __init__(self, nostr_add: str, nostr_add_type: str, nostr_signature: str = None, nostr_qrtype: str = None, nostr_event: str = None):
@@ -222,22 +218,33 @@ class NostrSignEventIDReviewView(BaseNostrView):
             print("does this execute")
             return Destination(BackStackView)
 
-class NostrSignFullEventStartView(BaseNostrView):
+class NostrSignEventStartView(BaseNostrView):
     def run(self):    
             
-        selected_menu_num = NostrSignFullEventStartScreen(
+        selected_menu_num = NostrSigEventStartScreen(
             title="Sign Full Nostr Event"
         ).display()
+        
+        if selected_menu_num == 0:
+            self.controller.resume_main_flow = Controller.FLOW__NOSTR_EVENT_ID
+            return Destination(ScanNostrJsonEventIDView)
+        elif selected_menu_num == 1:
+            self.controller.resume_main_flow = Controller.FLOW__NOSTR_EVENT
+            #TODO porting over - might need to change
+            raise NotImplementedError()
+            return Destination(ScanView)
 
-        if selected_menu_num == RET_CODE__BACK_BUTTON:
+        elif selected_menu_num == RET_CODE__BACK_BUTTON:
             return Destination(BackStackView)
         
         print("NEED TO DEBUG HERE")
         print (selected_menu_num)
+        ## NOTE TO SELF, THIS RETURNS A 0 for first option and 1 for second.
+        ##TODO WE SHOULD NOT GET HERE
         # from seedsigner.views.scan_views import ScanNostrJsonEventView
-        self.controller.resume_main_flow = Controller.FLOW__NOSTR_EVENT
+        # self.controller.resume_main_flow = Controller.FLOW__NOSTR_EVENT
         raise NotImplementedError()
-        return Destination(ScanNostrJsonEventView)
+        
  
 """****************************************************************************
     Nostr Nsec Address Views

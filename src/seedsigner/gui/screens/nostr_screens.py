@@ -42,30 +42,30 @@ class NostrBaseTopNavScreen(BaseTopNavScreen):
     Sign Event
 ****************************************************************************"""
 @dataclass
-class NostrSignEventIDStartScreen(NostrButtonListScreen):
-    def __post_init__(self):
-        # Customize defaults
-        self.is_bottom_list = True
-        self.button_data = [("Scan", SeedSignerIconConstants.SCAN)]
+# class NostrSignEventIDStartScreen(NostrButtonListScreen):
+#     def __post_init__(self):
+#         # Customize defaults
+#         self.is_bottom_list = True
+#         self.button_data = [("Scan", SeedSignerIconConstants.SCAN)]
 
-        super().__post_init__()
+#         super().__post_init__()
 
-        self.components.append(TextArea(
-            text="Scan the event hash",
-            is_text_centered=True,
-            screen_y=self.top_nav.height + 3*GUIConstants.COMPONENT_PADDING
-        ))
+#         self.components.append(TextArea(
+#             text="Scan the event hash",
+#             is_text_centered=True,
+#             screen_y=self.top_nav.height + 3*GUIConstants.COMPONENT_PADDING
+#         ))
         
-class NostrSignFullEventStartScreen(NostrButtonListScreen):
+class NostrSigEventStartScreen(NostrButtonListScreen):
     def __post_init__(self):
         # Customize defaults
         self.is_bottom_list = True
-        self.button_data = [("Regular", FontAwesomeIconConstants.PEN),("Encrypted", FontAwesomeIconConstants.LOCK)]
+        self.button_data = [("Event Hash", FontAwesomeIconConstants.PEN),("Full Event", FontAwesomeIconConstants.LOCK)]
 
         super().__post_init__()
 
         self.components.append(TextArea(
-            text="Scan the full event, either regular (kind1) or encrypted (kind4)",
+            text="Scan the Event Hash or the Full event",
             is_text_centered=True,
             screen_y=self.top_nav.height + 3*GUIConstants.COMPONENT_PADDING
         ))
