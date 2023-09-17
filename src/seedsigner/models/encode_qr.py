@@ -104,7 +104,7 @@ class EncodeQR:
         elif self.qr_type == QRType.BITCOIN_ADDRESS:
             self.encoder = BitcoinAddressEncoder(address=self.bitcoin_address)
             
-        elif self.qr_type == QRType.NOSTR__SIGNED_EVENT:
+        elif self.qr_type == QRType.NOSTR_EVENT_SIGNATURE:
             self.encoder = NostrEventSignature(nostr_signature=self.nostr_signature)
 
         elif self.qr_type == QRType.SIGN_MESSAGE:
