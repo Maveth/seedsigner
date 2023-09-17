@@ -246,8 +246,8 @@ class NostrSignFullEventStartView(BaseNostrView):
 class NostrAddressStartView(View):
     
     #TODO CAN REMOVE, THIS just prints a success laoded, it used to do more, but doesnt need to.
-    # def __init__(self, nostr_add: str, nostr_add_type: str):
-    #     super().__init__()
+    def __init__(self, nostr_add: str, nostr_add_type: str):
+        super().__init__()
         # self.controller.storage.add_nsec(nostr_add)
     
     def run(self):
