@@ -1154,9 +1154,9 @@ class NostrSerializedEventQrDecoder(BaseSingleFrameQrDecoder):
     def __init__(self):
         super().__init__()
         self.serialized_event = None
-    #TODO THIS CODE SHOULD NOT WORK YET
-    def add(self, segment, qr_type=QRType.NOSTR_JSON_EVENT):
-        print("we are in the decode.nostrjsonevent FULL RAW EVENT qrdecoder")
+        
+    def add(self, segment, qr_type=QRType.NOSTR_SERIALIZED_EVENT):
+        print("we are in the decode.nostrSerializedevent qrdecoder")
         print (segment)
         self.serialized_event = segment.strip()
         print (self.serialized_event)
@@ -1172,9 +1172,9 @@ class NostrJsonEventQrDecoder(BaseSingleFrameQrDecoder):
     def __init__(self):
         super().__init__()
         self.json_event = None
-    #TODO THIS CODE SHOULD NOT WORK YET
-    def add(self, segment, qr_type=QRType.NOSTR_SERIALIZED_EVENT):
-        print("we are in the decode.nostrSerializedevent qrdecoder")
+    
+    def add(self, segment, qr_type=QRType.NOSTR_JSON_EVENT):
+        print("we are in the decode.nostrjsonevent FULL RAW EVENT qrdecoder")
         print (segment)
         self.json_event = segment.strip()
         print (self.json_event)

@@ -221,9 +221,43 @@ class ScanView(View):
                 nostr_event = self.decoder.get_json_event()
                 print("WE ARE IN SCAN VIEWS")
                 
-                #TODO
-                #we need to check that we got back the json event
-                #it should not be serialized as of yet
+                try:
+                    nostr_add = self.controller.storage.get_nsec()
+                except IndexError:
+                    #No Nsec is stored, goto nostr menu to add nsec
+                    selected_menu_num = WarningScreen(
+                        status_headline="No Nsec",
+                        text="Scanned a nostr event id hash, we need a nsec loaded to sign it, Load Nsec from seed/scan/keyboard.",
+                        button_data=["Continue"],
+                    ).display()
+
+                    if selected_menu_num == RET_CODE__BACK_BUTTON:
+                        return Destination(BackStackView)
+
+                    # Only one exit point
+                    return Destination(
+                        ScanNostrAddView,
+                        skip_current_view=True,  # Prevent going BACK to WarningViews
+                    )
+
+                # TODO - maybe the decoder should return type as well?????
+                # #TODO - might error but shouldnt, since its a valid nostr addr already stored
+                if nostr_add.startswith('nsec'):
+                # # print("addres strats with nsec: ",nostr_add.tostring().startswith('nsec'))
+                #     print("address is:", nostr_add)
+                    nostr_add_type = "nsec"
+                elif nostr_add.startswith('npub'):
+                    nostr_add_type = "npub"
+                    print("Invalid")
+                    raise Exception(f"expecting a nsec key")
+                else: 
+                    if nostr_add == "" :
+                        print("I think we have no nsec, try and scan for one?")
+                #         #THIS SHOULD NOT SHOW UP ANYMORE
+                #         #TODO maybe we should ask first
+                        Destination(ScanNostrAddView)
+            
+                print("WE ARE ABOUT TO LOAD REVIEW OF EVENT - THAT IS WHERE SIGNING HAPPENS")
                 
                 from seedsigner.views.nostr_views import NostrSignEventReviewView
                 return Destination(
