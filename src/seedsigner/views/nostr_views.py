@@ -242,8 +242,6 @@ class NostrSignEventReviewView(BaseNostrView):
         self.nostr_qrtype = nostr_qrtype,
         self.nostr_add_type = nostr_add_type,
         self.nostr_signature = nostr_signature,
-        self.nostr_npub_hex = "",
-        self.nostr_privkey_hex ="",
         
         #TODO WE need to add the serialization part, and then signing the data
         #we also need to check if its encrypted.
@@ -266,10 +264,10 @@ class NostrSignEventReviewView(BaseNostrView):
         
         print ("we need to get the public key from the stored nsec")
         print("we have nsec:",self.nostr_add[0])
-        self.nostr_privkey_hex = nostr.nsec_to_hex(self.nostr_add[0])
-        print("we have a private_hex",self.nostr_privkey_hex)
-        self.nostr_npub_hex = nostr.privkey_hex_get_pubkey_hex(self.nostr_privkey_hex)
-        print("public hex key is :", self.nostr_npub_hex)
+        # self.nostr_privkey_hex = nostr.nsec_to_hex(self.nostr_add[0])
+        print("we have a private_hex",nostr.nsec_to_hex(self.nostr_add[0]))
+        # self.nostr_npub_hex = nostr.privkey_hex_get_pubkey_hex(nostr.nsec_to_hex(self.nostr_add[0]))
+        print("public hex key is :", nostr.privkey_hex_get_pubkey_hex(nostr.nsec_to_hex(self.nostr_add[0])))
         
         if sender_pubkey != self.nostr_pubkey_hex:
             print("HUSTON WE HAVE A PROBLEM")
