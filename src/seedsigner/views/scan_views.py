@@ -216,16 +216,9 @@ class ScanView(View):
                     }
                 )
                 
-            elif self.decoder.is_nostr_json_event:
+            elif self.decoder.is_nostr_event:
                 # from seedsigner.views.nostr_views import NostrSignEventReviewView
                 print("this is the self.decode.is_nostr_json_event")
-                print("is serialized:", self.decoder.is_nostr_event_serialized)
-                try:
-                    self.decoder.is_nostr_event
-                except:
-                    print("ERROR")
-
-                print("is normal:", self.decoder.is_nostr_event)
                 nostr_event = self.decoder.get_json_event()
                 print("WE ARE IN SCAN VIEWS")
                 
@@ -278,7 +271,7 @@ class ScanView(View):
                     }
                 )
                 
-            elif self.decoder.is_nostr_json_event_serialized:
+            elif self.decoder.is_nostr_event_serialized:
                 # from seedsigner.views.nostr_views import NostrSignEventReviewView
                 print("this is the self.decode.is_nostr_json_event_serialized")
                 print("is serialized:", self.decoder.is_nostr_event_serialized)
