@@ -424,24 +424,6 @@ class DecodeQR:
             elif "sortedmulti" in s:
                 return QRType.WALLET__GENERIC
             
-            # try:
-            #     # Nostr json {"EVENT.ID":"Hash"}
-            #     #This is a compressed version of the event, to save space we are only using a json that is the hash
-            #     #This means we cant verify that signature within seedsigner
-                
-            #     """
-            #         {
-            #             "EVENT.ID":"5f61dbc70077f61dd1b639d2302907b1e06c2ef54c249a7f20c830cb71811f29"
-            #         }
-            #     """
-            #     json_content = json.loads(s)
-            #     expected_attrs = ["EVENT.ID"]
-                
-            #     if len([k for k in json_content.keys() if k in expected_attrs]) == len(expected_attrs):
-            #         return QRType.NOSTR__JSON_EVENT
-            # except Exception:
-            #     pass
-            
 
             # Seed
             if re.search(r'\d{48,96}', s):
@@ -1165,19 +1147,19 @@ class NostrAddressQrDecoder(BaseSingleFrameQrDecoder):
 class NostrJsonEventIDQrDecoder(BaseSingleFrameQrDecoder):
     def __init__(self):
         super().__init__()
-        self.nostr_event = None
+        self.nostr_event_id = None
 
     def add(self, segment, qr_type=QRType.NOSTR_JSON_EVENT_ID):
         print("we are in the decode.nostrjsonevent ID qrdecoder")
         print (segment)
-        self.nostr_event = segment.strip()
-        print (self.nostr_event)
+        self.nostr_event_id = segment.strip()
+        print (self.nostr_event_id)
         
         return DecodeQRStatus.COMPLETE
 
     def get_nostr_event_id(self):
         if self.get_nostr_event_id != None:
-            return self.nostr_event
+            return self.nostr_event_id
         return None
     
 class NostrSerializedEventQrDecoder(BaseSingleFrameQrDecoder):
