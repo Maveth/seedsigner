@@ -104,7 +104,7 @@ def npub_to_hex(npub: str) -> str:
 
 #Since we will not always have a seed, we need to have the ability to do this directly
 def nsec_to_hex(nsec: str) -> str:
-    hrp, data, spec = bech32.bech32_decode(bytes.fromhex(nsec))
+    hrp, data, spec = bech32.bech32_decode(nsec)
     raw_priv_key = bech32.convertbits(data, 5, 8)[:-1]
     return bytes(raw_priv_key).hex()
 
