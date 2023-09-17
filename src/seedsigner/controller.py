@@ -127,6 +127,7 @@ class Controller(Singleton):
     FLOW__ADDRESS_EXPLORER = "address_explorer"
     FLOW__SIGN_MESSAGE = "sign_message"
     FLOW__NOSTR_ADDRESS = "Nostr Address"
+    FLOW__NOSTR_EVENT_ID = "Nostr Event Id"
     FLOW__NOSTR_EVENT = "Nostr Event"
     resume_main_flow: str = None
 

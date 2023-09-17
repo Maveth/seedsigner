@@ -55,6 +55,20 @@ class NostrSignEventIDStartScreen(NostrButtonListScreen):
             is_text_centered=True,
             screen_y=self.top_nav.height + 3*GUIConstants.COMPONENT_PADDING
         ))
+        
+class NostrSignFullEventStartScreen(NostrButtonListScreen):
+    def __post_init__(self):
+        # Customize defaults
+        self.is_bottom_list = True
+        self.button_data = [("Regular", FontAwesomeIconConstants.PEN),("Encrypted", FontAwesomeIconConstants.LOCK)]
+
+        super().__post_init__()
+
+        self.components.append(TextArea(
+            text="Scan the full event, either regular (kind1) or encrypted (kind4)",
+            is_text_centered=True,
+            screen_y=self.top_nav.height + 3*GUIConstants.COMPONENT_PADDING
+        ))
 
 
 @dataclass
