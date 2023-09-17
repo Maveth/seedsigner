@@ -187,22 +187,21 @@ class ScanView(View):
                         skip_current_view=True,  # Prevent going BACK to WarningViews
                     )
 
-                # TODO - THIS CAN ALL BE REMOVED - here for debug
-                # #TODO - might error but shouldnt, since its a valid nostr addr already stored
-                # if nostr_add.startswith('nsec'):
-                # # print("addres strats with nsec: ",nostr_add.tostring().startswith('nsec'))
-                #     print("address is:", nostr_add)
-                #     nostr_add_type = "nsec"
-                # elif nostr_add.startswith('npub'):
-                #     nostr_add_type = "npub"
-                #     print("Invalid")
-                #     raise Exception(f"expecting a nsec key")
-                # else: 
-                #     if nostr_add == "" :
-                #         print("I think we have no nsec, try and scan for one?")
-                #         #THIS SHOULD NOT SHOW UP ANYMORE
-                #         #TODO maybe we should ask first
-                #         Destination(ScanNostrAddView)
+                #TODO - might error but shouldnt, since its a valid nostr addr
+                if nostr_add.startswith('nsec'):
+                # print("addres strats with nsec: ",nostr_add.tostring().startswith('nsec'))
+                    print("address is:", nostr_add)
+                    nostr_add_type = "nsec"
+                elif nostr_add.startswith('npub'):
+                    nostr_add_type = "npub"
+                    print("Invalid")
+                    raise Exception(f"expecting a nsec key")
+                else: 
+                    if nostr_add == "" :
+                        print("I think we have no nsec, try and scan for one?")
+                        #THIS SHOULD NOT SHOW UP ANYMORE
+                        #TODO maybe we should ask first
+                        Destination(ScanNostrAddView)
             
                 
                 return Destination(
