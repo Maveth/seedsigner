@@ -628,16 +628,34 @@ class DecodeQR:
         """
         try:
             json_content = json.loads(s)
-            expected_attrs = ["pubkey", "created_at", "kind", "tags", "content", "id"]
-            if len([k for k in json_content.keys() if k in expected_attrs]) == len(expected_attrs):
-                print("this seemns to be a nostr event Json - if this prints for seialized then need extra check")
-                return True
+            if isinstance(json_content, dict):  # Check if it's a dictionary
+                expected_attrs = ["pubkey", "created_at", "kind", "tags", "content", "id"]
+                if all(attr in json_content for attr in expected_attrs):
+                    print("this seems to be a nostr event Json")
+                    return True
+                else:
+                    print("it does not seem to be an event json")
+                    return False
             else:
-                print("it does not seem to be an event json")
+                print("Input is not a JSON dictionary.")
                 return False
         except json.JSONDecodeError:
             print("Error decoding JSON. It may not be valid JSON.")
-        return False
+            return False
+        
+        
+        # try:
+        #     json_content = json.loads(s)
+        #     expected_attrs = ["pubkey", "created_at", "kind", "tags", "content", "id"]
+        #     if len([k for k in json_content.keys() if k in expected_attrs]) == len(expected_attrs):
+        #         print("this seemns to be a nostr event Json - if this prints for seialized then need extra check")
+        #         return True
+        #     else:
+        #         print("it does not seem to be an event json")
+        #         return False
+        # except json.JSONDecodeError:
+        #     print("Error decoding JSON. It may not be valid JSON.")
+        # return False
         
         
     @staticmethod
