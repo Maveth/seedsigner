@@ -223,11 +223,11 @@ class ScanView(View):
                 
                 try:
                     nostr_add = self.controller.storage.get_nsec()
-                except IndexError:
+                except:
                     #No Nsec is stored, goto nostr menu to add nsec
                     selected_menu_num = WarningScreen(
                         status_headline="No Nsec",
-                        text="Scanned a nostr event id hash, we need a nsec loaded to sign it, Load Nsec from seed/scan/keyboard.",
+                        text="Scanned a nostr event json, we need a nsec loaded to sign it, Load Nsec from seed/scan/keyboard.",
                         button_data=["Continue"],
                     ).display()
 
@@ -257,16 +257,71 @@ class ScanView(View):
                 #         #TODO maybe we should ask first
                         Destination(ScanNostrAddView)
             
-                print("WE ARE ABOUT TO LOAD REVIEW OF EVENT - THAT IS WHERE SIGNING HAPPENS")
+                print("WE ARE ABOUT TO LOAD REVIEW OF JSON EVENT - THAT IS WHERE SIGNING HAPPENS")
                 
                 from seedsigner.views.nostr_views import NostrSignEventReviewView
                 return Destination(
-                    NostrSignEventIDReviewView,
+                    NostrSignEventReviewView,
                     skip_current_view=True,
                     view_args={
                         "nostr_add": nostr_add,
                         "nostr_add_type": nostr_add_type,
                         "nostr_event" : nostr_event,
+                    }
+                )
+                
+            elif self.decoder.is_nostr_json_event_serialized:
+                # from seedsigner.views.nostr_views import NostrSignEventReviewView
+                
+                nostr_event_serialized = self.decoder.get_serialized_event()
+                print("WE ARE IN SCAN VIEWS")
+                
+                try:
+                    nostr_add = self.controller.storage.get_nsec()
+                except:
+                    #No Nsec is stored, goto nostr menu to add nsec
+                    selected_menu_num = WarningScreen(
+                        status_headline="No Nsec",
+                        text="Scanned a nostr serialized event , we need a nsec loaded to sign it, Load Nsec from seed/scan/keyboard.",
+                        button_data=["Continue"],
+                    ).display()
+
+                    if selected_menu_num == RET_CODE__BACK_BUTTON:
+                        return Destination(BackStackView)
+
+                    # Only one exit point
+                    return Destination(
+                        ScanNostrAddView,
+                        skip_current_view=True,  # Prevent going BACK to WarningViews
+                    )
+
+                # TODO - maybe the decoder should return type as well?????
+                # #TODO - might error but shouldnt, since its a valid nostr addr already stored
+                if nostr_add.startswith('nsec'):
+                # # print("addres strats with nsec: ",nostr_add.tostring().startswith('nsec'))
+                #     print("address is:", nostr_add)
+                    nostr_add_type = "nsec"
+                elif nostr_add.startswith('npub'):
+                    nostr_add_type = "npub"
+                    print("Invalid")
+                    raise Exception(f"expecting a nsec key")
+                else: 
+                    if nostr_add == "" :
+                        print("I think we have no nsec, try and scan for one?")
+                #         #THIS SHOULD NOT SHOW UP ANYMORE
+                #         #TODO maybe we should ask first
+                        Destination(ScanNostrAddView)
+            
+                print("WE ARE ABOUT TO LOAD REVIEW OF SERIALIZED EVENT - THAT IS WHERE SIGNING HAPPENS")
+                
+                from seedsigner.views.nostr_views import NostrSignSerializedEventReviewView
+                return Destination(
+                    NostrSignSerializedEventReviewView,
+                    skip_current_view=True,
+                    view_args={
+                        "nostr_add": nostr_add,
+                        "nostr_add_type": nostr_add_type,
+                        "nostr_event_serialized" : nostr_event_serialized,
                     }
                 )
                 
@@ -372,3 +427,11 @@ class ScanNostrJsonEventView(ScanView):
     @property
     def is_valid_qr_type(self):
         return self.decoder.is_nostr_event
+
+class ScanNostrSerializedEventView(ScanView):
+    instructions_text = "Scan a Serialized Event"
+    invalid_qr_type_message = "Expected a Nostr Serialized Event"
+        
+    @property
+    def is_valid_qr_type(self):
+        return self.decoder.is_nostr_event_serialized

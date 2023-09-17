@@ -217,6 +217,73 @@ class NostrSignEventIDReviewView(BaseNostrView):
             print("does this execute")
             return Destination(BackStackView)
 
+class NostrSignEventReviewView(BaseNostrView):
+    def __init__(self, nostr_add: str, nostr_add_type: str, nostr_signature: str = None, nostr_qrtype: str = None, nostr_event: str = None):
+        super().__init__()
+        self.nostr_event = nostr_event,
+        self.nostr_add=nostr_add,
+        self.nostr_qrtype = nostr_qrtype,
+        self.nostr_add_type = nostr_add_type,
+        self.nostr_signature = nostr_signature,
+        
+        raise NotImplementedError
+        
+        from seedsigner.helpers.nostr import sign_event_id
+        self.nostr_signature = sign_event_id(nostr_add=nostr_add,nostr_add_type=nostr_add_type,nostr_event=nostr_event)
+    
+    def run(self):
+        
+        e = EncodeQR(
+            qr_type=QRType.NOSTR_EVENT_SIGNATURE,
+            nostr_signature = '{"event.signature": "' + self.nostr_signature.to_string() + '"}'
+        )
+        data = e.next_part()
+        print (data)
+        ret = nostr_screens.NostrSignatureQRWholeQRScreen(
+            qr_data=data,
+        ).display()
+
+        if ret == RET_CODE__BACK_BUTTON:
+            return Destination(NostrMenuView)
+        
+        else:
+            print("does this execute")
+            return Destination(BackStackView)
+
+class NostrSignSerializedEventReviewView(BaseNostrView):
+    def __init__(self, nostr_add: str, nostr_add_type: str, nostr_signature: str = None, nostr_qrtype: str = None, nostr_event: str = None):
+        super().__init__()
+        self.nostr_event = nostr_event,
+        self.nostr_add=nostr_add,
+        self.nostr_qrtype = nostr_qrtype,
+        self.nostr_add_type = nostr_add_type,
+        self.nostr_signature = nostr_signature,
+        
+        raise NotImplementedError
+    
+        from seedsigner.helpers.nostr import sign_event_id
+        self.nostr_signature = sign_event_id(nostr_add=nostr_add,nostr_add_type=nostr_add_type,nostr_event=nostr_event)
+    
+    def run(self):
+        
+        e = EncodeQR(
+            qr_type=QRType.NOSTR_EVENT_SIGNATURE,
+            nostr_signature = '{"event.signature": "' + self.nostr_signature.to_string() + '"}'
+        )
+        data = e.next_part()
+        print (data)
+        ret = nostr_screens.NostrSignatureQRWholeQRScreen(
+            qr_data=data,
+        ).display()
+
+        if ret == RET_CODE__BACK_BUTTON:
+            return Destination(NostrMenuView)
+        
+        else:
+            print("does this execute")
+            return Destination(BackStackView)
+
+
 class NostrSignEventStartView(BaseNostrView):
     def run(self):    
             
