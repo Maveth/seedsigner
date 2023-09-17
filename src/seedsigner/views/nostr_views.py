@@ -268,10 +268,12 @@ class NostrSignEventReviewView(BaseNostrView):
         print("we have a private_hex",nostr.nsec_to_hex(self.nostr_add[0]))
         # self.nostr_npub_hex = nostr.privkey_hex_get_pubkey_hex(nostr.nsec_to_hex(self.nostr_add[0]))
         print("public hex key is :", nostr.privkey_hex_to_pubkey_hex(nostr.nsec_to_hex(self.nostr_add[0])))
-        self.nostr_pubkey_hex = nostr.privkey_hex_to_pubkey_hex(nostr.nsec_to_hex(self.nostr_add[0]))
+        # self.nostr_pubkey_hex = nostr.privkey_hex_to_pubkey_hex(nostr.nsec_to_hex(self.nostr_add[0]))
         
-        if sender_pubkey != self.nostr_pubkey_hex:
+        if sender_pubkey != nostr.privkey_hex_to_pubkey_hex(nostr.nsec_to_hex(self.nostr_add[0])):
             print("HUSTON WE HAVE A PROBLEM")
+        else:
+            print("PUBKEY in EVENT = MATCHES = dervived from NSEC")
         
         
         
