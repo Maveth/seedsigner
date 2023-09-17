@@ -109,7 +109,8 @@ def nsec_to_hex(nsec: str) -> str:
     return bytes(raw_priv_key).hex()
 
 def privkey_hex_get_pubkey_hex(privkey_hex: str) -> str:
-    hexlify(privkey_hex.get_public_key().xonly()).decode()
+    privkey = ec.PrivateKey(secret=privkey_hex)
+    hexlify(privkey.get_public_key().xonly()).decode()
 
 
 
