@@ -301,7 +301,7 @@ class NostrSignEventReviewView(BaseNostrView):
         
         
         # raise NotImplementedError
-        signature = nostr.sign_event_with_key(nostr_add=self.nostr_add, serialized_event=self.nostr_event)
+        signature = nostr.sign_event_with_key(nostr_add=self.nostr_add, serialized_event=self.nostr_event_serialized)
 
         
         e = EncodeQR(

@@ -627,7 +627,7 @@ class DecodeQR:
         json_content = json.loads(s)
         expected_attrs = ["pubkey", "created_at", "kind", "tags", "content", "id"]
         if len([k for k in json_content.keys() if k in expected_attrs]) == len(expected_attrs):
-            # return QRType.NOSTR__JSON_EVENT
+            print("this seemns to be a nostr event Json - if this prints for seialized then need extra check")
             return True
         else:
             print("it does not seem to be an event json")
