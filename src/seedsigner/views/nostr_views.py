@@ -229,17 +229,15 @@ class NostrSignEventReviewView(BaseNostrView):
         super().__init__()
         if nostr_event:
             event_dict = json.loads(nostr_event)
-            self.nostr_event_serialized = nostr.serialize_event(event_dict)
-            self.nostr_event = self.nostr_event_serialized
-        elif nostr_event_serialized:
-            self.nostr_event_serialized = json.loads(nostr_event_serialized)
-            self.nostr_event = self.nostr_event_serialized
+            nostr_event_serialized = nostr.serialize_event(event_dict)
+            
+        self.nostr_event_serialized = json.loads(nostr_event_serialized)
             
         # self.controller.nostr_data["raw_serialized_event"] = serialized_event
         # self.serialized_event = json.loads(serialized_event)
         
         # self.nostr_event = nostr_event_serialized,
-        print("converted nostr event, \n this should only be serialized:",self.nostr_event)
+        print("converted nostr event, \n this should only be serialized:",self.nostr_event_serialized)
         self.nostr_add=nostr_add,
         self.nostr_qrtype = nostr_qrtype,
         self.nostr_add_type = nostr_add_type,
@@ -254,11 +252,11 @@ class NostrSignEventReviewView(BaseNostrView):
     
     def run(self):
         
-        sender_pubkey = self.nostr_event[nostr.SerializedEventFields.SENDER_PUBKEY]
+        sender_pubkey = self.nostr_event_serialized[nostr.SerializedEventFields.SENDER_PUBKEY]
         print("we see the public key as: ",sender_pubkey)
-        kind = self.nostr_event[nostr.SerializedEventFields.KIND]
+        kind = self.nostr_event_serialized[nostr.SerializedEventFields.KIND]
         # kind_description = f"{nostr.KINDS[self.nostr_event[nostr.SerializedEventFields.KIND]]} (kind: {kind})"
-        content = self.nostr_event[nostr.SerializedEventFields.CONTENT]
+        content = self.nostr_event_serialized[nostr.SerializedEventFields.CONTENT]
         
         if kind ==4:
             print("we see an encrypted msg kind:",kind)
@@ -267,8 +265,10 @@ class NostrSignEventReviewView(BaseNostrView):
         
         print ("we need to get the public key from the stored nsec")
         print("we have nsec:",self.nostr_add[0])
-        self.nostr_npub_hex = nostr.privkey_hex_get_pubkey_hex(self.nostr_add[0])
-        print("private hex key is :", self.nostr_npub_hex)
+        self.nostr_privkey_hex = nostr.nsec_to_hex(self.nostr_add[0])
+        print("we ahve a private_hex",self.nostr_privkey_hex)
+        self.nostr_npub_hex = nostr.privkey_hex_get_pubkey_hex(self.nostr_privkey_hex)
+        print("public hex key is :", self.nostr_npub_hex)
         
         if sender_pubkey != self.nostr_pubkey_hex:
             print("HUSTON WE HAVE A PROBLEM")
