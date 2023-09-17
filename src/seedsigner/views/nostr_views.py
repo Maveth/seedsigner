@@ -232,6 +232,7 @@ class NostrSignEventReviewView(BaseNostrView):
             nostr_event_serialized = nostr.serialize_event(event_dict)
             
         self.nostr_event_serialized = json.loads(nostr_event_serialized)
+        self.nostr_event = json.loads(nostr_event_serialized)
             
         # self.controller.nostr_data["raw_serialized_event"] = serialized_event
         # self.serialized_event = json.loads(serialized_event)
@@ -289,7 +290,7 @@ class NostrSignEventReviewView(BaseNostrView):
         
         
         # raise NotImplementedError
-        signature = nostr.sign_event_with_key(nostr_add=self.nostr_add, serialized_event=self.nostr_event_serialized)
+        signature = nostr.sign_event_with_key(nostr_add=self.nostr_add, serialized_event=self.nostr_event)
 
         
         e = EncodeQR(
