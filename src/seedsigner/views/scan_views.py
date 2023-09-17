@@ -70,6 +70,13 @@ class ScanView(View):
                 ))
 
             if self.decoder.is_seed:
+                print("THIS SECTION SHOULD NOT SHOW")
+                print("THIS SECTION SHOULD NOT SHOW")
+                print("THIS SECTION SHOULD NOT SHOW")
+                print("THIS SECTION SHOULD NOT SHOW")
+                print("THIS SECTION SHOULD NOT SHOW")
+                print("THIS SECTION SHOULD NOT SHOW")
+                
                 seed_mnemonic = self.decoder.get_seed_phrase()
 
                 if not seed_mnemonic:
