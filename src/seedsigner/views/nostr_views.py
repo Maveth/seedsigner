@@ -118,7 +118,7 @@ class NostrMenuView(View):
         
         #TODO add full event signing, including DMS
         elif button_data[selected_menu_num] == FULLSIGN:
-            return Destination(NotYetImplementedView)                
+            return Destination(NostrSignFullEventStartView)                
 
 
 """****************************************************************************
