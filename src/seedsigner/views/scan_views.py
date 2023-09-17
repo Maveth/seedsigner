@@ -147,15 +147,17 @@ class ScanView(View):
                 print ("entering scan_views.nostr - is_nostr_address is TRUE - line 147") #DEBUG
                 print("is_nostr_address: ", self.decoder.is_nostr_add)
                 
-                from seedsigner.views.nostr_views import NostrAddressStartView
                 nostr_add = self.decoder.get_nostr_add()
                 nostr_add_type = self.decoder.get_nostr_add_type()
                 
-                
-                #TODO store nsec 
+                #TODO check if it is a nsec or a npub
+                print("STARTS WITH : ",nostr_add.startswith('nsec')) 
                 self.controller.storage.add_nsec(nostr_add)
                 print("added address, pulled from storage:",self.controller.storage.get_nsec())
                 
+                #TODO if we cscan a npub we might need to do something different.
+                
+                from seedsigner.views.nostr_views import NostrAddressStartView
                 return Destination(
                     NostrAddressStartView,
                     skip_current_view=True,
