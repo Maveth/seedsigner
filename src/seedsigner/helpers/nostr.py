@@ -104,7 +104,7 @@ def npub_to_hex(npub: str) -> str:
 
 #Since we will not always have a seed, we need to have the ability to do this directly
 def nsec_to_hex(nsec: str) -> str:
-    hrp, data, spec = bech32.bech32_decode(nsec)
+    hrp, data, spec = bech32.bech32_decode(bytes.fromhex(nsec))
     raw_priv_key = bech32.convertbits(data, 5, 8)[:-1]
     return bytes(raw_priv_key).hex()
 
@@ -178,6 +178,9 @@ def sign_event(seed: Seed, serialized_event: str):
 
 def sign_event_with_key(nostr_add: str, serialized_event: str):
     """ Hashes the full_message and then signs """
+    print ("trying to sign message, we have")
+    print ("nostr_add: ",nostr_add)
+    print ("event",serialized_event)
     PK1= nsec_to_hex (nostr_add)  #convert nsec bech32 to HEX
     PK2= ec.PrivateKey(bytes.fromhex(PK1)) #get WIF format secret privatekey used by seedsigner ec import
     
