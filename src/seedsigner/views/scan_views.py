@@ -211,7 +211,7 @@ class ScanView(View):
                     view_args={
                         "nostr_add": nostr_add,
                         "nostr_add_type": nostr_add_type,
-                        "nostr_event" : nostr_event_id,
+                        "nostr_event_id" : nostr_event_id,
                     }
                 )
                 
@@ -314,9 +314,9 @@ class ScanView(View):
             
                 print("WE ARE ABOUT TO LOAD REVIEW OF SERIALIZED EVENT - THAT IS WHERE SIGNING HAPPENS")
                 
-                from seedsigner.views.nostr_views import NostrSignSerializedEventReviewView
+                from seedsigner.views.nostr_views import NostrSignEventReviewView
                 return Destination(
-                    NostrSignSerializedEventReviewView,
+                    NostrSignEventReviewView,
                     skip_current_view=True,
                     view_args={
                         "nostr_add": nostr_add,

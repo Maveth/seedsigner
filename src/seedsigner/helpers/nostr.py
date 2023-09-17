@@ -108,6 +108,9 @@ def nsec_to_hex(nsec: str) -> str:
     raw_priv_key = bech32.convertbits(data, 5, 8)[:-1]
     return bytes(raw_priv_key).hex()
 
+def privkey_hex_get_pubkey_hex(privkey_hex: str) -> str:
+    hexlify(privkey_hex.get_public_key().xonly()).decode()
+
 
 
 ##TODO we will need to have a method to do signing without a seed.

@@ -186,9 +186,9 @@ class NostrRemoveNsecView(BaseNostrView):
 #         return Destination(ScanNostrJsonEventIDView)
     
 class NostrSignEventIDReviewView(BaseNostrView):
-    def __init__(self, nostr_add: str, nostr_add_type: str, nostr_signature: str = None, nostr_qrtype: str = None, nostr_event: str = None):
+    def __init__(self, nostr_add: str, nostr_add_type: str, nostr_signature: str = None, nostr_qrtype: str = None, nostr_event_id: str = None):
         super().__init__()
-        self.nostr_event = nostr_event,
+        self.nostr_event = nostr_event_id,
         self.nostr_add=nostr_add,
         self.nostr_qrtype = nostr_qrtype,
         self.nostr_add_type = nostr_add_type,
@@ -196,7 +196,7 @@ class NostrSignEventIDReviewView(BaseNostrView):
         
         
         from seedsigner.helpers.nostr import sign_event_id
-        self.nostr_signature = sign_event_id(nostr_add=nostr_add,nostr_add_type=nostr_add_type,nostr_event=nostr_event)
+        self.nostr_signature = sign_event_id(nostr_add=nostr_add,nostr_add_type=nostr_add_type,nostr_event=nostr_event_id)
     
     def run(self):
         
@@ -218,20 +218,58 @@ class NostrSignEventIDReviewView(BaseNostrView):
             return Destination(BackStackView)
 
 class NostrSignEventReviewView(BaseNostrView):
-    def __init__(self, nostr_add: str, nostr_add_type: str, nostr_signature: str = None, nostr_qrtype: str = None, nostr_event: str = None):
+    def __init__(self, nostr_add: str,
+                 nostr_add_type: str,
+                 nostr_signature: str = None,
+                 nostr_qrtype: str = None,
+                 nostr_event: str = None,
+                 nostr_event_serialized: str = None,
+                 nostr_event_id: str = None):
+        
         super().__init__()
+        if nostr_event:
+            event_dict = json.loads(nostr_event)
+            serialized_event = nostr.serialize_event(event_dict)
+            
+        self.controller.nostr_data["raw_serialized_event"] = serialized_event
+        self.serialized_event = json.loads(serialized_event)
+        
         self.nostr_event = nostr_event,
         self.nostr_add=nostr_add,
         self.nostr_qrtype = nostr_qrtype,
         self.nostr_add_type = nostr_add_type,
         self.nostr_signature = nostr_signature,
+        self.nostr_npub_hex = ""
         
-        raise NotImplementedError
+        #TODO WE need to add the serialization part, and then signing the data
+        #we also need to check if its encrypted.
         
-        from seedsigner.helpers.nostr import sign_event_id
-        self.nostr_signature = sign_event_id(nostr_add=nostr_add,nostr_add_type=nostr_add_type,nostr_event=nostr_event)
+        # from seedsigner.helpers.nostr import sign_event_id
+        # self.nostr_signature = sign_event_id(nostr_add=nostr_add,nostr_add_type=nostr_add_type,nostr_event=nostr_event)
     
     def run(self):
+        
+        sender_pubkey = self.serialized_event[nostr.SerializedEventFields.SENDER_PUBKEY]
+        kind = self.serialized_event[nostr.SerializedEventFields.KIND]
+        # kind_description = f"{nostr.KINDS[self.serialized_event[nostr.SerializedEventFields.KIND]]} (kind: {kind})"
+        content = self.serialized_event[nostr.SerializedEventFields.CONTENT]
+        
+        if kind ==4:
+            print("we see an encrypted msg kind:",kind)
+        else:
+            print("message kind :", kind)
+        
+        print ("we need to get the public key from the stored nsec")
+        print("we have nsec:",self.nostr_add)
+        self.nostr_npub_hex = nostr.privkey_hex_get_pubkey_hex(self.nostr_add)
+        print("private hex key is :", self.nostr_npub_hex)
+        
+        if sender_pubkey != self.nostr_pubkey_hex:
+            print("HUSTON WE HAVE A PROBLEM")
+        
+        
+        
+        raise NotImplementedError
         
         e = EncodeQR(
             qr_type=QRType.NOSTR_EVENT_SIGNATURE,
@@ -250,38 +288,40 @@ class NostrSignEventReviewView(BaseNostrView):
             print("does this execute")
             return Destination(BackStackView)
 
-class NostrSignSerializedEventReviewView(BaseNostrView):
-    def __init__(self, nostr_add: str, nostr_add_type: str, nostr_signature: str = None, nostr_qrtype: str = None, nostr_event: str = None):
-        super().__init__()
-        self.nostr_event = nostr_event,
-        self.nostr_add=nostr_add,
-        self.nostr_qrtype = nostr_qrtype,
-        self.nostr_add_type = nostr_add_type,
-        self.nostr_signature = nostr_signature,
-        
-        raise NotImplementedError
-    
-        from seedsigner.helpers.nostr import sign_event_id
-        self.nostr_signature = sign_event_id(nostr_add=nostr_add,nostr_add_type=nostr_add_type,nostr_event=nostr_event)
-    
-    def run(self):
-        
-        e = EncodeQR(
-            qr_type=QRType.NOSTR_EVENT_SIGNATURE,
-            nostr_signature = '{"event.signature": "' + self.nostr_signature.to_string() + '"}'
-        )
-        data = e.next_part()
-        print (data)
-        ret = nostr_screens.NostrSignatureQRWholeQRScreen(
-            qr_data=data,
-        ).display()
 
-        if ret == RET_CODE__BACK_BUTTON:
-            return Destination(NostrMenuView)
+#TODO THIS ONE SHOULD NOT BE CALLED AS THE OTHER CAN DO BOTH REGULAR AND SERIALIZED
+# class NostrSignSerializedEventReviewView(BaseNostrView):
+    # def __init__(self, nostr_add: str, nostr_add_type: str, nostr_signature: str = None, nostr_qrtype: str = None, nostr_event: str = None):
+    #     super().__init__()
+    #     self.nostr_event = nostr_event,
+    #     self.nostr_add=nostr_add,
+    #     self.nostr_qrtype = nostr_qrtype,
+    #     self.nostr_add_type = nostr_add_type,
+    #     self.nostr_signature = nostr_signature,
         
-        else:
-            print("does this execute")
-            return Destination(BackStackView)
+    #     raise NotImplementedError
+    
+    #     from seedsigner.helpers.nostr import sign_event_id
+    #     self.nostr_signature = sign_event_id(nostr_add=nostr_add,nostr_add_type=nostr_add_type,nostr_event=nostr_event)
+    
+    # def run(self):
+        
+    #     e = EncodeQR(
+    #         qr_type=QRType.NOSTR_EVENT_SIGNATURE,
+    #         nostr_signature = '{"event.signature": "' + self.nostr_signature.to_string() + '"}'
+    #     )
+    #     data = e.next_part()
+    #     print (data)
+    #     ret = nostr_screens.NostrSignatureQRWholeQRScreen(
+    #         qr_data=data,
+    #     ).display()
+
+    #     if ret == RET_CODE__BACK_BUTTON:
+    #         return Destination(NostrMenuView)
+        
+    #     else:
+    #         print("does this execute")
+    #         return Destination(BackStackView)
 
 
 class NostrSignEventStartView(BaseNostrView):
@@ -333,5 +373,27 @@ class NostrAddressStartView(View):
         ).display()
         
         return Destination(NostrMenuView)
+    
+#TODO THIS WAS THE WAY THE OTHER CODE DISPLAYED THE QR CODE AT THE END
+class NostrSignEventSignatureQRView(BaseNostrView):
+    def __init__(self, signature):
+        super().__init__()
+
+        signature = nostr.sign_event(seed=self.seed, serialized_event=self.controller.nostr_data["raw_serialized_event"])
+
+        qr_density = self.settings.get_value(SettingsConstants.SETTING__QR_DENSITY)
+        qr_type = QRType.GENERIC__STATIC
+
+        self.qr_encoder = EncodeQR(
+            data=signature,
+            qr_type=qr_type,
+            qr_density=qr_density,
+        )
+
+
+    def run(self):
+        QRDisplayScreen(qr_encoder=self.qr_encoder).display()
+
+        return Destination(NostrMenuView, clear_history=True)
         
         
