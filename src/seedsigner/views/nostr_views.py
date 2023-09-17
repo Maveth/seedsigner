@@ -81,7 +81,7 @@ class NostrMenuView(View):
         REMOVE = ("Remove Stored Nsec", SeedSignerIconConstants.RESTART)
         
         
-        if self.controller.storage.nsec == "":
+        if self.controller.storage.nsecs[0] == "":
             
             if not self.seeds:
                 button_data = [IMAGE, KEYBOARD]
