@@ -108,13 +108,13 @@ def nsec_to_hex(nsec: str) -> str:
     raw_priv_key = bech32.convertbits(data, 5, 8)[:-1]
     return bytes(raw_priv_key).hex()
 
-def privkey_hex_get_pubkey_hex(privkey_hex: str) -> str:
-    print ("DEBUG - PRIV HEX STRING", privkey_hex)
-    # privkey_hex = privkey_hex.hex()
-    # print ("DEBUG - PRIV HEX", privkey_hex)
-    privkey_hex = bytes(privkey_hex).hex()
-    print ("DEBUG - CONVERT TO BYTESPRIV HEX STRING", privkey_hex)
-    privkey = ec.PrivateKey(secret=bytes(privkey_hex).hex())
+
+    PK1= nsec_to_hex (nostr_add)  #convert nsec bech32 to HEX
+    # PK1 = bytes.fromhex(PK1)  # Convert the hexadecimal string to bytes
+    PK2= ec.PrivateKey(bytes.fromhex(PK1)) #get WIF format secret privatekey used by seedsigner ec import
+
+def privkey_hex_to_pubkey_hex(privkey_hex: str) -> str:
+    privkey = ec.PrivateKey(bytes.fromhex(privkey_hex))
     return hexlify(privkey.get_public_key().xonly()).decode()
     
 
