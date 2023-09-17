@@ -231,11 +231,12 @@ class NostrAddressStartView(View):
     
     def __init__(self, nostr_add: str, nostr_add_type: str):
         super().__init__()
-        self.nostr_add=nostr_add,
-        self.nostr_add_type=nostr_add_type,
+        # self.nostr_add=nostr_address,
+        # self.nostr_add_type=nostr_address_type,
+        self.controller.storage.add_nsec(nostr_add)
     
     def run(self):
-        self.controller.storage.add_nsec(self.nostr_add)
+        # self.controller.storage.add_nsec(self.nostr_add)
         LargeIconStatusScreen(
             title="Nsec Loaded",
             show_back_button=False,
