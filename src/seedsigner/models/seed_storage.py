@@ -22,7 +22,7 @@ class SeedStorage:
         self.nsec = []
 
     def get_nsec(self):
-        nsec = self.nsec[0]
+        nsec = self.nsecs[0]
         return nsec
     
 
