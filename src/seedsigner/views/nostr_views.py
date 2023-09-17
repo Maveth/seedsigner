@@ -234,6 +234,7 @@ class NostrSignEventReviewView(BaseNostrView):
             nostr_event = json.loads(nostr_event_serialized)
         self.nostr_event = nostr_event
         self.nostr_event_serialized = nostr_event_serialized
+        self.nostr_event = json.loads(nostr_event_serialized)
         # self.nostr_event_serialized = json.loads(nostr_event_serialized)
         # self.nostr_event = json.loads(nostr_event_serialized)
         # self.nostr_event_serialized = nostr.serialize_event(self.nostr_event)
@@ -245,7 +246,7 @@ class NostrSignEventReviewView(BaseNostrView):
         # self.nostr_event = nostr_event_serialized,
         print("converted nostr event, \n this should only be serialized:",self.nostr_event_serialized)
         print()
-        print("Verification: ",self.nostr_event_serialized[1],"  test:", self.nostr_event_serialized[1] == 0)
+        print("Verification: ",self.nostr_event_serialized[1],"  test:", self.nostr_event_serialized[1] == "0")
         print("nostr event, \n this should only be json:",self.nostr_event)
         print("Verification: ",self.nostr_event[1],"  test:",self.nostr_event[1] == 0)
         
