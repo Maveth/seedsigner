@@ -254,10 +254,10 @@ class NostrSignEventReviewView(BaseNostrView):
     
     def run(self):
         
-        sender_pubkey = self.serialized_event[nostr.SerializedEventFields.SENDER_PUBKEY]
-        kind = self.serialized_event[nostr.SerializedEventFields.KIND]
-        # kind_description = f"{nostr.KINDS[self.serialized_event[nostr.SerializedEventFields.KIND]]} (kind: {kind})"
-        content = self.serialized_event[nostr.SerializedEventFields.CONTENT]
+        sender_pubkey = self.nostr_event[nostr.SerializedEventFields.SENDER_PUBKEY]
+        kind = self.nostr_event[nostr.SerializedEventFields.KIND]
+        # kind_description = f"{nostr.KINDS[self.nostr_event[nostr.SerializedEventFields.KIND]]} (kind: {kind})"
+        content = self.nostr_event[nostr.SerializedEventFields.CONTENT]
         
         if kind ==4:
             print("we see an encrypted msg kind:",kind)
