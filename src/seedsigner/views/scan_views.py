@@ -218,7 +218,8 @@ class ScanView(View):
             elif self.decoder.is_nostr_json_event:
                 # from seedsigner.views.nostr_views import NostrSignEventReviewView
                 
-                nostr_event = self.decoder.get_nostr_event()
+                nostr_event = self.decoder.get_json_event()
+                print("WE ARE IN SCAN VIEWS")
                 
                 #TODO
                 #we need to check that we got back the json event
