@@ -626,26 +626,34 @@ class DecodeQR:
                 "id": <sha256 hash of serialized Event: str>
             }
         """
-        json_content = json.loads(s)
-        expected_attrs = ["pubkey", "created_at", "kind", "tags", "content", "id"]
-        if len([k for k in json_content.keys() if k in expected_attrs]) == len(expected_attrs):
-            print("this seemns to be a nostr event Json - if this prints for seialized then need extra check")
-            return True
-        else:
-            print("it does not seem to be an event json")
-            return False
+        try:
+            json_content = json.loads(s)
+            expected_attrs = ["pubkey", "created_at", "kind", "tags", "content", "id"]
+            if len([k for k in json_content.keys() if k in expected_attrs]) == len(expected_attrs):
+                print("this seemns to be a nostr event Json - if this prints for seialized then need extra check")
+                return True
+            else:
+                print("it does not seem to be an event json")
+                return False
+        except json.JSONDecodeError:
+            print("Error decoding JSON. It may not be valid JSON.")
+        return False
         
         
     @staticmethod
     def is_nostr_json_event_serialized(s):  #     is_nostr_json_event(s):
         print("checking is serialized event")
-        json_content = json.loads(s)
-        if type(json_content) == list and json_content[0] == 0 and len(json_content) == 6:
-            print("this seemns to be a nostr serialed event Json")
-            return True
-        else:
-            print("it does not seem to be a SERIALZED event json")
-            return False
+        try:
+            json_content = json.loads(s)
+            if type(json_content) == list and json_content[0] == 0 and len(json_content) == 6:
+                print("this seemns to be a nostr serialed event Json")
+                return True
+            else:
+                print("it does not seem to be a SERIALZED event json")
+                return False
+        except json.JSONDecodeError:
+            print("Error decoding JSON. It may not be valid JSON.")
+        return False
             
     
 
