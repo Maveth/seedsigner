@@ -144,16 +144,12 @@ class ScanView(View):
                 
             #nostr
             elif self.decoder.is_nostr_add:
-                print ("entering scan_views.nostr - is_nostr_address is TRUE - line 147") #DEBUG
-                print("is_nostr_address: ", self.decoder.is_nostr_add)
-                
                 nostr_add = self.decoder.get_nostr_add()
                 nostr_add_type = self.decoder.get_nostr_add_type()
                 
                 #TODO check if it is a nsec or a npub
                 print("STARTS WITH : ",nostr_add.startswith('nsec')) 
                 self.controller.storage.add_nsec(nostr_add)
-                print("added address, pulled from storage:",self.controller.storage.get_nsec())
                 
                 #TODO if we cscan a npub we might need to do something different.
                 
@@ -174,8 +170,6 @@ class ScanView(View):
                 
                 try:
                     nostr_add = self.controller.storage.get_nsec()
-                    print("pulled address from storage:",nostr_add)
-                    print("same: ",self.controller.storage.get_nsec())
                 except IndexError:
                     #No Nsec is stored, goto nostr menu to add nsec
                     selected_menu_num = WarningScreen(
@@ -193,26 +187,21 @@ class ScanView(View):
                         skip_current_view=True,  # Prevent going BACK to WarningViews
                     )
 
-                
-                # nostr_add = self.controller.storage.get_nsec()[0]
-                print("we got an address from storage:",nostr_add)
-                
-                
                 #TODO - might error but shouldnt, since its a valid nostr addr
-                # if nostr_add.startswith('nsec'):
+                if nostr_add.startswith('nsec'):
                 # print("addres strats with nsec: ",nostr_add.tostring().startswith('nsec'))
-                print("address is:", nostr_add)
-                nostr_add_type = "nsec"
-                # elif nostr_add.startswith('npub'):
-                #     nostr_add_type = "npub"
-                #     print("Invalid")
-                #     raise Exception(f"expecting a nsec key")
-                # else: 
-                if nostr_add == "" :
-                    print("I think we have no nsec, try and scan for one?")
-                    #THIS SHOULD NOT SHOW UP ANYMORE
-                    #TODO maybe we should ask first
-                    Destination(ScanNostrAddView)
+                    print("address is:", nostr_add)
+                    nostr_add_type = "nsec"
+                elif nostr_add.startswith('npub'):
+                    nostr_add_type = "npub"
+                    print("Invalid")
+                    raise Exception(f"expecting a nsec key")
+                else: 
+                    if nostr_add == "" :
+                        print("I think we have no nsec, try and scan for one?")
+                        #THIS SHOULD NOT SHOW UP ANYMORE
+                        #TODO maybe we should ask first
+                        Destination(ScanNostrAddView)
             
                 
                 return Destination(
