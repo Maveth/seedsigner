@@ -242,8 +242,8 @@ class NostrSignEventReviewView(BaseNostrView):
         self.nostr_qrtype = nostr_qrtype,
         self.nostr_add_type = nostr_add_type,
         self.nostr_signature = nostr_signature,
-        self.nostr_npub_hex = ""
-        self.nostr_privkey_hex =""
+        self.nostr_npub_hex = "",
+        self.nostr_privkey_hex ="",
         
         #TODO WE need to add the serialization part, and then signing the data
         #we also need to check if its encrypted.
