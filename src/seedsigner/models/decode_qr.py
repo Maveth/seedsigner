@@ -459,13 +459,13 @@ class DecodeQR:
             elif DecodeQR.is_nostr_json_event_id(s):
                 return QRType.NOSTR_JSON_EVENT_ID
             
-            # Nostr Event Serialized
-            elif DecodeQR.is_nostr_json_event_serialized(s):
-                return QRType.NOSTR_SERIALIZED_EVENT
-            
             # Nostr Event raw
             elif DecodeQR.is_nostr_json_event(s):
                 return QRType.NOSTR_JSON_EVENT
+            
+            # Nostr Event Serialized
+            elif DecodeQR.is_nostr_json_event_serialized(s):
+                return QRType.NOSTR_SERIALIZED_EVENT
 
             # message signing
             elif DecodeQR.is_sign_message(s):
@@ -605,6 +605,7 @@ class DecodeQR:
         else:
             print("it is not an event id") #DEBUG
             return False
+        
 
     @staticmethod
     def is_nostr_json_event(s):  #     is_nostr_json_event(s):
@@ -633,6 +634,7 @@ class DecodeQR:
         else:
             print("it does not seem to be an event json")
             return False
+        
         
     @staticmethod
     def is_nostr_json_event_serialized(s):  #     is_nostr_json_event(s):
