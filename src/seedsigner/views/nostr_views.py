@@ -239,6 +239,10 @@ class NostrSignEventReviewView(BaseNostrView):
         
         # self.nostr_event = nostr_event_serialized,
         print("converted nostr event, \n this should only be serialized:",self.nostr_event_serialized)
+        print("Verification:",self.nostr_event_serialized[1] == 0)
+        print("nostr event, \n this should only be json:",self.nostr_event)
+        print("Verification:",self.nostr_event_serialized[1] != 0)
+        
         self.nostr_add=nostr_add,
         self.nostr_qrtype = nostr_qrtype,
         self.nostr_add_type = nostr_add_type,
