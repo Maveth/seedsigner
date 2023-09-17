@@ -87,7 +87,13 @@ class DecodeQR:
                 self.decoder = NostrAddressQrDecoder() #Single Nostr Address required for storage
                 
             elif self.qr_type == QRType.NOSTR_JSON_EVENT_ID:
-                self.decoder = NostrJsonEventIDQrDecoder()
+                self.decoder = NostrJsonEventIDQrDecoder()    
+                
+            elif self.qr_type == QRType.NOSTR_JSON_EVENT:
+                self.decoder = NostrJsonEventQrDecoder()
+                    
+            elif self.qr_type == QRType.NOSTR_SERIALIZED_EVENT:
+                self.decoder = NostrSerializedEventQrDecoder()
 
             elif self.qr_type == QRType.SIGN_MESSAGE:
                 self.decoder = SignMessageQrDecoder() # Single Segment sign message request
@@ -212,6 +218,15 @@ class DecodeQR:
     def get_nostr_event_id(self):
         if self.is_nostr_event_id:
             return self.decoder.get_nostr_event_id()
+        
+    def get_serialized_event(self):
+        if self.is_nostr_event_serialized:
+            return self.decoder.get_serialized_event()
+
+
+    def get_json_event(self):
+        if self.is_nostr_event:
+            return self.decoder.get_json_event()
 
 
 
@@ -312,6 +327,14 @@ class DecodeQR:
     @property
     def is_nostr_event_id(self):
         return self.qr_type == QRType.NOSTR_JSON_EVENT_ID
+    
+    @property
+    def is_nostr_event(self):
+        return self.qr_type == QRType.NOSTR_JSON_EVENT
+    
+    @property
+    def is_nostr_event_serialized(self):
+        return self.qr_type == QRType.NOSTR_SERIALIZED_EVENT
     
 
     @property
@@ -435,6 +458,14 @@ class DecodeQR:
             # Nostr event id
             elif DecodeQR.is_nostr_json_event_id(s):
                 return QRType.NOSTR_JSON_EVENT_ID
+            
+            # Nostr Event Serialized
+            elif DecodeQR.is_nostr_json_event_serialized(s):
+                return QRType.NOSTR_SERIALIZED_EVENT
+            
+            # Nostr Event raw
+            elif DecodeQR.is_nostr_json_event(s):
+                return QRType.NOSTR_JSON_EVENT
 
             # message signing
             elif DecodeQR.is_sign_message(s):
@@ -565,16 +596,54 @@ class DecodeQR:
         
         
     @staticmethod
-    def is_nostr_json_event_id(s):  #     is_nostr_json_event(s):
+    def is_nostr_json_event_id(s):  #     is_nostr_json_event_id(s):
         print("we are checking if this is an event") # DEBUG
         print(s)
         if re.search(r'^\{"event\.id":', s, re.IGNORECASE):
             print("is a nostr json_event id = true") # DEBUG
             return True
         else:
-            print("it is not an event")
+            print("it is not an event id") #DEBUG
             return False
 
+    @staticmethod
+    def is_nostr_json_event(s):  #     is_nostr_json_event(s):
+        # Nostr raw json Events:
+        """
+            {
+                "pubkey": <sender pubkey hex: str>,
+                "created_at": 1674864298,
+                "kind": 1,
+                "tags": [
+                    [
+                        "e",
+                        <event_id being referenced: str>
+                    ]
+                ],
+                "content": "Testing a reply! To myself!",
+                "id": <sha256 hash of serialized Event: str>
+            }
+        """
+        json_content = json.loads(s)
+        expected_attrs = ["pubkey", "created_at", "kind", "tags", "content", "id"]
+        if len([k for k in json_content.keys() if k in expected_attrs]) == len(expected_attrs):
+            # return QRType.NOSTR__JSON_EVENT
+            return True
+        else:
+            print("it does not seem to be an event json")
+            return False
+        
+    @staticmethod
+    def is_nostr_json_event_serialized(s):  #     is_nostr_json_event(s):
+        json_content = json.loads(s)
+        if type(json_content) == list and json_content[0] == 0 and len(json_content) == 6:
+            print("this seemns to be a nostr serialed event Json")
+            return True
+        else:
+            print("it does not seem to be a SERIALZED event json")
+            return False
+            
+    
 
 
     @staticmethod
@@ -1080,6 +1149,44 @@ class NostrJsonEventIDQrDecoder(BaseSingleFrameQrDecoder):
         if self.get_nostr_event_id != None:
             return self.nostr_event
         return None
+    
+class NostrJsonEventQrDecoder(BaseSingleFrameQrDecoder):
+    def __init__(self):
+        super().__init__()
+        self.serialized_event = None
+    #TODO THIS CODE SHOULD NOT WORK YET
+    def add(self, segment, qr_type=QRType.NOSTR_JSON_EVENT):
+        print("we are in the decode.nostrjsonevent FULL RAW EVENT qrdecoder")
+        print (segment)
+        self.serialized_event = segment.strip()
+        print (self.serialized_event)
+        
+        return DecodeQRStatus.COMPLETE
+
+    def get_serialized_event(self):
+        if self.get_serialized_event != None:
+            return self.serialized_event
+        return None
+
+class NostrSerializedEventQrDecoder(BaseSingleFrameQrDecoder):
+    def __init__(self):
+        super().__init__()
+        self.json_event = None
+    #TODO THIS CODE SHOULD NOT WORK YET
+    def add(self, segment, qr_type=QRType.NOSTR_SERIALIZED_EVENT):
+        print("we are in the decode.nostrSerializedevent qrdecoder")
+        print (segment)
+        self.json_event = segment.strip()
+        print (self.json_event)
+        
+        return DecodeQRStatus.COMPLETE
+
+    def get_json_event(self):
+        if self.get_json_event != None:
+            return self.json_event
+        return None
+    
+        
 
 
 class BitcoinAddressQrDecoder(BaseSingleFrameQrDecoder):

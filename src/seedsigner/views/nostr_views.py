@@ -87,7 +87,7 @@ class NostrMenuView(View):
             else:
                 button_data = [SEEDS, IMAGE, KEYBOARD]
         else:
-            button_data = [SIGN, REMOVE, FULLSIGN]
+            button_data = [SIGN, REMOVE]
             
         screen = NostrButtonListScreen(
             title="Nostr Menu",

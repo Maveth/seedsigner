@@ -166,7 +166,7 @@ class ScanView(View):
                 
             elif self.decoder.is_nostr_event_id:   # .qr_type == QRType.NOSTR__JSON_EVENT:
                 from seedsigner.views.nostr_views import NostrSignEventIDReviewView
-                nostr_event = self.decoder.get_nostr_event_id()
+                nostr_event_id = self.decoder.get_nostr_event_id()
                 
                 try:
                     nostr_add = self.controller.storage.get_nsec()
@@ -187,7 +187,7 @@ class ScanView(View):
                         skip_current_view=True,  # Prevent going BACK to WarningViews
                     )
 
-                # TODO - THIS CAN ALL BE REMOVED - here for debug
+                # TODO - maybe the decoder should return type as well?????
                 # #TODO - might error but shouldnt, since its a valid nostr addr already stored
                 if nostr_add.startswith('nsec'):
                 # # print("addres strats with nsec: ",nostr_add.tostring().startswith('nsec'))
@@ -211,9 +211,31 @@ class ScanView(View):
                     view_args={
                         "nostr_add": nostr_add,
                         "nostr_add_type": nostr_add_type,
+                        "nostr_event" : nostr_event_id,
+                    }
+                )
+                
+            elif self.decoder.is_nostr_json_event:
+                # from seedsigner.views.nostr_views import NostrSignEventReviewView
+                
+                nostr_event = self.decoder.get_nostr_event()
+                
+                #TODO
+                #we need to check that we got back the json event
+                #it should not be serialized as of yet
+                
+                from seedsigner.views.nostr_views import NostrSignEventReviewView
+                return Destination(
+                    NostrSignEventIDReviewView,
+                    skip_current_view=True,
+                    view_args={
+                        "nostr_add": nostr_add,
+                        "nostr_add_type": nostr_add_type,
                         "nostr_event" : nostr_event,
                     }
                 )
+                
+                
 
             ## THE CODE BELOW seems to have bug for get_qr_data - I might be missing something here.
             ## it might only trigger if it gets this far and never exits.
@@ -303,10 +325,15 @@ class ScanNostrAddView(ScanView):
 class ScanNostrJsonEventIDView(ScanView):
     instructions_text = "Scan an Event Id"
     invalid_qr_type_message = "Expected a Nostr Json Event Id"
-    
-    print(instructions_text)
-    print("scan_views line 263")
         
     @property
     def is_valid_qr_type(self):
         return self.decoder.is_nostr_event_id
+    
+class ScanNostrJsonEventView(ScanView):
+    instructions_text = "Scan an Event"
+    invalid_qr_type_message = "Expected a Nostr Json Event"
+        
+    @property
+    def is_valid_qr_type(self):
+        return self.decoder.is_nostr_event
