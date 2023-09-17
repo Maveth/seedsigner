@@ -1150,7 +1150,7 @@ class NostrJsonEventIDQrDecoder(BaseSingleFrameQrDecoder):
             return self.nostr_event
         return None
     
-class NostrJsonEventQrDecoder(BaseSingleFrameQrDecoder):
+class NostrSerializedEventQrDecoder(BaseSingleFrameQrDecoder):
     def __init__(self):
         super().__init__()
         self.serialized_event = None
@@ -1168,7 +1168,7 @@ class NostrJsonEventQrDecoder(BaseSingleFrameQrDecoder):
             return self.serialized_event
         return None
 
-class NostrSerializedEventQrDecoder(BaseSingleFrameQrDecoder):
+class NostrJsonEventQrDecoder(BaseSingleFrameQrDecoder):
     def __init__(self):
         super().__init__()
         self.json_event = None
