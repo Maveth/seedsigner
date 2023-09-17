@@ -248,7 +248,7 @@ class NostrSignEventReviewView(BaseNostrView):
         print()
         print("Verification: ",self.nostr_event_serialized[1],"  test:", self.nostr_event_serialized[1] == "0")
         print("nostr event, \n this should only be json:",self.nostr_event)
-        print("Verification: ",self.nostr_event[1],"  test:",self.nostr_event[1] == 0)
+        print("Verification: ",self.nostr_event[0],"  test:",self.nostr_event[1] == 0)
         
         self.nostr_add=nostr_add,
         self.nostr_qrtype = nostr_qrtype,
@@ -263,11 +263,11 @@ class NostrSignEventReviewView(BaseNostrView):
     
     def run(self):
         
-        sender_pubkey = self.nostr_event_serialized[nostr.SerializedEventFields.SENDER_PUBKEY]
+        sender_pubkey = self.nostr_event[nostr.SerializedEventFields.SENDER_PUBKEY]
         print("we see the public key as: ",sender_pubkey)
-        kind = self.nostr_event_serialized[nostr.SerializedEventFields.KIND]
+        kind = self.nostr_event[nostr.SerializedEventFields.KIND]
         # kind_description = f"{nostr.KINDS[self.nostr_event[nostr.SerializedEventFields.KIND]]} (kind: {kind})"
-        content = self.nostr_event_serialized[nostr.SerializedEventFields.CONTENT]
+        content = self.nostr_event[nostr.SerializedEventFields.CONTENT]
         
         if kind ==4:
             print("we see an encrypted msg kind:",kind)
@@ -285,7 +285,7 @@ class NostrSignEventReviewView(BaseNostrView):
         if sender_pubkey != nostr.privkey_hex_to_pubkey_hex(nostr.nsec_to_hex(self.nostr_add[0])):
             # This Seed can't sign this Event
             from seedsigner.gui.screens import DireWarningScreen
-            sender_npub = nostr.pubkey_hex_to_npub(self.nostr_event_serialized[nostr.SerializedEventFields.SENDER_PUBKEY])
+            sender_npub = nostr.pubkey_hex_to_npub(self.nostr_event[nostr.SerializedEventFields.SENDER_PUBKEY])
             DireWarningScreen(
                 title="Wrong Nostr Key",
                 status_headline="Cannot sign event",
