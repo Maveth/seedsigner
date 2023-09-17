@@ -24,7 +24,7 @@ class QRType:
     NOSTR_JSON_EVENT_ID = "nostr_json_event_id"
     NOSTR_EVENT_SIGNATURE = "nostr_event_signature"
     NOSTR_JSON_EVENT = "nostr_json_event"
-    NOSTR_SERIALIZED_EVENT = "nostr_json_event"
+    NOSTR_SERIALIZED_EVENT = "nostr_json_event_serialized"
     NOSTR_SIGNED_EVENT = "nostr_signed_event"
 
     SIGN_MESSAGE = "sign_message"
