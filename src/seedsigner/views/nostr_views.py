@@ -171,28 +171,15 @@ class NostrRemoveNsecView(BaseNostrView):
             self.controller.storage.remove_nsec()
         return Destination(BackStackView) 
     
-# class NostrSignEventIDStartView(BaseNostrView):
-#     def run(self):    
-            
-#         selected_menu_num = NostrSignEventIDStartScreen(
-#             title="Sign Event"
-#         ).display()
-
-#         if selected_menu_num == RET_CODE__BACK_BUTTON:
-#             return Destination(BackStackView)
-        
-#         # from seedsigner.views.scan_views import ScanNostrJsonEventView
-#         self.controller.resume_main_flow = Controller.FLOW__NOSTR_EVENT_ID
-#         return Destination(ScanNostrJsonEventIDView)
     
 class NostrSignEventIDReviewView(BaseNostrView):
     def __init__(self, nostr_add: str, nostr_add_type: str, nostr_signature: str = None, nostr_qrtype: str = None, nostr_event_id: str = None):
         super().__init__()
-        self.nostr_event = nostr_event_id,
-        self.nostr_add=nostr_add,
-        self.nostr_qrtype = nostr_qrtype,
-        self.nostr_add_type = nostr_add_type,
-        self.nostr_signature = nostr_signature,
+        self.nostr_event = nostr_event_id
+        self.nostr_add=nostr_add
+        self.nostr_qrtype = nostr_qrtype
+        self.nostr_add_type = nostr_add_type
+        self.nostr_signature = nostr_signature
         
         
         from seedsigner.helpers.nostr import sign_event_id
@@ -227,14 +214,20 @@ class NostrSignEventReviewView(BaseNostrView):
                  nostr_event_id: str = None):
         
         super().__init__()
+        
         if nostr_event:
             event_dict = json.loads(nostr_event)
             nostr_event_serialized = nostr.serialize_event(event_dict)
+            
         elif nostr_event_serialized:
             nostr_event = json.loads(nostr_event_serialized)
+            
         self.nostr_event = nostr_event
         self.nostr_event_serialized = nostr_event_serialized
+        
         self.nostr_event = json.loads(nostr_event_serialized)
+        
+        
         # self.nostr_event_serialized = json.loads(nostr_event_serialized)
         # self.nostr_event = json.loads(nostr_event_serialized)
         # self.nostr_event_serialized = nostr.serialize_event(self.nostr_event)
@@ -250,10 +243,10 @@ class NostrSignEventReviewView(BaseNostrView):
         print("nostr event, \n this should only be json:",self.nostr_event)
         print("Verification: ",self.nostr_event[0],"  test:",self.nostr_event[1] == 0)
         
-        self.nostr_add=nostr_add,
-        self.nostr_qrtype = nostr_qrtype,
-        self.nostr_add_type = nostr_add_type,
-        self.nostr_signature = nostr_signature,
+        self.nostr_add=nostr_add
+        self.nostr_qrtype = nostr_qrtype
+        self.nostr_add_type = nostr_add_type
+        self.nostr_signature = nostr_signature
         
         #TODO WE need to add the serialization part, and then signing the data
         #we also need to check if its encrypted.
@@ -274,13 +267,13 @@ class NostrSignEventReviewView(BaseNostrView):
         else:
             print("message kind :", kind)
         
-        print ("we need to get the public key from the stored nsec")
-        print("we have nsec:",self.nostr_add[0])
-        # self.nostr_privkey_hex = nostr.nsec_to_hex(self.nostr_add[0])
-        print("we have a private_hex",nostr.nsec_to_hex(self.nostr_add[0]))
-        # self.nostr_npub_hex = nostr.privkey_hex_get_pubkey_hex(nostr.nsec_to_hex(self.nostr_add[0]))
-        print("public hex key is :", nostr.privkey_hex_to_pubkey_hex(nostr.nsec_to_hex(self.nostr_add[0])))
-        # self.nostr_pubkey_hex = nostr.privkey_hex_to_pubkey_hex(nostr.nsec_to_hex(self.nostr_add[0]))
+        # print ("we need to get the public key from the stored nsec")
+        # print("we have nsec:",self.nostr_add[0])
+        # # self.nostr_privkey_hex = nostr.nsec_to_hex(self.nostr_add[0])
+        # print("we have a private_hex",nostr.nsec_to_hex(self.nostr_add[0]))
+        # # self.nostr_npub_hex = nostr.privkey_hex_get_pubkey_hex(nostr.nsec_to_hex(self.nostr_add[0]))
+        # print("public hex key is :", nostr.privkey_hex_to_pubkey_hex(nostr.nsec_to_hex(self.nostr_add[0])))
+        # # self.nostr_pubkey_hex = nostr.privkey_hex_to_pubkey_hex(nostr.nsec_to_hex(self.nostr_add[0]))
         
         if sender_pubkey != nostr.privkey_hex_to_pubkey_hex(nostr.nsec_to_hex(self.nostr_add[0])):
             # This Seed can't sign this Event

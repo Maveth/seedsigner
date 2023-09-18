@@ -188,4 +188,3 @@ def sign_event_with_key(nostr_add: str, serialized_event: str):
     print ("we got a sig: ", sig)
     return sig
 
-
