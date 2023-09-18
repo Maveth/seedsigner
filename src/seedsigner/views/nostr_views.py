@@ -22,7 +22,7 @@ from seedsigner.models.seed import Seed
 from seedsigner.models.settings_definition import SettingsConstants
 from seedsigner.views.seed_views import SeedDiscardView, SeedFinalizeView, SeedMnemonicEntryView, SeedWordsWarningView, SeedExportXpubScriptTypeView
 from seedsigner.views.view import NotYetImplementedView, OptionDisabledView, View, Destination, BackStackView, MainMenuView
-from seedsigner.views.scan_views import ScanNostrAddView, ScanNostrJsonEventIDView
+from seedsigner.views.scan_views import ScanNostrAddView, ScanNostrJsonEventIDView, ScanView
 
 from .view import View, Destination, BackStackView
 
@@ -110,7 +110,7 @@ class NostrMenuView(View):
             return Destination(NotYetImplementedView)            
 
         elif button_data[selected_menu_num] == SIGN:
-            return Destination(NostrSignEventStartView)
+            return Destination(ScanView)
         
         elif button_data[selected_menu_num] == REMOVE:
             return Destination(NostrRemoveNsecView)               
@@ -361,28 +361,28 @@ class NostrSignEventStartView(BaseNostrView):
     def run(self):    
             
         selected_menu_num = NostrSignEventStartScreen(
-            title="Sign Full Nostr Event"
+            title="Sign Nostr Event"
         ).display()
         
-        if selected_menu_num == 0:
-            self.controller.resume_main_flow = Controller.FLOW__NOSTR_EVENT_ID
-            return Destination(ScanNostrJsonEventIDView)
-        elif selected_menu_num == 1:
-            self.controller.resume_main_flow = Controller.FLOW__NOSTR_EVENT
-            #TODO porting over - might need to change
-            return Destination(NotYetImplementedView)
-            return Destination(ScanView)
+        # if selected_menu_num == 0:
+        #     self.controller.resume_main_flow = Controller.FLOW__NOSTR_EVENT_ID
+        #     return Destination(ScanNostrJsonEventIDView)
+        # elif selected_menu_num == 1:
+        #     self.controller.resume_main_flow = Controller.FLOW__NOSTR_EVENT
+        #     #TODO porting over - might need to change
+        #     return Destination(NotYetImplementedView)
+        return Destination(ScanView)
 
-        elif selected_menu_num == RET_CODE__BACK_BUTTON:
-            return Destination(BackStackView)
+        # elif selected_menu_num == RET_CODE__BACK_BUTTON:
+        #     return Destination(BackStackView)
         
-        print("NEED TO DEBUG HERE")
-        print (selected_menu_num)
-        ## NOTE TO SELF, THIS RETURNS A 0 for first option and 1 for second.
-        ##TODO WE SHOULD NOT GET HERE
-        # from seedsigner.views.scan_views import ScanNostrJsonEventView
-        # self.controller.resume_main_flow = Controller.FLOW__NOSTR_EVENT
-        return Destination(NotYetImplementedView)
+        # print("NEED TO DEBUG HERE")
+        # print (selected_menu_num)
+        # ## NOTE TO SELF, THIS RETURNS A 0 for first option and 1 for second.
+        # ##TODO WE SHOULD NOT GET HERE
+        # # from seedsigner.views.scan_views import ScanNostrJsonEventView
+        # # self.controller.resume_main_flow = Controller.FLOW__NOSTR_EVENT
+        # return Destination(NotYetImplementedView)
         
  
 """****************************************************************************
